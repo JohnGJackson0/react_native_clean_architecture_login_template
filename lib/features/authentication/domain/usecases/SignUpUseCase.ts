@@ -8,6 +8,6 @@ export default class SignUpUseCase {
   }
 
   public execute = async (email: string, password: string) => {
-    await this._repository.userSignUp(email, password);
+    return await this._repository.userSignUp(email, password);
   };
 }

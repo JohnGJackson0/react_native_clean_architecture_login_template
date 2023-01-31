@@ -6,5 +6,5 @@ import UserSignUpModel from '../entities/UserSignUpModel';
 */
 
 export default interface AuthenticationRepository {
-  userSignUp(email: string, password: string): Promise<UserSignUpModel>;
+  userSignUp: (email: string, password: string) => Promise<UserSignUpModel>;
 }
