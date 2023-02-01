@@ -1,4 +1,4 @@
-import UserSignUpModel from '../entities/UserSignUpModel';
+import UserSignUpModel from '../entities/UserSignUp';
 
 /*
   There is no enforcement for names of functions and parameter

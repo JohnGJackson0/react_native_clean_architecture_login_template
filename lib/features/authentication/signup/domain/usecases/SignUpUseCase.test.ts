@@ -1,4 +1,4 @@
-import UserSignUpModel from '../entities/UserSignUpModel';
+import UserSignUpModel from '../entities/UserSignUp';
 import AuthenticationRepository from '../repositories/AuthenticationRepository';
 import SignUpUseCase from './SignUpUseCase';
 // Jest Doesn't Allow Mocking Interfaces
@@ -8,8 +8,6 @@ it('should get sign up from the repository', async () => {
   const signUpModel = new UserSignUpModel(
     'fakeEmail@fakeemail.com',
     'password',
-    'authtoken',
-    'refreshToken',
   );
 
   const repo = mock<AuthenticationRepository>();
