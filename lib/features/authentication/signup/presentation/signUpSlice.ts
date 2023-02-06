@@ -3,7 +3,6 @@ import SignUpUseCase from '../domain/usecases/SignUpUseCase';
 import AuthenticationRepositoryImpl from '../data/repositories/AuthenticationRepositoryImpl';
 import UserSignUpDataSourceImpl from '../data/datasources/signUpDataSource';
 import UserSignUp from '../domain/entities/UserSignUp';
-import {Client} from '../../../../core/client';
 
 export interface signedUpUserState {
   email: string;
@@ -26,9 +25,7 @@ export const signUpUserThunk = createAsyncThunk(
   'users/signUp',
   async (_: UserSignUp, {rejectWithValue}) => {
     try {
-      const datasource = new UserSignUpDataSourceImpl(
-        fetch as unknown as Client,
-      );
+      const datasource = new UserSignUpDataSourceImpl({fetch: fetch});
       const repo = new AuthenticationRepositoryImpl(datasource);
       const useCase = new SignUpUseCase(repo);
       return await useCase.execute(_.email, _.password);

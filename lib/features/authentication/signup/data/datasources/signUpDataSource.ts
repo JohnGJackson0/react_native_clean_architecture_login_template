@@ -24,22 +24,20 @@ export default class UserSignUpDataSourceImpl implements UserSignUpDataSource {
     const url =
       'https://iz1ul818p3.execute-api.us-east-1.amazonaws.com/Prod/signup';
 
-    return await fetch(url, {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(data),
-    })
+    return await this._client
+      .fetch(url, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data),
+      })
       .then(resp => {
         if (!resp.ok) {
           return resp.text().then(text => {
-            throw new Error(text);
+            throw new Error(JSON.parse(text).error);
           });
         } else {
           return {email, password};
         }
-      })
-      .catch(err => {
-        throw new Error(JSON.parse(err.message).error.toString());
       });
   };
 }

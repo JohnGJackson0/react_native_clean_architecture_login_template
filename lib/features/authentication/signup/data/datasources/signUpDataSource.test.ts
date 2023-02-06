@@ -1,24 +1,41 @@
-import UserSignUpModel from '../models/UserSignUpModel';
+import {
+  SignUpHappyFixture,
+  SignUpSadFixture,
+} from '../../../../tests/SignUpFixture';
 import UserSignUpDataSourceImpl from './signUpDataSource';
 
 describe('signup', () => {
-  it('should perform a get request passing in correct email and password', async () => {
-    const expectedUser: UserSignUpModel = {
+  it('returns email and password as long as response is ok', async () => {
+    const expectedUser = {
       email: 'fakeEmail@fakeEmail.com',
       password: 'fakePassword',
     };
 
-    const client = {post: jest.fn(() => expectedUser)} as any;
+    const client = {
+      fetch: jest.fn(() => Promise.resolve(SignUpHappyFixture)),
+    };
 
-    const signUpResult = await new UserSignUpDataSourceImpl(client).getSignUp(
-      'fakeEmail@fakeEmail.com',
-      'fakePassword',
-    );
+    const signUpResult = await new UserSignUpDataSourceImpl(
+      client as any,
+    ).getSignUp('fakeEmail@fakeEmail.com', 'fakePassword');
 
     expect(signUpResult).toEqual(expectedUser);
-    expect(client.post.mock.calls[0][1]).toEqual({
-      email: 'fakeEmail@fakeEmail.com',
-      password: 'fakePassword',
-    });
+  });
+
+  it('throws with !ok response', async () => {
+    const client = {
+      fetch: jest.fn(() => Promise.resolve(SignUpSadFixture)),
+    };
+
+    let thrown = false;
+
+    const userSignUpDataSource = new UserSignUpDataSourceImpl(client as any);
+    try {
+      await userSignUpDataSource.getSignUp('', '');
+    } catch (e) {
+      thrown = true;
+    }
+
+    expect(thrown).toEqual(true);
   });
 });
