@@ -1,65 +1,31 @@
-import React, {useState} from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TextInput,
-  Touchable,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import React from 'react';
+import {SafeAreaView, StyleSheet} from 'react-native';
+import {persistStore} from 'redux-persist';
+import {Provider} from 'react-redux';
+import {store} from './lib/features/authentication/signup/presentation/store';
+import {PersistGate} from 'redux-persist/integration/react';
+import SplashScreen from './lib/features/splashScreen/presentation/SplashScreen';
+import SignUp from './lib/features/authentication/signup/presentation/SignUp';
+
+export const persistor = persistStore(store);
 
 function App(): JSX.Element {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  const onPress = () => {
-    console.log('pressed');
-  };
-
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.signUpContainer}>
-        <Text style={styles.signUp}>Sign Up</Text>
-        <TextInput style={styles.input} onChangeText={setEmail} value={email} />
-
-        <TextInput
-          style={styles.input}
-          onChangeText={setPassword}
-          value={password}
-          secureTextEntry={true}
-        />
-
-        <TouchableOpacity onPress={onPress} style={styles.button}>
-          <Text>Submit</Text>
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+    <PersistGate loading={<SplashScreen />} persistor={persistor}>
+      <Provider store={store}>
+        <SafeAreaView style={styles.container}>
+          <SignUp />
+        </SafeAreaView>
+      </Provider>
+    </PersistGate>
   );
 }
 
 const styles = StyleSheet.create({
-  input: {
-    height: 40,
-    borderWidth: 1,
-    margin: 20,
-  },
   container: {
     flex: 1,
     backgroundColor: 'white',
     alignContent: 'center',
-  },
-  signUpContainer: {
-    padding: 20,
-    marginTop: '30%',
-  },
-  button: {
-    alignSelf: 'center',
-  },
-  signUp: {
-    alignSelf: 'center',
-    fontSize: 35,
-    marginBottom: 30,
   },
 });
 

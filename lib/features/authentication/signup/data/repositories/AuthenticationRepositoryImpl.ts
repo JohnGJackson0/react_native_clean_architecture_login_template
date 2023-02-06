@@ -15,6 +15,6 @@ export default class AuthenticationRepositoryImpl
     email: string,
     password: string,
   ): Promise<UserSignUp> => {
-    return this.datasource.getSignUp(email, password);
+    return await this.datasource.getSignUp(email, password);
   };
 }

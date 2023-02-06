@@ -1,3 +1,6 @@
-import {AxiosStatic} from 'axios';
-
-export type Client = AxiosStatic;
+export interface Client {
+  fetch: (
+    input: RequestInfo,
+    init?: RequestInit | undefined,
+  ) => Promise<Response>;
+}

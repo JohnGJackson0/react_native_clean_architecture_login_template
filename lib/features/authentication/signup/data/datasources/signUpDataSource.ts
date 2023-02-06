@@ -12,7 +12,10 @@ export default class UserSignUpDataSourceImpl implements UserSignUpDataSource {
     this._client = client;
   }
 
-  getSignUp = async (email: string, password: string) => {
+  getSignUp = async (
+    email: string,
+    password: string,
+  ): Promise<UserSignUpModel> => {
     const data = {
       email: email,
       password: password,
@@ -21,8 +24,22 @@ export default class UserSignUpDataSourceImpl implements UserSignUpDataSource {
     const url =
       'https://iz1ul818p3.execute-api.us-east-1.amazonaws.com/Prod/signup';
 
-    const response: UserSignUpModel = await this._client.post(url, data);
-
-    return response;
+    return await fetch(url, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(data),
+    })
+      .then(resp => {
+        if (!resp.ok) {
+          return resp.text().then(text => {
+            throw new Error(text);
+          });
+        } else {
+          return {email, password};
+        }
+      })
+      .catch(err => {
+        throw new Error(JSON.parse(err.message).error.toString());
+      });
   };
 }
