@@ -6322,6 +6322,11 @@
   dependencies:
     "glob" "^7.1.3"
 
+"rsdi@^2.3.0":
+  "integrity" "sha512-7x2VDjppYSc1L4N4B6tM3XF8ZLJM+sbr3fIfVhngK9eFJQBq0eOK+J0PUAxlTWa10Okp3az9fpCRRdGQOnEFVw=="
+  "resolved" "https://registry.npmjs.org/rsdi/-/rsdi-2.3.0.tgz"
+  "version" "2.3.0"
+
 "run-parallel@^1.1.9":
   "integrity" "sha512-5l4VyZR86LZ/lDxZTR6jqL8AFE2S0IFLMP26AbjsLVADxHdhB/c0GUsH+y39UfCi3dzz8OlQuPmnaJOMoDHQBA=="
   "resolved" "https://registry.npmjs.org/run-parallel/-/run-parallel-1.2.0.tgz"
