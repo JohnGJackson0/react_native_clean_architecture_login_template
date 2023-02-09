@@ -1,9 +1,7 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import SignUpUseCase from '../domain/usecases/SignUpUseCase';
-import AuthenticationRepositoryImpl from '../data/repositories/AuthenticationRepositoryImpl';
-import UserSignUpDataSourceImpl from '../data/datasources/signUpDataSource';
 import UserSignUp from '../domain/entities/UserSignUp';
 import configureDI from '../../../../core/ioc/container';
+import {AppIOCContainer} from '../../../../../App';
 
 export interface signedUpUserState {
   email: string;
@@ -26,15 +24,7 @@ export const signUpUserThunk = createAsyncThunk(
   'users/signUp',
   async (_: UserSignUp, {rejectWithValue}) => {
     try {
-      const container = configureDI();
-
-      console.log(
-        container.get('UserSignUpDataSource') instanceof
-          UserSignUpDataSourceImpl,
-      );
-      const datasource = new UserSignUpDataSourceImpl({fetch: fetch});
-      const repo = new AuthenticationRepositoryImpl(datasource);
-      const useCase = new SignUpUseCase(repo);
+      const useCase = AppIOCContainer.get('SignUpUseCase');
       return await useCase.execute(_.email, _.password);
     } catch (e) {
       return rejectWithValue(e);
