@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {signUpUserThunk} from './signUpSlice';
-import {RootState} from './store';
+import {RootState} from '../../../../core/store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function SignUp(): JSX.Element {
@@ -38,7 +38,7 @@ function SignUp(): JSX.Element {
   return (
     <View style={styles.signUpContainer}>
       {loading === 'pending' && (
-        <View style={styles.loading}>
+        <View style={styles.loading} testID="loading">
           <ActivityIndicator size="large" />
         </View>
       )}
@@ -46,19 +46,24 @@ function SignUp(): JSX.Element {
         <>
           <Text style={styles.signUp}>Sign Up</Text>
           <TextInput
+            testID="email-input"
             style={styles.input}
             onChangeText={setEmail}
             value={email}
           />
 
           <TextInput
+            testID="password-input"
             style={styles.input}
             onChangeText={setPassword}
             value={password}
             secureTextEntry={true}
           />
 
-          <TouchableOpacity onPress={onPress} style={styles.button}>
+          <TouchableOpacity
+            testID="submit"
+            onPress={onPress}
+            style={styles.button}>
             <Text>Submit</Text>
           </TouchableOpacity>
         </>

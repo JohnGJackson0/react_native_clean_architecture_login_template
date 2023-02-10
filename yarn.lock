@@ -1670,6 +1670,13 @@
   dependencies:
     "@sinonjs/commons" "^2.0.0"
 
+"@testing-library/react-native@^11.5.2":
+  "integrity" "sha512-haa/82Sy4ngAbXF6VTw5U306ZQHWfv7OKxALA4AkMKnX+6frhSd9aAe9rp50CyI2XJsNna0Rh6G+CSw+SPztYg=="
+  "resolved" "https://registry.npmjs.org/@testing-library/react-native/-/react-native-11.5.2.tgz"
+  "version" "11.5.2"
+  dependencies:
+    "pretty-format" "^29.4.0"
+
 "@tsconfig/react-native@^2.0.2":
   "integrity" "sha512-jE58snEKBd9DXfyR4+ssZmYJ/W2mOSnNrvljR0aLyQJL9JKX6vlWELHkRjb3HBbcM9Uy0hZGijXbqEAjOERW2A=="
   "resolved" "https://registry.npmjs.org/@tsconfig/react-native/-/react-native-2.0.3.tgz"
@@ -5886,7 +5893,7 @@
     "ansi-styles" "^4.0.0"
     "react-is" "^17.0.1"
 
-"pretty-format@^29.0.0", "pretty-format@^29.4.1":
+"pretty-format@^29.0.0", "pretty-format@^29.4.0", "pretty-format@^29.4.1":
   "integrity" "sha512-dt/Z761JUVsrIKaY215o1xQJBGlSmTx/h4cSqXqjHLnU1+Kt+mavVE7UgqJJO5ukx5HjSswHfmXz4LjS2oIJfg=="
   "resolved" "https://registry.npmjs.org/pretty-format/-/pretty-format-29.4.1.tgz"
   "version" "29.4.1"

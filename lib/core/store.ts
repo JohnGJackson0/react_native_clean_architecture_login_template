@@ -1,5 +1,5 @@
 import {combineReducers, configureStore} from '@reduxjs/toolkit';
-import {SignUpReducer} from './signUpSlice';
+import {SignUpReducer} from '../features/authentication/signup/presentation/signUpSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {persistReducer} from 'redux-persist';
 

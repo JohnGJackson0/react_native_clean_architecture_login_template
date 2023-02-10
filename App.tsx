@@ -2,7 +2,7 @@ import React from 'react';
 import {SafeAreaView, StyleSheet} from 'react-native';
 import {persistStore} from 'redux-persist';
 import {Provider} from 'react-redux';
-import {store} from './lib/features/authentication/signup/presentation/store';
+import {store} from './lib/core/store';
 import {PersistGate} from 'redux-persist/integration/react';
 import SplashScreen from './lib/features/splashScreen/presentation/SplashScreen';
 import SignUp from './lib/features/authentication/signup/presentation/SignUp';
