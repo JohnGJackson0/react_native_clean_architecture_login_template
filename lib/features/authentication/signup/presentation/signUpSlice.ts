@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import UserSignUp from '../domain/entities/UserSignUp';
-import {AppIOCContainer} from '../../../../../App';
+import {AppIOCContainer} from '../../../../core/ioc/container';
 
 export interface signedUpUserState {
   email: string;

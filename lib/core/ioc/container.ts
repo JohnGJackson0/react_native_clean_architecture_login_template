@@ -19,3 +19,5 @@ export default function configureDI(): IDIContainer {
 
   return container;
 }
+
+export const AppIOCContainer = configureDI();
