@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import UserSignUp from '../domain/entities/UserSignUp';
+import UserSignUp from '../domain/entities/UserSignUpEntity';
 import {AppIOCContainer} from '../../../../core/ioc/container';
 
 export interface signedUpUserState {

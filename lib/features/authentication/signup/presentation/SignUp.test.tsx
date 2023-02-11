@@ -13,7 +13,7 @@ jest.mock('@react-native-async-storage/async-storage', () =>
 
 const mockIOC = jest.fn();
 
-jest.mock('../../../../../App', () => ({
+jest.mock('../../../../core/ioc/container', () => ({
   __esmodule: true,
   AppIOCContainer: {
     get: () => {

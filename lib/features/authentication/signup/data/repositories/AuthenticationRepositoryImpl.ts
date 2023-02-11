@@ -1,6 +1,10 @@
-import UserSignUp from '../../domain/entities/UserSignUp';
+import {UserSignUpDTO} from '../../domain/entities/UserSignUpDTO';
 import AuthenticationRepository from '../../domain/repositories/AuthenticationRepository';
 import UserSignUpDataSource from '../datasources/signUpDataSource';
+
+/**
+ * This can pull from datasources, local, caching, ect.
+ */
 
 export default class AuthenticationRepositoryImpl
   implements AuthenticationRepository
@@ -14,7 +18,7 @@ export default class AuthenticationRepositoryImpl
   public userSignUp = async (
     email: string,
     password: string,
-  ): Promise<UserSignUp> => {
+  ): Promise<UserSignUpDTO> => {
     return await this.datasource.getSignUp(email, password);
   };
 }

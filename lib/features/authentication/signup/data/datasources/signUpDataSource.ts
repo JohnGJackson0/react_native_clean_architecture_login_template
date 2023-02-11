@@ -1,8 +1,8 @@
 import {Client} from '../../../../../core/client';
-import UserSignUpModel from '../models/UserSignUpModel';
+import {UserSignUpDTO} from '../../domain/entities/UserSignUpDTO';
 
 export interface UserSignUpDataSource {
-  getSignUp: (email: string, password: string) => Promise<UserSignUpModel>;
+  getSignUp: (email: string, password: string) => Promise<UserSignUpDTO>;
 }
 
 export default class UserSignUpDataSourceImpl implements UserSignUpDataSource {
@@ -15,7 +15,7 @@ export default class UserSignUpDataSourceImpl implements UserSignUpDataSource {
   getSignUp = async (
     email: string,
     password: string,
-  ): Promise<UserSignUpModel> => {
+  ): Promise<UserSignUpDTO> => {
     const data = {
       email: email,
       password: password,
@@ -36,7 +36,7 @@ export default class UserSignUpDataSourceImpl implements UserSignUpDataSource {
             throw new Error(JSON.parse(text).error);
           });
         } else {
-          return {email, password};
+          return data;
         }
       });
   };

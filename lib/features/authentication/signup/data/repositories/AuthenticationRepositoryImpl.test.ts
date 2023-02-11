@@ -1,8 +1,7 @@
-import UserSignUpModel from '../models/UserSignUpModel';
 import AuthenticationRepositoryImpl from './AuthenticationRepositoryImpl';
 
 it('calls the datasource with the correct email and password', () => {
-  const mockDataSource = {getSignUp: jest.fn(() => UserSignUpModel)} as any;
+  const mockDataSource = {getSignUp: jest.fn()} as any;
 
   const authRepo = new AuthenticationRepositoryImpl(mockDataSource);
 

@@ -1,13 +1,26 @@
+import {Validator} from '../../../../../core/validator';
 import AuthenticationRepository from '../repositories/AuthenticationRepository';
 
 export default class SignUpUseCase {
-  _repository: AuthenticationRepository;
+  repository: AuthenticationRepository;
+  validator: Validator;
 
-  constructor(repo: AuthenticationRepository) {
-    this._repository = repo;
+  constructor(repo: AuthenticationRepository, validator: Validator) {
+    this.repository = repo;
+    this.validator = validator;
   }
 
   public execute = async (email: string, password: string) => {
-    return await this._repository.userSignUp(email, password);
+    const emailValidator = this.validator.validateEmail(email);
+    const passwordValidator = this.validator.validatePassword(password);
+
+    if (!emailValidator.isValid) {
+      throw emailValidator.message;
+    }
+
+    if (!passwordValidator.isValid) {
+      throw passwordValidator.message;
+    }
+    return await this.repository.userSignUp(email, password);
   };
 }
