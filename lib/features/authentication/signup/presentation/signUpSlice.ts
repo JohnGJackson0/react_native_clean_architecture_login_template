@@ -1,14 +1,13 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import UserSignUp from '../domain/entities/UserSignUpEntity';
 import {AppIOCContainer} from '../../../../core/ioc/container';
 
-export interface signedUpUserState {
+export interface SignedUpUserState {
   email: string;
   password: string;
 }
 
 export interface SignUpState {
-  signedUpUser: signedUpUserState;
+  signedUpUser: SignedUpUserState;
   loading: 'idle' | 'pending';
   error: string;
 }
@@ -21,7 +20,7 @@ export const initialState = {
 
 export const signUpUserThunk = createAsyncThunk(
   'users/signUp',
-  async (_: UserSignUp, {rejectWithValue}) => {
+  async (_: {email: string; password: string}, {rejectWithValue}) => {
     try {
       const useCase = AppIOCContainer.get('SignUpUseCase');
       return await useCase.execute(_.email, _.password);

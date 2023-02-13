@@ -3,6 +3,7 @@ import {configureStore} from '@reduxjs/toolkit';
 import {Provider} from 'react-redux';
 import {render as rntlRender} from '@testing-library/react-native';
 import {SignUpReducer} from '../authentication/signup/presentation/signUpSlice';
+import {ConfirmReducer} from '../authentication/confirm/presentation/confirmSlice';
 
 function render(
   ui: any,
@@ -10,7 +11,7 @@ function render(
     //@ts-ignore
     preloadedState,
     store = configureStore({
-      reducer: {signUp: SignUpReducer},
+      reducer: {signUp: SignUpReducer, confirm: ConfirmReducer},
       preloadedState,
     }),
     ...renderOptions
