@@ -19,6 +19,7 @@ describe('sign up useCase', () => {
           message: 'mockMessagePassword',
         };
       }),
+      validateConfirmCode: jest.fn(),
     };
 
     const repo = mock<AuthenticationRepository>();
@@ -61,6 +62,7 @@ describe('sign up useCase', () => {
           message: 'mockMessagePassword',
         };
       }),
+      validateConfirmCode: jest.fn(),
     };
 
     const repo = mock<AuthenticationRepository>();
@@ -103,6 +105,7 @@ describe('sign up useCase', () => {
           message: '',
         };
       }),
+      validateConfirmCode: jest.fn(),
     };
 
     const repo = mock<AuthenticationRepository>();
@@ -141,6 +144,7 @@ describe('sign up useCase', () => {
           message: '',
         };
       }),
+      validateConfirmCode: jest.fn(),
     };
 
     const repo = mock<AuthenticationRepository>();
