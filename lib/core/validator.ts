@@ -12,6 +12,14 @@ export interface Validator {
 
 export default class ValidatorImpl implements Validator {
   public validateConfirmCode = (confirmCode: string) => {
+    const re = /^[0-9]+$/;
+
+    if (!re.test(confirmCode)) {
+      return {
+        isValid: false,
+        message: 'Confirm Code should only contain numbers.',
+      };
+    }
     if (confirmCode.length === 6) {
       return {
         isValid: true,

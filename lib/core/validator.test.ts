@@ -123,4 +123,32 @@ describe('Validator', () => {
       });
     });
   });
+  describe('confirm codes', () => {
+    it('is true for 6 digit strings', () => {
+      const validator = new ValidatorImpl();
+      expect(validator.validateConfirmCode('123456').isValid).toEqual(true);
+    });
+
+    it('is not valid for 7 digit strings or 5', () => {
+      const validator = new ValidatorImpl();
+      expect(validator.validateConfirmCode('1234567').isValid).toEqual(false);
+      expect(validator.validateConfirmCode('12345').isValid).toEqual(false);
+    });
+
+    it('has correct message', () => {
+      const validator = new ValidatorImpl();
+      expect(validator.validateConfirmCode('1234567').message).toEqual(
+        'Confirm Code should be 6 digits in length.',
+      );
+      expect(validator.validateConfirmCode('123456').message).toEqual(
+        'Confirm Code is correct.',
+      );
+    });
+
+    it('is not valid if it contains something other than number', () => {
+      const validator = new ValidatorImpl();
+      expect(validator.validateConfirmCode('123456').isValid).toEqual(true);
+      expect(validator.validateConfirmCode('a23456').isValid).toEqual(false);
+    });
+  });
 });
