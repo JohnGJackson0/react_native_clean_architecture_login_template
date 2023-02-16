@@ -8,7 +8,7 @@ import {UserSignUpDTO} from '../entities/UserSignUpDTO';
 
 export default interface AuthenticationRepository {
   userSignUp: (email: string, password: string) => Promise<UserSignUpDTO>;
-  confirm: (
+  confirmUser: (
     email: string,
     password: string,
     confirmCode: string,

@@ -3,6 +3,7 @@ import UserSignUpDataSourceImpl from '../../features/authentication/signup/data/
 import AuthenticationRepositoryImpl from '../../features/authentication/signup/data/repositories/AuthenticationRepositoryImpl';
 import SignUpUseCase from '../../features/authentication/signup/domain/usecases/SignUpUseCase';
 import ValidatorImpl from '../validator';
+import ConfirmDataSourceImpl from '../../features/authentication/confirm/data/confirmDataSource';
 
 export default function configureDI(): IDIContainer {
   const container: any = new DIContainer();
@@ -10,11 +11,15 @@ export default function configureDI(): IDIContainer {
   container.add({
     ENV: 'PRODUCTION',
     Validator: object(ValidatorImpl),
+    ConfirmDataSource: object(ConfirmDataSourceImpl).construct({
+      fetch: fetch,
+    }),
     UserSignUpDataSource: object(UserSignUpDataSourceImpl).construct({
       fetch: fetch,
     }),
     AuthRepo: object(AuthenticationRepositoryImpl).construct(
       use('UserSignUpDataSource'),
+      use('ConfirmDataSource'),
     ),
     SignUpUseCase: object(SignUpUseCase).construct(
       use('AuthRepo'),

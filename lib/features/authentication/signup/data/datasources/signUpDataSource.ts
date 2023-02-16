@@ -32,7 +32,7 @@ export default class UserSignUpDataSourceImpl implements UserSignUpDataSource {
       })
       .then(resp => {
         if (!resp.ok) {
-          return resp.text().then(text => {
+          return resp.text().then((text: string) => {
             throw new Error(JSON.parse(text).error);
           });
         } else {
