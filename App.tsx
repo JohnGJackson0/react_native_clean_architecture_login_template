@@ -5,18 +5,21 @@ import {Provider} from 'react-redux';
 import {store} from './lib/core/store';
 import {PersistGate} from 'redux-persist/integration/react';
 import SplashScreen from './lib/features/splashScreen/presentation/SplashScreen';
-import SignUp from './lib/features/authentication/signup/presentation/SignUp';
+import {NavigationContainer} from '@react-navigation/native';
+import {AppStack} from './lib/core/ui/Navigator';
 
 export const persistor = persistStore(store);
 
 function App(): JSX.Element {
   return (
     <PersistGate loading={<SplashScreen />} persistor={persistor}>
-      <Provider store={store}>
-        <SafeAreaView style={styles.container}>
-          <SignUp />
-        </SafeAreaView>
-      </Provider>
+      <NavigationContainer>
+        <Provider store={store}>
+          <SafeAreaView style={styles.container}>
+            <AppStack />
+          </SafeAreaView>
+        </Provider>
+      </NavigationContainer>
     </PersistGate>
   );
 }

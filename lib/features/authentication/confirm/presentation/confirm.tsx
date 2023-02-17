@@ -10,15 +10,19 @@ import {
 import {confirmUserThunk} from './confirmSlice';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../../../core/store';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {RootStackParamList} from '../../../../core/ui/Navigator';
 
-function Confirm(): JSX.Element {
+type ConfirmProps = NativeStackScreenProps<RootStackParamList, 'Confirm'>;
+
+const Confirm: React.FC<ConfirmProps> = props => {
   const dispatch = useDispatch();
   const [confirm, setConfirm] = useState('');
   const confirmedUser = useSelector((state: RootState) => state.confirm);
   const onPress = () => {
     // version conflict
     // @ts-ignore
-    dispatch(confirmUserThunk(confirm));
+    dispatch(confirmUserThunk(props.email, props.password, confirm));
   };
   const loading = useSelector((state: RootState) => state.confirm.loading);
 
@@ -58,7 +62,7 @@ function Confirm(): JSX.Element {
       )}
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   input: {

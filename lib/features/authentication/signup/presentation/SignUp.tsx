@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
   StyleSheet,
@@ -10,9 +10,12 @@ import {
 import {useDispatch, useSelector} from 'react-redux';
 import {signUpUserThunk} from './signUpSlice';
 import {RootState} from '../../../../core/store';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {RootStackParamList} from '../../../../core/ui/Navigator';
 
-function SignUp(): JSX.Element {
+type SignUpProps = NativeStackScreenProps<RootStackParamList, 'SignUp'>;
+
+const SignUp: React.FC<SignUpProps> = ({navigation}) => {
   const dispatch = useDispatch();
   const signedUpUser = useSelector(
     (state: RootState) => state.signUp.signedUpUser,
@@ -31,9 +34,14 @@ function SignUp(): JSX.Element {
     dispatch(signUpUserThunk({email, password}));
   };
 
-  const clearAsyncStorage = () => {
-    AsyncStorage.clear();
-  };
+  useEffect(() => {
+    if (signedUpUser?.email !== '' || signedUpUser?.password !== '') {
+      navigation.navigate('Confirm', {
+        email: signedUpUser?.email,
+        password: signedUpUser?.password,
+      });
+    }
+  }, [email, navigation, password, signedUpUser]);
 
   return (
     <View style={styles.signUpContainer}>
@@ -42,43 +50,34 @@ function SignUp(): JSX.Element {
           <ActivityIndicator size="large" />
         </View>
       )}
-      {signedUpUser?.email === '' || signedUpUser === undefined ? (
-        <>
-          <Text style={styles.signUp}>Sign Up</Text>
-          <TextInput
-            testID="email-input"
-            style={styles.input}
-            onChangeText={setEmail}
-            value={email}
-          />
+      <>
+        <Text style={styles.signUp}>Sign Up</Text>
+        <TextInput
+          testID="email-input"
+          style={styles.input}
+          onChangeText={setEmail}
+          value={email}
+        />
 
-          <TextInput
-            testID="password-input"
-            style={styles.input}
-            onChangeText={setPassword}
-            value={password}
-            secureTextEntry={true}
-          />
+        <TextInput
+          testID="password-input"
+          style={styles.input}
+          onChangeText={setPassword}
+          value={password}
+          secureTextEntry={true}
+        />
 
-          <TouchableOpacity
-            testID="submit"
-            onPress={onPress}
-            style={styles.button}>
-            <Text>Submit</Text>
-          </TouchableOpacity>
-        </>
-      ) : (
-        <>
-          <Text>Sign Up Success {signedUpUser?.email}</Text>
-          <TouchableOpacity onPress={clearAsyncStorage}>
-            <Text>Clear</Text>
-          </TouchableOpacity>
-        </>
-      )}
+        <TouchableOpacity
+          testID="submit"
+          onPress={onPress}
+          style={styles.button}>
+          <Text>Submit</Text>
+        </TouchableOpacity>
+      </>
       {errorMessage.toString() !== '' && <Text>{errorMessage.toString()}</Text>}
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   input: {
