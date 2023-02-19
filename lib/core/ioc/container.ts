@@ -1,33 +1,42 @@
-import DIContainer, {object, IDIContainer, use} from 'rsdi';
-import UserSignUpDataSourceImpl from '../../features/authentication/signup/data/datasources/signUpDataSource';
+import 'reflect-metadata';
+import {Container} from 'inversify';
+import AuthenticationRepository from '../../features/authentication/signup/domain/repositories/AuthenticationRepository';
 import AuthenticationRepositoryImpl from '../../features/authentication/signup/data/repositories/AuthenticationRepositoryImpl';
+import ValidatorImpl, {Validator} from '../validator';
+import ConfirmDataSourceImpl, {
+  ConfirmDataSource,
+} from '../../features/authentication/confirm/data/confirmDataSource';
+import UserSignUpDataSourceImpl, {
+  UserSignUpDataSource,
+} from '../../features/authentication/signup/data/datasources/signUpDataSource';
 import SignUpUseCase from '../../features/authentication/signup/domain/usecases/SignUpUseCase';
-import ValidatorImpl from '../validator';
-import ConfirmDataSourceImpl from '../../features/authentication/confirm/data/confirmDataSource';
+import {TYPES} from './Types';
+import ConfirmUseCase from '../../features/authentication/confirm/domain/usecases/ConfirmUseCase';
+import {Client} from '../client';
 
-export default function configureDI(): IDIContainer {
-  const container: any = new DIContainer();
+const container = new Container();
 
-  container.add({
-    ENV: 'PRODUCTION',
-    Validator: object(ValidatorImpl),
-    ConfirmDataSource: object(ConfirmDataSourceImpl).construct({
-      fetch: fetch,
-    }),
-    UserSignUpDataSource: object(UserSignUpDataSourceImpl).construct({
-      fetch: fetch,
-    }),
-    AuthRepo: object(AuthenticationRepositoryImpl).construct(
-      use('UserSignUpDataSource'),
-      use('ConfirmDataSource'),
-    ),
-    SignUpUseCase: object(SignUpUseCase).construct(
-      use('AuthRepo'),
-      use('Validator'),
-    ),
-  });
+container.bind<Client>(TYPES.Client).toConstantValue({fetch});
+container
+  .bind<AuthenticationRepository>(TYPES.AuthenticationRepository)
+  .to(AuthenticationRepositoryImpl)
+  .inSingletonScope();
+container.bind<Validator>(TYPES.Validator).to(ValidatorImpl).inSingletonScope();
+container
+  .bind<ConfirmDataSource>(TYPES.ConfirmDataSource)
+  .to(ConfirmDataSourceImpl)
+  .inSingletonScope();
+container
+  .bind<UserSignUpDataSource>(TYPES.UserSignUpDataSource)
+  .to(UserSignUpDataSourceImpl)
+  .inSingletonScope();
+container
+  .bind<SignUpUseCase>(TYPES.SignUpUseCase)
+  .to(SignUpUseCase)
+  .inSingletonScope();
+container
+  .bind<ConfirmUseCase>(TYPES.ConfirmUseCase)
+  .to(ConfirmUseCase)
+  .inSingletonScope();
 
-  return container;
-}
-
-export const AppIOCContainer = configureDI();
+export {container};

@@ -1,5 +1,8 @@
+import 'reflect-metadata';
+import {inject, injectable} from 'inversify';
+import {ConfirmDTO} from '../domain/entities/ConfirmDTO';
+import {TYPES} from '../../../../core/ioc/Types';
 import {Client} from '../../../../core/client';
-import {ConfirmDTO} from '../domain/ConfirmDTO';
 
 export interface ConfirmDataSource {
   getConfirm: (
@@ -8,13 +11,9 @@ export interface ConfirmDataSource {
     confirmCode: string,
   ) => Promise<ConfirmDTO>;
 }
-
+@injectable()
 export default class ConfirmDataSourceImpl implements ConfirmDataSource {
-  _client: Client;
-
-  constructor(client: Client) {
-    this._client = client;
-  }
+  constructor(@inject(TYPES.Client) private client: Client) {}
 
   getConfirm = async (
     email: string,
@@ -24,7 +23,7 @@ export default class ConfirmDataSourceImpl implements ConfirmDataSource {
     const url =
       'https://iz1ul818p3.execute-api.us-east-1.amazonaws.com/Prod/confirm';
 
-    return await this._client
+    return await this.client
       .fetch(url, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
@@ -34,6 +33,7 @@ export default class ConfirmDataSourceImpl implements ConfirmDataSource {
           confirmCode,
         }),
       })
+      // TODO: Inferred by usage
       .then(resp => {
         const response = resp?.response;
         if (!resp.ok) {

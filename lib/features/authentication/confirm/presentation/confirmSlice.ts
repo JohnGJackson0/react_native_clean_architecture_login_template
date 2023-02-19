@@ -1,5 +1,7 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {AppIOCContainer} from '../../../../core/ioc/container';
+import {TYPES} from '../../../../core/ioc/Types';
+import {container} from '../../../../core/ioc/container';
+import ConfirmUseCase from '../domain/usecases/ConfirmUseCase';
 
 interface Tokens {
   jwt: string;
@@ -23,10 +25,13 @@ export const initialState = {
 
 export const confirmUserThunk = createAsyncThunk(
   'users/confirm',
-  async (_: string, {rejectWithValue}) => {
+  async (
+    _: {email: string; password: string; confirm: string},
+    {rejectWithValue},
+  ) => {
     try {
-      const useCase = AppIOCContainer.get('ConfirmUseCase');
-      return await useCase.execute(_);
+      const useCase = container.get<ConfirmUseCase>(TYPES.ConfirmUseCase);
+      return await useCase.execute(_.email, _.password, _.confirm);
     } catch (e) {
       return rejectWithValue(e);
     }
@@ -43,9 +48,8 @@ export const ConfirmSlice = createSlice({
       state.error = '';
     });
     builder.addCase(confirmUserThunk.fulfilled, (state, action) => {
-      state.tokens = action.payload;
-      state.tokens.jwt = action.payload.jwt;
-      state.tokens.refresh = action.payload.refresh;
+      state.tokens.jwt = action.payload.jwtToken;
+      state.tokens.refresh = action.payload.refreshToken;
       state.loading = 'idle';
     });
     builder.addCase(confirmUserThunk.rejected, (state, action) => {

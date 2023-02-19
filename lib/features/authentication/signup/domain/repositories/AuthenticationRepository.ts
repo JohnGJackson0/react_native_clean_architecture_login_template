@@ -1,4 +1,4 @@
-import {ConfirmDTO} from '../../../confirm/domain/ConfirmDTO';
+import {ConfirmDTO} from '../../../confirm/domain/entities/ConfirmDTO';
 import {UserSignUpDTO} from '../entities/UserSignUpDTO';
 
 /*

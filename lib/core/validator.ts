@@ -1,3 +1,6 @@
+import 'reflect-metadata';
+import {injectable} from 'inversify';
+
 export interface ValidatorResult {
   isValid: boolean;
   message: string;
@@ -9,7 +12,7 @@ export interface Validator {
   validatePassword: (password: string) => ValidatorResult;
   validateConfirmCode: (confirmCode: string) => ValidatorResult;
 }
-
+@injectable()
 export default class ValidatorImpl implements Validator {
   public validateConfirmCode = (confirmCode: string) => {
     const re = /^[0-9]+$/;

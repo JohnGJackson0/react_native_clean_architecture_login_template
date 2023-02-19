@@ -1,6 +1,6 @@
 import {any, mock} from 'jest-mock-extended';
-import {Validator} from '../../../../core/validator';
-import AuthenticationRepository from '../../signup/domain/repositories/AuthenticationRepository';
+import {Validator} from '../../../../../core/validator';
+import AuthenticationRepository from '../../../signup/domain/repositories/AuthenticationRepository';
 import ConfirmUseCase from './confirmUseCase';
 
 describe('confirm useCase', () => {

@@ -1,26 +1,26 @@
+import 'reflect-metadata';
+import {inject, injectable} from 'inversify';
 import {ConfirmDataSource} from '../../../confirm/data/confirmDataSource';
-import {ConfirmDTO} from '../../../confirm/domain/ConfirmDTO';
+import {ConfirmDTO} from '../../../confirm/domain/entities/ConfirmDTO';
 import {UserSignUpDTO} from '../../domain/entities/UserSignUpDTO';
 import AuthenticationRepository from '../../domain/repositories/AuthenticationRepository';
 import UserSignUpDataSource from '../datasources/signUpDataSource';
+import {TYPES} from '../../../../../core/ioc/Types';
 
 /**
  * This can pull from datasources, local, caching, ect.
  */
 
+@injectable()
 export default class AuthenticationRepositoryImpl
   implements AuthenticationRepository
 {
-  signUpDatasource: UserSignUpDataSource;
-  confirmDataSource: ConfirmDataSource;
-
   constructor(
-    signUpDatasource: UserSignUpDataSource,
-    confirmUserDataSource: ConfirmDataSource,
-  ) {
-    this.signUpDatasource = signUpDatasource;
-    this.confirmDataSource = confirmUserDataSource;
-  }
+    @inject(TYPES.UserSignUpDataSource)
+    private signUpDatasource: UserSignUpDataSource,
+    @inject(TYPES.ConfirmDataSource)
+    private confirmDataSource: ConfirmDataSource,
+  ) {}
 
   public userSignUp = async (
     email: string,
