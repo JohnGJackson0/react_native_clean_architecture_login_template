@@ -24,26 +24,23 @@ export default class ConfirmDataSourceImpl implements ConfirmDataSource {
     const url =
       'https://iz1ul818p3.execute-api.us-east-1.amazonaws.com/Prod/confirm';
 
+    const payload = {email, password, confirmationCode: confirmCode};
+
     return await this._client
       .fetch(url, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-          email,
-          password,
-          confirmCode,
-        }),
+        body: JSON.stringify(payload),
       })
       .then(resp => {
-        const response = resp?.response;
         if (!resp.ok) {
           return resp.text().then((text: string) => {
             throw new Error(JSON.parse(text).error);
           });
         } else {
           return {
-            refreshToken: response.AuthenticationResult?.RefreshToken,
-            jwtToken: response.AuthenticationResult?.AccessToken,
+            refreshToken: resp?.AuthenticationResult?.RefreshToken,
+            jwtToken: resp?.AuthenticationResult?.AccessToken,
             email: email,
           };
         }

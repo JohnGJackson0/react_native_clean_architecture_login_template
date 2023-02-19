@@ -23,7 +23,10 @@ jest.mock('../../../../core/ioc/container', () => ({
 
 describe('Confirm Presenation', () => {
   it('loads when submitting useCase ', async () => {
-    const props = createScreenTestProps();
+    const props = createScreenTestProps({
+      email: 'fakeEmail@fakeEmail.com',
+      password: 'fakePassword',
+    });
     mockIOC.mockResolvedValue({
       refreshToken: 'fakeRefresh',
       jwt: 'fakeJWT',
@@ -39,7 +42,10 @@ describe('Confirm Presenation', () => {
   });
 
   it('shows elements on page when initially loaded', () => {
-    const props = createScreenTestProps();
+    const props = createScreenTestProps({
+      email: 'fakeEmail@fakeEmail.com',
+      password: 'fakePassword',
+    });
     const {getByText, getByTestId} = render(<Confirm {...props} />);
     expect(getByText('Please confirm your email.')).toBeTruthy();
     expect(getByTestId('confirm-input')).toBeTruthy();
@@ -47,7 +53,10 @@ describe('Confirm Presenation', () => {
   });
 
   it('shows logged in when returned a jwt and refresh token', async () => {
-    const props = createScreenTestProps();
+    const props = createScreenTestProps({
+      email: 'fakeEmail@fakeEmail.com',
+      password: 'fakePassword',
+    });
     mockIOC.mockResolvedValue({
       refreshToken: 'fakeRefresh',
       jwt: 'fakeJWT',
@@ -59,7 +68,10 @@ describe('Confirm Presenation', () => {
   });
 
   it('properly shows an error message', async () => {
-    const props = createScreenTestProps();
+    const props = createScreenTestProps({
+      email: 'fakeEmail@fakeEmail.com',
+      password: 'fakePassword',
+    });
     mockIOC.mockRejectedValue('Error: Message');
     const {getByTestId, getByText, queryByText} = render(
       <Confirm {...props} />,

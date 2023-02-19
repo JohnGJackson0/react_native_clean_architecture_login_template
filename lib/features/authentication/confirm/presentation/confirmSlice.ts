@@ -21,12 +21,18 @@ export const initialState = {
   loading: 'idle',
 };
 
+interface ConfirmUserThunkInput {
+  email: string;
+  password: string;
+  confirmCode: string;
+}
+
 export const confirmUserThunk = createAsyncThunk(
   'users/confirm',
-  async (_: string, {rejectWithValue}) => {
+  async (_: ConfirmUserThunkInput, {rejectWithValue}) => {
     try {
       const useCase = AppIOCContainer.get('ConfirmUseCase');
-      return await useCase.execute(_);
+      return await useCase.execute(_.email, _.password, _.confirmCode);
     } catch (e) {
       return rejectWithValue(e);
     }

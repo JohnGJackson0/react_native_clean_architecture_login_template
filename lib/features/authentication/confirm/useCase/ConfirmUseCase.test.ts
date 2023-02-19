@@ -1,7 +1,7 @@
 import {any, mock} from 'jest-mock-extended';
 import {Validator} from '../../../../core/validator';
 import AuthenticationRepository from '../../signup/domain/repositories/AuthenticationRepository';
-import ConfirmUseCase from './confirmUseCase';
+import ConfirmUseCase from './ConfirmUseCase';
 
 describe('confirm useCase', () => {
   it('correctly throws on client side validation error', async () => {
@@ -24,7 +24,9 @@ describe('confirm useCase', () => {
       email: 'mockedEmail',
     };
 
-    repo.confirm.calledWith(any(), any(), any()).mockResolvedValue(expected);
+    repo.confirmUser
+      .calledWith(any(), any(), any())
+      .mockResolvedValue(expected);
 
     let throws = false;
     let message = '';
@@ -42,7 +44,7 @@ describe('confirm useCase', () => {
 
     expect(throws).toEqual(true);
     expect(message).toEqual('fakeMessage');
-    expect(repo.confirm).toHaveBeenCalledTimes(0);
+    expect(repo.confirmUser).toHaveBeenCalledTimes(0);
   });
 
   it('correctly calls the authentication repo', async () => {
@@ -65,7 +67,9 @@ describe('confirm useCase', () => {
       email: 'mockedEmail',
     };
 
-    repo.confirm.calledWith(any(), any(), any()).mockResolvedValue(expected);
+    repo.confirmUser
+      .calledWith(any(), any(), any())
+      .mockResolvedValue(expected);
 
     const confirm = await new ConfirmUseCase(repo, mockValidator).execute(
       'fakeEmail@fakeEmail.com',
@@ -79,8 +83,8 @@ describe('confirm useCase', () => {
       refreshToken: 'mockedRefresh',
     });
 
-    expect(repo.confirm).toBeCalledTimes(1);
-    expect(repo.confirm).toHaveBeenCalledWith(
+    expect(repo.confirmUser).toBeCalledTimes(1);
+    expect(repo.confirmUser).toHaveBeenCalledWith(
       'fakeEmail@fakeEmail.com',
       'fakePassword',
       'mockedEmail',

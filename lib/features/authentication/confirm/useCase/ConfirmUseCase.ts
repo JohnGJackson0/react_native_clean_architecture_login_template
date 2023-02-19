@@ -21,7 +21,6 @@ export default class ConfirmUseCase {
     if (!confirmCodeValidor.isValid) {
       throw confirmCodeValidor.message;
     }
-
-    return await this.repository.confirm(email, password, confirmationCode);
+    return await this.repository.confirmUser(email, password, confirmationCode);
   };
 }

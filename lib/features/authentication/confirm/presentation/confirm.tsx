@@ -20,9 +20,15 @@ const Confirm: React.FC<ConfirmProps> = props => {
   const [confirm, setConfirm] = useState('');
   const confirmedUser = useSelector((state: RootState) => state.confirm);
   const onPress = () => {
-    // version conflict
-    // @ts-ignore
-    dispatch(confirmUserThunk(props.email, props.password, confirm));
+    dispatch(
+      // version conflict
+      // @ts-ignore
+      confirmUserThunk({
+        email: props.route.params.email,
+        password: props.route.params.password,
+        confirmCode: confirm,
+      }),
+    );
   };
   const loading = useSelector((state: RootState) => state.confirm.loading);
 

@@ -4,8 +4,10 @@ import AuthenticationRepositoryImpl from '../../features/authentication/signup/d
 import SignUpUseCase from '../../features/authentication/signup/domain/usecases/SignUpUseCase';
 import ValidatorImpl from '../validator';
 import ConfirmDataSourceImpl from '../../features/authentication/confirm/data/confirmDataSource';
+import ConfirmUseCase from '../../features/authentication/confirm/useCase/ConfirmUseCase';
 
 export default function configureDI(): IDIContainer {
+  // TODO need types
   const container: any = new DIContainer();
 
   container.add({
@@ -22,6 +24,10 @@ export default function configureDI(): IDIContainer {
       use('ConfirmDataSource'),
     ),
     SignUpUseCase: object(SignUpUseCase).construct(
+      use('AuthRepo'),
+      use('Validator'),
+    ),
+    ConfirmUseCase: object(ConfirmUseCase).construct(
       use('AuthRepo'),
       use('Validator'),
     ),
