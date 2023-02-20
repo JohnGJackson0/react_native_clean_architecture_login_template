@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {signUpUserThunk} from './signUpSlice';
-import {RootState} from '../../../../core/store';
+import {RootState} from '../../../../core/ui/store';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../../../core/ui/Navigator';
 

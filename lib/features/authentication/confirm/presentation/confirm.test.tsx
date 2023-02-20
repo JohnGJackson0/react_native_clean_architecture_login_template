@@ -31,14 +31,11 @@ describe('Confirm Presenation', () => {
       refreshToken: 'fakeRefresh',
       jwt: 'fakeJWT',
     });
-    const {queryByTestId, getByTestId, getByText} = render(
-      <Confirm {...props} />,
-    );
+    const {queryByTestId, getByTestId} = render(<Confirm {...props} />);
     expect(queryByTestId('loading')).toBeFalsy();
     fireEvent.press(getByTestId('submit'));
     expect(getByTestId('loading')).toBeTruthy();
-    await waitForElementToBeRemoved(() => getByText('Submit'));
-    expect(queryByTestId('loading')).toBeFalsy();
+    await waitForElementToBeRemoved(() => getByTestId('loading'));
   });
 
   it('shows elements on page when initially loaded', () => {
@@ -52,7 +49,7 @@ describe('Confirm Presenation', () => {
     expect(getByText('Submit')).toBeTruthy();
   });
 
-  it('shows logged in when returned a jwt and refresh token', async () => {
+  it('navigates to home screen when returned a jwt and refresh token', async () => {
     const props = createScreenTestProps({
       email: 'fakeEmail@fakeEmail.com',
       password: 'fakePassword',
@@ -61,10 +58,29 @@ describe('Confirm Presenation', () => {
       refreshToken: 'fakeRefresh',
       jwt: 'fakeJWT',
     });
-    const {getByText} = render(<Confirm {...props} />);
+    const {getByText, getByTestId} = render(<Confirm {...props} />);
     fireEvent.press(getByText('Submit'));
-    await waitForElementToBeRemoved(() => getByText('Submit'));
-    expect(getByText('Logged In Successful')).toBeTruthy();
+
+    await waitForElementToBeRemoved(() => getByTestId('loading'));
+    expect(props.navigation.replace).toHaveBeenCalledWith('Home');
+    expect(props.navigation.replace).toHaveBeenCalledTimes(1);
+  });
+
+  it('does not navigate to home on an error', async () => {
+    const props = createScreenTestProps({
+      email: 'fakeEmail@fakeEmail.com',
+      password: 'fakePassword',
+    });
+    mockIOC.mockRejectedValue('Error: Message');
+    const {getByTestId, getByText, queryByText} = render(
+      <Confirm {...props} />,
+    );
+    expect(queryByText('Error: Message')).not.toBeTruthy();
+
+    fireEvent.press(getByTestId('submit'));
+
+    await waitFor(() => getByText('Error: Message'));
+    expect(props.navigation.replace).not.toHaveBeenCalledTimes(1);
   });
 
   it('properly shows an error message', async () => {
@@ -77,8 +93,33 @@ describe('Confirm Presenation', () => {
       <Confirm {...props} />,
     );
     expect(queryByText('Error: Message')).not.toBeTruthy();
+
     fireEvent.press(getByTestId('submit'));
 
     await waitFor(() => getByText('Error: Message'));
+  });
+
+  it('properly calls the useCase', async () => {
+    const props = createScreenTestProps({
+      email: 'fakeEmail@fakeEmail.com',
+      password: 'fakePassword',
+    });
+    mockIOC.mockResolvedValue({
+      refreshToken: 'fakeRefresh',
+      jwt: 'fakeJWT',
+    });
+    const {getByText, getByTestId} = render(<Confirm {...props} />);
+
+    fireEvent.changeText(getByTestId('confirm-input'), 'fakeCode');
+
+    fireEvent.press(getByText('Submit'));
+
+    await waitForElementToBeRemoved(() => getByTestId('loading'));
+
+    expect(mockIOC).toHaveBeenCalledWith(
+      'fakeEmail@fakeEmail.com',
+      'fakePassword',
+      'fakeCode',
+    );
   });
 });

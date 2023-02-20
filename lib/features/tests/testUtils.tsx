@@ -4,6 +4,7 @@ export const createScreenTestProps = (
 ) => ({
   navigation: {
     navigate: jest.fn(),
+    replace: jest.fn(),
   },
   route: {params: routeParam},
   ...(customProp as any),

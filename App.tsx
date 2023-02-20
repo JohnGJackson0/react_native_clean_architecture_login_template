@@ -2,7 +2,7 @@ import React from 'react';
 import {SafeAreaView, StyleSheet} from 'react-native';
 import {persistStore} from 'redux-persist';
 import {Provider} from 'react-redux';
-import {store} from './lib/core/store';
+import {store} from './lib/core/ui/store';
 import {PersistGate} from 'redux-persist/integration/react';
 import SplashScreen from './lib/features/splashScreen/presentation/SplashScreen';
 import {NavigationContainer} from '@react-navigation/native';

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
   StyleSheet,
@@ -9,9 +9,10 @@ import {
 } from 'react-native';
 import {confirmUserThunk} from './confirmSlice';
 import {useDispatch, useSelector} from 'react-redux';
-import {RootState} from '../../../../core/store';
+import {RootState} from '../../../../core/ui/store';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../../../core/ui/Navigator';
+import {setUserTokens} from '../../../presentation/AppSlice';
 
 type ConfirmProps = NativeStackScreenProps<RootStackParamList, 'Confirm'>;
 
@@ -34,6 +35,18 @@ const Confirm: React.FC<ConfirmProps> = props => {
 
   const errorMessage = useSelector((state: RootState) => state.confirm.error);
 
+  useEffect(() => {
+    if (confirmedUser?.tokens?.jwt !== '') {
+      dispatch(
+        setUserTokens({
+          jwtToken: confirmedUser?.tokens?.jwt,
+          refreshToken: confirmedUser?.tokens?.refresh,
+        }),
+      );
+      props.navigation.replace('Home');
+    }
+  }, [confirmedUser, dispatch, props.navigation]);
+
   return (
     <View style={styles.container}>
       {loading === 'pending' && (
@@ -41,31 +54,26 @@ const Confirm: React.FC<ConfirmProps> = props => {
           <ActivityIndicator size="large" />
         </View>
       )}
-      {confirmedUser?.tokens?.jwt === '' ? (
-        <>
-          <Text style={styles.confirmText}>Confirm Email</Text>
-          <Text>Please confirm your email.</Text>
-          <TextInput
-            testID="confirm-input"
-            style={styles.input}
-            onChangeText={setConfirm}
-            value={confirm}
-          />
-          <TouchableOpacity
-            testID="submit"
-            onPress={onPress}
-            style={styles.button}>
-            <Text>Submit</Text>
-          </TouchableOpacity>
-          {errorMessage.toString() !== '' && (
-            <Text>{errorMessage.toString()}</Text>
-          )}
-        </>
-      ) : (
-        <>
-          <Text>Logged In Successful</Text>
-        </>
-      )}
+
+      <>
+        <Text style={styles.confirmText}>Confirm Email</Text>
+        <Text>Please confirm your email.</Text>
+        <TextInput
+          testID="confirm-input"
+          style={styles.input}
+          onChangeText={setConfirm}
+          value={confirm}
+        />
+        <TouchableOpacity
+          testID="submit"
+          onPress={onPress}
+          style={styles.button}>
+          <Text>Submit</Text>
+        </TouchableOpacity>
+        {errorMessage.toString() !== '' && (
+          <Text>{errorMessage.toString()}</Text>
+        )}
+      </>
     </View>
   );
 };
