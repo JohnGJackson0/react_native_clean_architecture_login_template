@@ -13,9 +13,16 @@ export default function configureDI(): IDIContainer {
   container.add({
     ENV: 'PRODUCTION',
     Validator: object(ValidatorImpl),
-    ConfirmDataSource: object(ConfirmDataSourceImpl).construct({
-      fetch: fetch,
-    }),
+    ConfirmDataSource: object(ConfirmDataSourceImpl).construct(
+      /**
+       * TODO look into using Axios as I think it may be
+       * better typescript / mock support
+       */
+
+      {
+        fetch: fetch,
+      },
+    ),
     UserSignUpDataSource: object(UserSignUpDataSourceImpl).construct({
       fetch: fetch,
     }),
