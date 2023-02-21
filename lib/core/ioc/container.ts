@@ -1,10 +1,10 @@
 import DIContainer, {object, IDIContainer, use} from 'rsdi';
-import UserSignUpDataSourceImpl from '../../features/authentication/signup/data/datasources/signUpDataSource';
-import AuthenticationRepositoryImpl from '../../features/authentication/signup/data/repositories/AuthenticationRepositoryImpl';
-import SignUpUseCase from '../../features/authentication/signup/domain/usecases/SignUpUseCase';
-import ValidatorImpl from '../validator';
-import ConfirmDataSourceImpl from '../../features/authentication/confirm/data/confirmDataSource';
-import ConfirmUseCase from '../../features/authentication/confirm/useCase/ConfirmUseCase';
+import UserSignUpDataSourceImpl from '../../features/authentication/infrastructure/datasources/SignUpDataSource';
+import AuthenticationRepositoryImpl from '../../features/authentication/infrastructure/repositories/AuthenticationRepositoryImpl';
+import SignUpUseCase from '../../features/authentication/domain/usecases/SignUpUseCase';
+import ValidatorImpl from '../services/validator';
+import ConfirmDataSourceImpl from '../../features/authentication/infrastructure/datasources/ConfirmDataSource';
+import ConfirmUseCase from '../../features/authentication/domain/usecases/ConfirmUseCase';
 
 export default function configureDI(): IDIContainer {
   // TODO need types
