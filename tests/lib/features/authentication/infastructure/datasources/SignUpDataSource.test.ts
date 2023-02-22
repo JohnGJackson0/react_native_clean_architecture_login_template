@@ -1,7 +1,4 @@
-import {
-  SignUpHappyFixture,
-  SignUpSadFixture,
-} from '../../../../../fixtures/SignUpFixture';
+import {SignUpHappyFixture} from '../../../../../fixtures/SignUpFixture';
 import UserSignUpDataSourceImpl from '../../../../../../lib/features/authentication/infrastructure/datasources/SignUpDataSource';
 
 describe('signup', () => {
@@ -24,9 +21,10 @@ describe('signup', () => {
 
   it('throws with !ok response', async () => {
     const client = {
-      fetch: jest.fn(() => Promise.resolve(SignUpSadFixture)),
+      fetch: jest.fn(() => Promise.reject('fakeError')),
     };
 
+    let message;
     let thrown = false;
 
     const userSignUpDataSource = new UserSignUpDataSourceImpl(client as any);
@@ -34,8 +32,10 @@ describe('signup', () => {
       await userSignUpDataSource.getSignUp('', '');
     } catch (e) {
       thrown = true;
+      message = e;
     }
 
     expect(thrown).toEqual(true);
+    expect(message).toEqual('fakeError');
   });
 });

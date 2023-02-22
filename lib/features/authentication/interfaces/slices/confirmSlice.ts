@@ -50,8 +50,8 @@ export const ConfirmSlice = createSlice({
     });
     builder.addCase(confirmUserThunk.fulfilled, (state, action) => {
       state.tokens = action.payload;
-      state.tokens.jwt = action.payload.jwt;
-      state.tokens.refresh = action.payload.refresh;
+      state.tokens.jwt = action.payload.jwtToken;
+      state.tokens.refresh = action.payload.refreshToken;
       state.loading = 'idle';
     });
     builder.addCase(confirmUserThunk.rejected, (state, action) => {

@@ -2,19 +2,21 @@ import {combineReducers, configureStore} from '@reduxjs/toolkit';
 import {SignUpReducer} from '../slices/signUpSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {persistReducer} from 'redux-persist';
-import {AppReducer} from '../slices/AppSlice';
 import {ConfirmReducer} from '../slices/confirmSlice';
+import {AppReducer} from '../slices/appSlice';
+import {HomeReducer} from '../slices/homeSlice';
 
 const reducers = combineReducers({
   signUp: SignUpReducer,
   confirm: ConfirmReducer,
   app: AppReducer,
+  home: HomeReducer,
 });
 
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  blacklist: ['signUp'],
+  blacklist: ['signUp', 'confirm', 'home'],
 };
 const persistedReducer = persistReducer(persistConfig, reducers);
 

@@ -4,6 +4,8 @@ import {Provider} from 'react-redux';
 import {render as rntlRender} from '@testing-library/react-native';
 import {SignUpReducer} from '../../lib/features/authentication/interfaces/slices/signUpSlice';
 import {ConfirmReducer} from '../../lib/features/authentication/interfaces/slices/confirmSlice';
+import {HomeReducer} from '../../lib/features/authentication/interfaces/slices/homeSlice';
+import {AppReducer} from '../../lib/features/authentication/interfaces/slices/appSlice';
 
 function render(
   ui: any,
@@ -11,7 +13,12 @@ function render(
     //@ts-ignore
     preloadedState,
     store = configureStore({
-      reducer: {signUp: SignUpReducer, confirm: ConfirmReducer},
+      reducer: {
+        signUp: SignUpReducer,
+        confirm: ConfirmReducer,
+        home: HomeReducer,
+        app: AppReducer,
+      },
       preloadedState,
     }),
     ...renderOptions

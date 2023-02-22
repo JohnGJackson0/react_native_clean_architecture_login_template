@@ -12,10 +12,11 @@ import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../store/store';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../navigators/Navigator';
-import {setUserTokens} from '../slices/AppSlice';
+import {setUserTokens} from '../slices/appSlice';
 
 type ConfirmProps = NativeStackScreenProps<RootStackParamList, 'Confirm'>;
 
+// TODO resubmit on wrong confirm code
 const Confirm: React.FC<ConfirmProps> = props => {
   const dispatch = useDispatch();
   const [confirm, setConfirm] = useState('');

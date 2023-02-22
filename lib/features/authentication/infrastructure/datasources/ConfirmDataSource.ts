@@ -32,18 +32,13 @@ export default class ConfirmDataSourceImpl implements ConfirmDataSource {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(payload),
       })
-      .then(resp => {
-        if (!resp.ok) {
-          return resp.text().then((text: string) => {
-            throw new Error(JSON.parse(text).error);
-          });
-        } else {
-          return {
-            refreshToken: resp?.AuthenticationResult?.RefreshToken,
-            jwtToken: resp?.AuthenticationResult?.AccessToken,
-            email: email,
-          };
-        }
+      .then(resp => resp.json())
+      .then(data => {
+        return {
+          refreshToken: data?.response?.AuthenticationResult?.RefreshToken,
+          jwtToken: data?.response?.AuthenticationResult?.AccessToken,
+          email: email,
+        };
       });
   };
 }

@@ -9,3 +9,9 @@ export const createScreenTestProps = (
   route: {params: routeParam},
   ...(customProp as any),
 });
+
+export const mockClient = (fetchedFixture: object) => ({
+  fetch: jest.fn().mockResolvedValue({
+    json: () => fetchedFixture,
+  }),
+});

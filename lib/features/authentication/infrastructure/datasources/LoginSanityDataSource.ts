@@ -23,18 +23,14 @@ export default class LoginSanityDataSourceImpl
         method: 'POST',
         headers: {'Content-Type': 'application/json', Authorization: jwtToken},
       })
-      .then(resp => {
-        if (!resp.ok) {
-          return resp.text().then((text: string) => {
-            throw new Error(JSON.parse(text).error);
-          });
-        } else {
-          return {
-            message: resp?.message,
-            email: resp?.email,
-            verifiedEmail: resp?.verifiedEmail,
-          };
-        }
+      .then(resp => resp.json())
+      .then(data => {
+        const isEmailVerified = data?.verifiedEmail === 'true';
+        return {
+          message: data?.message,
+          email: data?.email,
+          verifiedEmail: isEmailVerified,
+        };
       });
   };
 }

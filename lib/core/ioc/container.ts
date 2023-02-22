@@ -6,6 +6,7 @@ import ValidatorImpl from '../services/validator';
 import ConfirmDataSourceImpl from '../../features/authentication/infrastructure/datasources/ConfirmDataSource';
 import ConfirmUseCase from '../../features/authentication/domain/usecases/ConfirmUseCase';
 import LoginSanityDataSourceImpl from '../../features/authentication/infrastructure/datasources/LoginSanityDataSource';
+import LoginSanityUseCase from '../../features/authentication/domain/usecases/LoginSanityUseCase';
 
 export default function configureDI(): IDIContainer {
   // TODO need types
@@ -43,6 +44,8 @@ export default function configureDI(): IDIContainer {
       use('AuthRepo'),
       use('Validator'),
     ),
+    // tests the authorizer
+    LoginSanityUseCase: object(LoginSanityUseCase).construct(use('AuthRepo')),
   });
 
   return container;
