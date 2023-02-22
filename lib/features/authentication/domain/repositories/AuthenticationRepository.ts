@@ -1,4 +1,5 @@
 import {ConfirmDTO} from '../entities/ConfirmDTO';
+import {LoginSanityDTO} from '../entities/LoginSanityDTO';
 import {UserSignUpDTO} from '../entities/UserSignUpDTO';
 
 export default interface AuthenticationRepository {
@@ -8,4 +9,5 @@ export default interface AuthenticationRepository {
     password: string,
     confirmCode: string,
   ) => Promise<ConfirmDTO>;
+  getLoginSanity: (jwtToken: string) => Promise<LoginSanityDTO>;
 }

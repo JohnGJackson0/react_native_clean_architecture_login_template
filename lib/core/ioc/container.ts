@@ -5,6 +5,7 @@ import SignUpUseCase from '../../features/authentication/domain/usecases/SignUpU
 import ValidatorImpl from '../services/validator';
 import ConfirmDataSourceImpl from '../../features/authentication/infrastructure/datasources/ConfirmDataSource';
 import ConfirmUseCase from '../../features/authentication/domain/usecases/ConfirmUseCase';
+import LoginSanityDataSourceImpl from '../../features/authentication/infrastructure/datasources/LoginSanityDataSource';
 
 export default function configureDI(): IDIContainer {
   // TODO need types
@@ -26,9 +27,13 @@ export default function configureDI(): IDIContainer {
     UserSignUpDataSource: object(UserSignUpDataSourceImpl).construct({
       fetch: fetch,
     }),
+    LoginSanityDataSource: object(LoginSanityDataSourceImpl).construct({
+      fetch: fetch,
+    }),
     AuthRepo: object(AuthenticationRepositoryImpl).construct(
       use('UserSignUpDataSource'),
       use('ConfirmDataSource'),
+      use('LoginSanityDataSource'),
     ),
     SignUpUseCase: object(SignUpUseCase).construct(
       use('AuthRepo'),

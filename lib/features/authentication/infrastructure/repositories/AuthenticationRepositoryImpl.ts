@@ -2,6 +2,7 @@ import {ConfirmDTO} from '../../domain/entities/ConfirmDTO';
 import {UserSignUpDTO} from '../../domain/entities/UserSignUpDTO';
 import AuthenticationRepository from '../../domain/repositories/AuthenticationRepository';
 import {ConfirmDataSource} from '../datasources/ConfirmDataSource';
+import {LoginSanityDataSource} from '../datasources/LoginSanityDataSource';
 import UserSignUpDataSource from '../datasources/SignUpDataSource';
 
 /**
@@ -13,13 +14,16 @@ export default class AuthenticationRepositoryImpl
 {
   signUpDatasource: UserSignUpDataSource;
   confirmDataSource: ConfirmDataSource;
+  loginSanityDatasource: LoginSanityDataSource;
 
   constructor(
     signUpDatasource: UserSignUpDataSource,
     confirmUserDataSource: ConfirmDataSource,
+    loginSanityDataSource: LoginSanityDataSource,
   ) {
     this.signUpDatasource = signUpDatasource;
     this.confirmDataSource = confirmUserDataSource;
+    this.loginSanityDatasource = loginSanityDataSource;
   }
 
   public userSignUp = async (
@@ -39,5 +43,9 @@ export default class AuthenticationRepositoryImpl
       password,
       confirmCode,
     );
+  };
+
+  public getLoginSanity = async (jwtToken: string) => {
+    return await this.loginSanityDatasource.getLoginSanity(jwtToken);
   };
 }
