@@ -53,4 +53,55 @@ describe('LoginSanity', () => {
     );
     expect(client.fetch).toHaveBeenCalledTimes(1);
   });
+
+  it('throws if the email is undefined', async () => {
+    const client = {
+      fetch: jest.fn(() =>
+        Promise.resolve({
+          json: jest.fn().mockResolvedValue({message: 'fakeMessage'}),
+        }),
+      ),
+    };
+
+    let thrown = false;
+    let message;
+
+    const loginSanityResult = new LoginSanityDataSource(client as any);
+    try {
+      await loginSanityResult.getLoginSanity('fakeJwt');
+    } catch (e) {
+      thrown = true;
+      message = e;
+    }
+
+    expect(thrown).toEqual(true);
+    expect(message).toEqual('Authorization failed');
+  });
+
+  it('throws if the message is Authroization Failed', async () => {
+    const client = {
+      fetch: jest.fn(() =>
+        Promise.resolve({
+          json: jest.fn().mockResolvedValue({
+            message: 'Authorization failed',
+            email: 'fakeEmail@fakeEmail.com',
+          }),
+        }),
+      ),
+    };
+
+    let thrown = false;
+    let message;
+
+    const loginSanityResult = new LoginSanityDataSource(client as any);
+    try {
+      await loginSanityResult.getLoginSanity('fakeJwt');
+    } catch (e) {
+      thrown = true;
+      message = e;
+    }
+
+    expect(thrown).toEqual(true);
+    expect(message).toEqual('Authorization failed');
+  });
 });

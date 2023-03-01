@@ -26,6 +26,13 @@ export default class LoginSanityDataSourceImpl
       .then(resp => resp.json())
       .then(data => {
         const isEmailVerified = data?.verifiedEmail === 'true';
+        if (
+          data?.message === 'Authorization failed' ||
+          data?.email === undefined
+        ) {
+          throw 'Authorization failed';
+        }
+
         return {
           message: data?.message,
           email: data?.email,
