@@ -1,10 +1,11 @@
 import React from 'react';
-import {ActivityIndicator, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
+import AtomActivityIndicator from './atoms/atom-activity-indicator';
 
 function SplashScreen(): JSX.Element {
   return (
     <View style={styles.container}>
-      <ActivityIndicator />
+      <AtomActivityIndicator />
     </View>
   );
 }

@@ -1,7 +1,7 @@
 export const LoginHappyFixture = {
   message: 'fakeMessage',
   email: 'fakeEmail',
-  verifiedEmail: true,
+  verifiedEmail: 'true',
   ok: true,
 };
 

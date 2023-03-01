@@ -1,8 +1,11 @@
 import React, {useEffect} from 'react';
-import {ActivityIndicator, StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../store/store';
 import {LoginSanityThunk} from '../slices/homeSlice';
+import AtomText from './atoms/atom-text';
+import AtomErrorText from './atoms/atom-error-text';
+import AtomActivityIndicator from './atoms/atom-activity-indicator';
 
 function Home(): JSX.Element {
   const dispatch = useDispatch();
@@ -25,16 +28,16 @@ function Home(): JSX.Element {
 
   return (
     <View style={styles.container}>
-      {loading === 'pending' && <ActivityIndicator />}
-      <Text>Welcome!</Text>
-      {loginSanity.email !== '' && <Text>{loginSanity.email}</Text>}
+      {loading === 'pending' && <AtomActivityIndicator />}
+      <AtomText>Welcome!</AtomText>
+      {loginSanity.email !== '' && <AtomText>{loginSanity.email}</AtomText>}
       {loginSanity.verifiedEmail === true && (
-        <Text>Your Email has been verified.</Text>
+        <AtomText>Your Email has been verified.</AtomText>
       )}
       {loginSanity.verifiedEmail === false && (
-        <Text>Please verify your email.</Text>
+        <AtomText>Please verify your email.</AtomText>
       )}
-      {errorMessage !== '' && <Text>{errorMessage}</Text>}
+      {errorMessage !== '' && <AtomErrorText>{errorMessage}</AtomErrorText>}
     </View>
   );
 }

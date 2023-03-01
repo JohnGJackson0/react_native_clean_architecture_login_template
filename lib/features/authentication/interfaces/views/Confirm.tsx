@@ -1,18 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import {
-  ActivityIndicator,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {StyleSheet, TextInput, TouchableOpacity, View} from 'react-native';
 import {confirmUserThunk} from '../slices/confirmSlice';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../store/store';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../navigators/Navigator';
 import {setUserTokens} from '../slices/appSlice';
+import AtomText from './atoms/atom-text';
+import AtomErrorText from './atoms/atom-error-text';
+import AtomActivityIndicator from './atoms/atom-activity-indicator';
 
 type ConfirmProps = NativeStackScreenProps<RootStackParamList, 'Confirm'>;
 
@@ -51,14 +47,14 @@ const Confirm: React.FC<ConfirmProps> = props => {
   return (
     <View style={styles.container}>
       {loading === 'pending' && (
-        <View style={styles.loading} testID="loading">
-          <ActivityIndicator size="large" />
+        <View style={styles.loading}>
+          <AtomActivityIndicator size="large" />
         </View>
       )}
 
       <>
-        <Text style={styles.confirmText}>Confirm Email</Text>
-        <Text>Please confirm your email.</Text>
+        <AtomText style={styles.confirmText}>Confirm Email</AtomText>
+        <AtomText>Please confirm your email.</AtomText>
         <TextInput
           testID="confirm-input"
           style={styles.input}
@@ -69,10 +65,10 @@ const Confirm: React.FC<ConfirmProps> = props => {
           testID="submit"
           onPress={onPress}
           style={styles.button}>
-          <Text>Submit</Text>
+          <AtomText>Submit</AtomText>
         </TouchableOpacity>
         {errorMessage.toString() !== '' && (
-          <Text>{errorMessage.toString()}</Text>
+          <AtomErrorText>{errorMessage.toString()}</AtomErrorText>
         )}
       </>
     </View>

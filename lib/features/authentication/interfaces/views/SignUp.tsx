@@ -1,17 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import {
-  ActivityIndicator,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {StyleSheet, TextInput, TouchableOpacity, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {signUpUserThunk} from '../slices/signUpSlice';
 import {RootState} from '../store/store';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../navigators/Navigator';
+import AtomText from './atoms/atom-text';
+import AtomErrorText from './atoms/atom-error-text';
+import AtomActivityIndicator from './atoms/atom-activity-indicator';
 
 type SignUpProps = NativeStackScreenProps<RootStackParamList, 'SignUp'>;
 
@@ -46,12 +42,12 @@ const SignUp: React.FC<SignUpProps> = ({navigation}) => {
   return (
     <View style={styles.signUpContainer}>
       {loading === 'pending' && (
-        <View style={styles.loading} testID="loading">
-          <ActivityIndicator size="large" />
+        <View style={styles.loading}>
+          <AtomActivityIndicator size="large" />
         </View>
       )}
       <>
-        <Text style={styles.signUp}>Sign Up</Text>
+        <AtomText>Sign Up</AtomText>
         <TextInput
           testID="email-input"
           style={styles.input}
@@ -71,10 +67,12 @@ const SignUp: React.FC<SignUpProps> = ({navigation}) => {
           testID="submit"
           onPress={onPress}
           style={styles.button}>
-          <Text>Submit</Text>
+          <AtomText>Submit</AtomText>
         </TouchableOpacity>
       </>
-      {errorMessage.toString() !== '' && <Text>{errorMessage.toString()}</Text>}
+      {errorMessage.toString() !== '' && (
+        <AtomErrorText>{errorMessage.toString()}</AtomErrorText>
+      )}
     </View>
   );
 };
