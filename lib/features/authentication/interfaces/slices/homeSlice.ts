@@ -47,7 +47,6 @@ export const HomeSlice = createSlice({
       state.error = '';
     });
     builder.addCase(LoginSanityThunk.fulfilled, (state, action) => {
-      console.log('action', action);
       state.loginSanity.email = action.payload.email;
       state.loginSanity.verifiedEmail = action.payload.verifiedEmail;
       state.loading = 'idle';
