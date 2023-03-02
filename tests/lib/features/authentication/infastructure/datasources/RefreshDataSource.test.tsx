@@ -1,6 +1,6 @@
 import {mockClient} from '../../../../../utils/testUtils';
 import {RefreshHappyFixture} from '../../../../../fixtures/RefreshTokenFixture';
-import RefreshDataSourceImpl from '../../../../../../lib/features/authentication/infrastructure/datasources/refreshDataSource';
+import RefreshDataSourceImpl from '../../../../../../lib/features/authentication/infrastructure/datasources/RefreshDataSource';
 
 describe('refreshTokenDTO', () => {
   it('returns new JWT when response is okay', async () => {
