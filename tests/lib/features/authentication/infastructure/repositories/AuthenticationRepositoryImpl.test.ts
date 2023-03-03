@@ -1,37 +1,20 @@
-import AuthenticationRepositoryImpl from '../../../../../../lib/features/authentication/infrastructure/repositories/AuthenticationRepositoryImpl';
+import {mockRepo} from '../../../../../utils/testUtils';
 
 describe('Authentication repo', () => {
   it('calls the sign datasource with the correct email and password', () => {
-    const mockSignUpDataSource = {getSignUp: jest.fn()} as any;
-    const mockConfirmDataSource = {confirmUser: jest.fn()} as any;
-    const mockLoginSanityDataSource = {getLoginSanity: jest.fn() as any};
-
-    const authRepo = new AuthenticationRepositoryImpl(
-      mockSignUpDataSource,
-      mockConfirmDataSource,
-      mockLoginSanityDataSource,
-    );
+    const authRepo = mockRepo();
 
     authRepo.userSignUp('fakeEmail@fakeEmail.com', 'fakePassword');
 
-    expect(mockSignUpDataSource.getSignUp).toHaveBeenCalledWith(
+    expect(authRepo.signUpDatasource.getSignUp).toHaveBeenCalledWith(
       'fakeEmail@fakeEmail.com',
       'fakePassword',
     );
-
-    expect(mockConfirmDataSource.confirmUser).not.toHaveBeenCalled();
+    expect(authRepo.signUpDatasource.getSignUp).toHaveBeenCalledTimes(1);
   });
 
   it('calls the confirm datasource with the correct email, password and confirm code', async () => {
-    const mockSignUpDataSource = {getSignUp: jest.fn()} as any;
-    const mockConfirmDataSource = {getConfirm: jest.fn()} as any;
-    const mockLoginSanityDataSource = {getLoginSanity: jest.fn() as any};
-
-    const authRepo = new AuthenticationRepositoryImpl(
-      mockSignUpDataSource,
-      mockConfirmDataSource,
-      mockLoginSanityDataSource,
-    );
+    const authRepo = mockRepo();
 
     authRepo.confirmUser(
       'fakeEmail@fakeEmail.com',
@@ -39,32 +22,36 @@ describe('Authentication repo', () => {
       'fakeConfirm',
     );
 
-    expect(mockConfirmDataSource.getConfirm).toHaveBeenCalledWith(
+    expect(authRepo.confirmDataSource.getConfirm).toHaveBeenCalledWith(
       'fakeEmail@fakeEmail.com',
       'fakePassword',
       'fakeConfirm',
     );
 
-    expect(mockSignUpDataSource.getSignUp).not.toHaveBeenCalled();
+    expect(authRepo.signUpDatasource.getSignUp).not.toHaveBeenCalled();
   });
 
   it('calls the login sanity with the correct jwt token', async () => {
-    const mockSignUpDataSource = {getSignUp: jest.fn()} as any;
-    const mockConfirmDataSource = {getConfirm: jest.fn()};
-    const mockLoginSanityDataSource = {getLoginSanity: jest.fn()};
-
-    const authRepo = new AuthenticationRepositoryImpl(
-      mockSignUpDataSource,
-      mockConfirmDataSource,
-      mockLoginSanityDataSource,
-    );
-
+    const authRepo = mockRepo();
     authRepo.getLoginSanity('fakeJwt');
 
-    expect(mockLoginSanityDataSource.getLoginSanity).toHaveBeenCalledWith(
+    expect(authRepo.loginSanityDatasource.getLoginSanity).toHaveBeenCalledWith(
       'fakeJwt',
     );
 
-    expect(mockLoginSanityDataSource.getLoginSanity).toHaveBeenCalledTimes(1);
+    expect(authRepo.loginSanityDatasource.getLoginSanity).toHaveBeenCalledTimes(
+      1,
+    );
+  });
+
+  it('calls the refresh with the correct parameters', () => {
+    const authRepo = mockRepo();
+    authRepo.getRefresh('fakeRefresh');
+
+    expect(authRepo.refreshDataSource.refreshJwt).toHaveBeenCalledWith(
+      'fakeRefresh',
+    );
+
+    expect(authRepo.refreshDataSource.refreshJwt).toHaveBeenCalledTimes(1);
   });
 });

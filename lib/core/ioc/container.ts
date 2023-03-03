@@ -7,6 +7,7 @@ import ConfirmDataSourceImpl from '../../features/authentication/infrastructure/
 import ConfirmUseCase from '../../features/authentication/domain/usecases/ConfirmUseCase';
 import LoginSanityDataSourceImpl from '../../features/authentication/infrastructure/datasources/LoginSanityDataSource';
 import LoginSanityUseCase from '../../features/authentication/domain/usecases/LoginSanityUseCase';
+import RefreshDataSourceImpl from '../../features/authentication/infrastructure/datasources/RefreshDataSource';
 
 export default function configureDI(): IDIContainer {
   // TODO need types
@@ -31,10 +32,14 @@ export default function configureDI(): IDIContainer {
     LoginSanityDataSource: object(LoginSanityDataSourceImpl).construct({
       fetch: fetch,
     }),
+    RefreshDataSource: object(RefreshDataSourceImpl).construct({
+      fetch: fetch,
+    }),
     AuthRepo: object(AuthenticationRepositoryImpl).construct(
       use('UserSignUpDataSource'),
       use('ConfirmDataSource'),
       use('LoginSanityDataSource'),
+      use('RefreshDataSource'),
     ),
     SignUpUseCase: object(SignUpUseCase).construct(
       use('AuthRepo'),
@@ -44,7 +49,7 @@ export default function configureDI(): IDIContainer {
       use('AuthRepo'),
       use('Validator'),
     ),
-    // tests the authorizer
+    // tests the authorizer / jwt refresh
     LoginSanityUseCase: object(LoginSanityUseCase).construct(use('AuthRepo')),
   });
 
