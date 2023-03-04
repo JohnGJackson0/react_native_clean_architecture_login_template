@@ -3,21 +3,16 @@ import AuthenticationRepository from '../../../../../../lib/features/authenticat
 import SignUpUseCase from '../../../../../../lib/features/authentication/domain/usecases/SignUpUseCase';
 // Jest Doesn't Allow Mocking Interfaces
 import {any, mock} from 'jest-mock-extended';
+import * as E from 'fp-ts/Either';
 
 describe('sign up useCase', () => {
   it('throws with the correct message when client side validation for password is an error', async () => {
     const mockValidator: Validator = {
       validateEmail: jest.fn(() => {
-        return {
-          isValid: true,
-          message: 'mockMessageEmail',
-        };
+        return E.right(true);
       }),
       validatePassword: jest.fn(() => {
-        return {
-          isValid: false,
-          message: 'mockMessagePassword',
-        };
+        return E.left('mockMessagePassword');
       }),
       validateConfirmCode: jest.fn(),
     };
@@ -51,16 +46,10 @@ describe('sign up useCase', () => {
   it('throws with the correct message when client side validation for email is an error', async () => {
     const mockValidator: Validator = {
       validateEmail: jest.fn(() => {
-        return {
-          isValid: false,
-          message: 'mockMessageEmail',
-        };
+        return E.left('mockMessageEmail');
       }),
       validatePassword: jest.fn(() => {
-        return {
-          isValid: true,
-          message: 'mockMessagePassword',
-        };
+        return E.right(true);
       }),
       validateConfirmCode: jest.fn(),
     };
@@ -94,16 +83,10 @@ describe('sign up useCase', () => {
   it('calls the API correctly when there is no client side validation error', async () => {
     const mockValidator: Validator = {
       validateEmail: jest.fn(() => {
-        return {
-          isValid: true,
-          message: '',
-        };
+        return E.right(true);
       }),
       validatePassword: jest.fn(() => {
-        return {
-          isValid: true,
-          message: '',
-        };
+        return E.right(true);
       }),
       validateConfirmCode: jest.fn(),
     };
@@ -133,16 +116,10 @@ describe('sign up useCase', () => {
   it('does not call the API when client side validation failed', async () => {
     const mockValidator: Validator = {
       validateEmail: jest.fn(() => {
-        return {
-          isValid: true,
-          message: '',
-        };
+        return E.right(true);
       }),
       validatePassword: jest.fn(() => {
-        return {
-          isValid: false,
-          message: '',
-        };
+        return E.left('');
       }),
       validateConfirmCode: jest.fn(),
     };

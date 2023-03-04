@@ -1,5 +1,6 @@
 import {Validator} from '../../../../core/services/validator';
 import AuthenticationRepository from '../repositories/AuthenticationRepository';
+import * as E from 'fp-ts/Either';
 
 export default class SignUpUseCase {
   repository: AuthenticationRepository;
@@ -14,13 +15,20 @@ export default class SignUpUseCase {
     const emailValidator = this.validator.validateEmail(email);
     const passwordValidator = this.validator.validatePassword(password);
 
-    if (!emailValidator.isValid) {
-      throw emailValidator.message;
-    }
+    E.fold(
+      error => {
+        throw error;
+      },
+      value => value,
+    )(emailValidator);
 
-    if (!passwordValidator.isValid) {
-      throw passwordValidator.message;
-    }
+    E.fold(
+      error => {
+        throw error;
+      },
+      value => value,
+    )(passwordValidator);
+
     return await this.repository.userSignUp(email, password);
   };
 }

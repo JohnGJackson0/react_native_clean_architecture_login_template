@@ -1,5 +1,4 @@
 import AuthenticationRepository from '../repositories/AuthenticationRepository';
-
 export default class LoginSanityUseCase {
   repository: AuthenticationRepository;
 

@@ -2,6 +2,7 @@ import {any, mock} from 'jest-mock-extended';
 import {Validator} from '../../../../../../lib/core/services/validator';
 import AuthenticationRepository from '../../../../../../lib/features/authentication/domain/repositories/AuthenticationRepository';
 import ConfirmUseCase from '../../../../../../lib/features/authentication/domain/usecases/ConfirmUseCase';
+import * as E from 'fp-ts/Either';
 
 describe('confirm useCase', () => {
   it('correctly throws on client side validation error', async () => {
@@ -9,10 +10,7 @@ describe('confirm useCase', () => {
       validateEmail: jest.fn(),
       validatePassword: jest.fn(),
       validateConfirmCode: jest.fn(() => {
-        return {
-          isValid: false,
-          message: 'fakeMessage',
-        };
+        return E.left('fakeMessage');
       }),
     };
 
@@ -52,10 +50,7 @@ describe('confirm useCase', () => {
       validateEmail: jest.fn(),
       validatePassword: jest.fn(),
       validateConfirmCode: jest.fn(() => {
-        return {
-          isValid: true,
-          message: 'fakeMessage',
-        };
+        return E.right(true);
       }),
     };
 

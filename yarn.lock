@@ -3625,6 +3625,11 @@
     "combined-stream" "^1.0.8"
     "mime-types" "^2.1.12"
 
+"fp-ts@^2.13.1":
+  "integrity" "sha512-0eu5ULPS2c/jsa1lGFneEFFEdTbembJv8e4QKXeVJ3lm/5hyve06dlKZrpxmMwJt6rYen7sxmHHK2CLaXvWuWQ=="
+  "resolved" "https://registry.npmjs.org/fp-ts/-/fp-ts-2.13.1.tgz"
+  "version" "2.13.1"
+
 "fragment-cache@^0.2.1":
   "integrity" "sha512-GMBAbW9antB8iZRHLoGw0b3HANt57diZYFO/HL1JGIC1MjKrdmhxvrJbupnVvpys0zsz7yBApXdQyfepKly2kA=="
   "resolved" "https://registry.npmjs.org/fragment-cache/-/fragment-cache-0.2.1.tgz"

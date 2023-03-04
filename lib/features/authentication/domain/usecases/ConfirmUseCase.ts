@@ -1,5 +1,6 @@
 import {Validator} from '../../../../core/services/validator';
 import AuthenticationRepository from '../repositories/AuthenticationRepository';
+import * as E from 'fp-ts/Either';
 
 export default class ConfirmUseCase {
   repository: AuthenticationRepository;
@@ -15,12 +16,16 @@ export default class ConfirmUseCase {
     password: string,
     confirmationCode: string,
   ) => {
-    const confirmCodeValidor =
+    const confirmCodeValidator =
       this.validator.validateConfirmCode(confirmationCode);
 
-    if (!confirmCodeValidor.isValid) {
-      throw confirmCodeValidor.message;
-    }
+    E.fold(
+      error => {
+        throw error;
+      },
+      value => value,
+    )(confirmCodeValidator);
+
     return await this.repository.confirmUser(email, password, confirmationCode);
   };
 }
