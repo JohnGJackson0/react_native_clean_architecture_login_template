@@ -1,13 +1,6 @@
 import {Client} from '../../../../core/types/client';
 import {ConfirmDTO} from '../../domain/entities/ConfirmDTO';
-
-export interface ConfirmDataSource {
-  getConfirm: (
-    email: string,
-    password: string,
-    confirmCode: string,
-  ) => Promise<ConfirmDTO>;
-}
+import {ConfirmDataSource} from './datasources.types';
 
 export default class ConfirmDataSourceImpl implements ConfirmDataSource {
   _client: Client;

@@ -1,9 +1,5 @@
 import {Client} from '../../../../core/types/client';
-import {UserSignUpDTO} from '../../domain/entities/UserSignUpDTO';
-
-export interface RefreshDataSource {
-  refreshJwt: (refreshToken: string) => Promise<UserSignUpDTO>;
-}
+import {RefreshDataSource} from './datasources.types';
 
 export default class RefreshDataSourceImpl implements RefreshDataSource {
   _client: Client;

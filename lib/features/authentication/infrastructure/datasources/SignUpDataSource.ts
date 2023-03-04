@@ -1,9 +1,6 @@
 import {Client} from '../../../../core/types/client';
 import {UserSignUpDTO} from '../../domain/entities/UserSignUpDTO';
-
-export interface UserSignUpDataSource {
-  getSignUp: (email: string, password: string) => Promise<UserSignUpDTO>;
-}
+import {UserSignUpDataSource} from './datasources.types';
 
 export default class UserSignUpDataSourceImpl implements UserSignUpDataSource {
   _client: Client;

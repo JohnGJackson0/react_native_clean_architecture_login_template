@@ -1,9 +1,6 @@
 import {Client} from '../../../../core/types/client';
 import {LoginSanityDTO} from '../../domain/entities/LoginSanityDTO';
-
-export interface LoginSanityDataSource {
-  getLoginSanity: (jwtToken: string) => Promise<LoginSanityDTO>;
-}
+import {LoginSanityDataSource} from './datasources.types';
 
 export default class LoginSanityDataSourceImpl
   implements LoginSanityDataSource

@@ -1,10 +1,12 @@
 import {ConfirmDTO} from '../../domain/entities/ConfirmDTO';
 import {UserSignUpDTO} from '../../domain/entities/UserSignUpDTO';
 import AuthenticationRepository from '../../domain/repositories/AuthenticationRepository';
-import {ConfirmDataSource} from '../datasources/ConfirmDataSource';
-import {LoginSanityDataSource} from '../datasources/LoginSanityDataSource';
-import RefreshDataSource from '../datasources/RefreshDataSource';
-import UserSignUpDataSource from '../datasources/SignUpDataSource';
+import {
+  ConfirmDataSource,
+  LoginSanityDataSource,
+  RefreshDataSource,
+  UserSignUpDataSource,
+} from '../datasources/datasources.types';
 
 /**
  * This can pull from datasources, local, caching, ect.
@@ -53,7 +55,7 @@ export default class AuthenticationRepositoryImpl
     return await this.loginSanityDatasource.getLoginSanity(jwtToken);
   };
 
-  public getRefresh = async (refreshToken: string) => {
-    return await this.refreshDataSource.refreshJwt(refreshToken);
+  public getRefresh = async (refresh: string) => {
+    return await this.refreshDataSource.refreshJwt(refresh);
   };
 }
