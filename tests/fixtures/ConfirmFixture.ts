@@ -9,11 +9,9 @@ export const ConfirmHappyFixture = {
       RefreshToken: 'fakeRefreshToken',
       IdToken: 'fakeId',
     },
-    ok: true,
   },
 };
 
 export const ConfirmSadFixture = {
-  error: 'fakeError',
-  ok: false,
+  message: 'fakeError',
 };

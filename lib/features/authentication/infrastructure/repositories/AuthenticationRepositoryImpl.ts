@@ -7,6 +7,7 @@ import {
   RefreshDataSource,
   UserSignUpDataSource,
 } from '../datasources/datasources.types';
+import * as E from 'fp-ts/Either';
 
 /**
  * This can pull from datasources, local, caching, ect.
@@ -44,11 +45,18 @@ export default class AuthenticationRepositoryImpl
     password: string,
     confirmCode: string,
   ): Promise<ConfirmDTO> => {
-    return await this.confirmDataSource.getConfirm(
+    const dataSource = await this.confirmDataSource.getConfirm(
       email,
       password,
       confirmCode,
     );
+
+    return E.fold(
+      error => {
+        throw error;
+      },
+      value => value as ConfirmDTO,
+    )(dataSource);
   };
 
   public getLoginSanity = async (jwtToken: string) => {

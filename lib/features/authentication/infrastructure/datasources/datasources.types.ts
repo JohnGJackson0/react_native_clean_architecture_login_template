@@ -1,3 +1,4 @@
+import * as E from 'fp-ts/Either';
 import {ConfirmDTO} from '../../domain/entities/ConfirmDTO';
 import {LoginSanityDTO} from '../../domain/entities/LoginSanityDTO';
 import {RefreshDTO} from '../../domain/entities/RefreshDTO';
@@ -8,7 +9,7 @@ export interface ConfirmDataSource {
     email: string,
     password: string,
     confirmCode: string,
-  ) => Promise<ConfirmDTO>;
+  ) => Promise<E.Either<string, ConfirmDTO>>;
 }
 
 export interface LoginSanityDataSource {

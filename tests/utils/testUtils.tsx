@@ -12,14 +12,23 @@ export const createScreenTestProps = (
   ...(customProp as any),
 });
 
-export const mockClient = (fetchedFixture: object) => ({
+export const mockClient = (
+  fetchedFixture: object,
+  ok: boolean = true,
+  status: string = '200',
+) => ({
   fetch: jest.fn().mockResolvedValue({
-    json: () => fetchedFixture,
+    ok: ok,
+    status: status,
+    json: () => Promise.resolve(fetchedFixture),
+    text: () => Promise.resolve(JSON.stringify(fetchedFixture)),
   }),
 });
 export const mockRepo = () => {
   const mockSignUpDataSource = {getSignUp: jest.fn()};
-  const mockConfirmDataSource = {getConfirm: jest.fn()};
+  const mockConfirmDataSource = {
+    getConfirm: jest.fn(),
+  };
   const mockLoginSanityDataSource = {getLoginSanity: jest.fn()};
   const mockRefreshDataSource = {refreshJwt: jest.fn()};
 

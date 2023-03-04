@@ -1,6 +1,10 @@
-import {ConfirmHappyFixture} from '../../../../../fixtures/ConfirmFixture';
+import {
+  ConfirmHappyFixture,
+  ConfirmSadFixture,
+} from '../../../../../fixtures/ConfirmFixture';
 import ConfirmDataSourceImpl from '../../../../../../lib/features/authentication/infrastructure/datasources/ConfirmDataSource';
 import {mockClient} from '../../../../../utils/testUtils';
+import * as E from 'fp-ts/Either';
 
 describe('signup', () => {
   it('returns email and password as long as response is ok', async () => {
@@ -12,30 +16,50 @@ describe('signup', () => {
 
     const client = mockClient(ConfirmHappyFixture);
 
-    const signUpResult = await new ConfirmDataSourceImpl(
-      client as any,
-    ).getConfirm('fakeEmail@fakeEmail.com', 'fakePassword', 'fakeConfirm');
+    const signUpResult = await new ConfirmDataSourceImpl(client).getConfirm(
+      'fakeEmail@fakeEmail.com',
+      'fakePassword',
+      'fakeConfirm',
+    );
 
-    expect(signUpResult).toEqual(expectedConfirm);
+    const test = E.fold(
+      error => `Error: ${error}`,
+      value => value,
+    )(signUpResult);
+
+    expect(test).toEqual(expectedConfirm);
   });
 
-  it('throws with correct response', async () => {
-    const client = {
-      fetch: jest.fn(() => Promise.reject('fakeError')),
-    };
+  it('it displays the correct message on api responses that are not 200 status', async () => {
+    const client = mockClient(ConfirmSadFixture, false);
 
-    let thrown = false;
-    let response;
+    const userConfirmDataSource = new ConfirmDataSourceImpl(client);
 
-    const userSignUpDataSource = new ConfirmDataSourceImpl(client as any);
-    try {
-      await userSignUpDataSource.getConfirm('', '', '');
-    } catch (e) {
-      thrown = true;
-      response = e;
-    }
+    const response = await userConfirmDataSource.getConfirm('', '', '');
 
-    expect(thrown).toEqual(true);
-    expect(response).toEqual('fakeError');
+    const test = E.fold(
+      error => `Error: ${error}`,
+      value => value,
+    )(response);
+
+    expect(test).toEqual('Error: fakeError');
+  });
+
+  it('displays the correct message on network errors', async () => {
+    const client = mockClient({});
+    client.fetch.mockRejectedValue({});
+
+    const userConfirmDataSource = new ConfirmDataSourceImpl(client);
+
+    const response = await userConfirmDataSource.getConfirm('', '', '');
+
+    const test = E.fold(
+      error => `Error: ${error}`,
+      value => value,
+    )(response);
+
+    expect(test).toEqual(
+      'Error: Cannot fetch the specified resource most likely because of a network error.',
+    );
   });
 });
