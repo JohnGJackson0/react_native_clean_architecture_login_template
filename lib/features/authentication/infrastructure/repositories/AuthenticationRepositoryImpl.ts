@@ -10,10 +10,6 @@ import {
 } from '../datasources/datasources.types';
 import * as E from 'fp-ts/Either';
 
-/**
- * This can pull from datasources, local, caching, ect.
- */
-
 export default class AuthenticationRepositoryImpl
   implements AuthenticationRepository
 {
@@ -38,7 +34,14 @@ export default class AuthenticationRepositoryImpl
     email: string,
     password: string,
   ): Promise<UserSignUpDTO> => {
-    return await this.signUpDatasource.getSignUp(email, password);
+    const datasource = await this.signUpDatasource.getSignUp(email, password);
+
+    return E.fold(
+      error => {
+        throw error;
+      },
+      value => value as UserSignUpDTO,
+    )(datasource);
   };
 
   public confirmUser = async (

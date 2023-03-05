@@ -21,5 +21,8 @@ export interface RefreshDataSource {
 }
 
 export interface UserSignUpDataSource {
-  getSignUp: (email: string, password: string) => Promise<UserSignUpDTO>;
+  getSignUp: (
+    email: string,
+    password: string,
+  ) => Promise<E.Either<string, UserSignUpDTO>>;
 }

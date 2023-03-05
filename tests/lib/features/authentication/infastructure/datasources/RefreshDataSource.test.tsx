@@ -6,7 +6,7 @@ import {
 import RefreshDataSourceImpl from '../../../../../../lib/features/authentication/infrastructure/datasources/RefreshDataSource';
 import * as E from 'fp-ts/Either';
 
-describe('refreshTokenDTO', () => {
+describe('Refresh Data Source', () => {
   it('returns new JWT when response is okay', async () => {
     const expectedConfirm = {
       jwt: 'FakeToken',

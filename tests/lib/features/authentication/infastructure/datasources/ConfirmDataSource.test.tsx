@@ -6,7 +6,7 @@ import ConfirmDataSourceImpl from '../../../../../../lib/features/authentication
 import {mockClient} from '../../../../../utils/testUtils';
 import * as E from 'fp-ts/Either';
 
-describe('signup', () => {
+describe('Confirm DataSource', () => {
   it('returns email and password as long as response is ok', async () => {
     const expectedConfirm = {
       refreshToken: 'fakeRefreshToken',

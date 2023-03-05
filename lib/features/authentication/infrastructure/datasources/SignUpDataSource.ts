@@ -1,6 +1,7 @@
 import {Client} from '../../../../core/types/client';
 import {UserSignUpDTO} from '../../domain/entities/UserSignUpDTO';
 import {UserSignUpDataSource} from './datasources.types';
+import * as E from 'fp-ts/Either';
 
 export default class UserSignUpDataSourceImpl implements UserSignUpDataSource {
   _client: Client;
@@ -12,8 +13,8 @@ export default class UserSignUpDataSourceImpl implements UserSignUpDataSource {
   getSignUp = async (
     email: string,
     password: string,
-  ): Promise<UserSignUpDTO> => {
-    const data = {
+  ): Promise<E.Either<string, UserSignUpDTO>> => {
+    const payload = {
       email: email,
       password: password,
     };
@@ -25,16 +26,23 @@ export default class UserSignUpDataSourceImpl implements UserSignUpDataSource {
       .fetch(url, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(data),
+        body: JSON.stringify(payload),
       })
       .then(resp => {
         if (!resp.ok) {
-          return resp.text().then((text: string) => {
-            throw new Error(JSON.parse(text).error);
+          return resp.json().then((data: any) => {
+            return E.left(data?.error);
           });
         } else {
-          return data;
+          return resp.json().then((data: any) => {
+            return E.right(data);
+          });
         }
+      })
+      .catch(_ => {
+        return E.left(
+          'Cannot fetch the specified resource most likely because of a network error.',
+        );
       });
   };
 }

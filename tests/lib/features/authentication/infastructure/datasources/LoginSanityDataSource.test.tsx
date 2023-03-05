@@ -2,7 +2,7 @@ import LoginSanityDataSource from '../../../../../../lib/features/authentication
 import {LoginHappyFixture} from '../../../../../fixtures/LoginSanityFixture';
 import {mockClient} from '../../../../../utils/testUtils';
 
-describe('LoginSanity', () => {
+describe('Login Sanity Data Source', () => {
   it('returns loginSanity DTO as long as response is ok', async () => {
     const expectedLoginSanity = {
       message: 'fakeMessage',
