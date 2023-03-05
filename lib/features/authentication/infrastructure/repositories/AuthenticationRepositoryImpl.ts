@@ -1,4 +1,5 @@
 import {ConfirmDTO} from '../../domain/entities/ConfirmDTO';
+import {LoginSanityDTO} from '../../domain/entities/LoginSanityDTO';
 import {RefreshDTO} from '../../domain/entities/RefreshDTO';
 import {UserSignUpDTO} from '../../domain/entities/UserSignUpDTO';
 import AuthenticationRepository from '../../domain/repositories/AuthenticationRepository';
@@ -64,7 +65,16 @@ export default class AuthenticationRepositoryImpl
   };
 
   public getLoginSanity = async (jwtToken: string) => {
-    return await this.loginSanityDatasource.getLoginSanity(jwtToken);
+    const datasource = await this.loginSanityDatasource.getLoginSanity(
+      jwtToken,
+    );
+
+    return E.fold(
+      error => {
+        throw error;
+      },
+      value => value as LoginSanityDTO,
+    )(datasource);
   };
 
   public getRefresh = async (refresh: string) => {

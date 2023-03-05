@@ -6,6 +6,6 @@ export const LoginHappyFixture = {
 };
 
 export const LoginSadFixture = {
-  error: 'fakeError',
+  message: 'fakeError',
   ok: false,
 };

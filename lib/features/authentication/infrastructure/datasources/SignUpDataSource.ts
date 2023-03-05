@@ -34,8 +34,11 @@ export default class UserSignUpDataSourceImpl implements UserSignUpDataSource {
             return E.left(data?.error);
           });
         } else {
-          return resp.json().then((data: any) => {
-            return E.right(data);
+          return resp.json().then((_: any) => {
+            return E.right({
+              email,
+              password,
+            });
           });
         }
       })

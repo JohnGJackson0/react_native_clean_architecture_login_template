@@ -13,7 +13,9 @@ export interface ConfirmDataSource {
 }
 
 export interface LoginSanityDataSource {
-  getLoginSanity: (jwtToken: string) => Promise<LoginSanityDTO>;
+  getLoginSanity: (
+    jwtToken: string,
+  ) => Promise<E.Either<string, LoginSanityDTO>>;
 }
 
 export interface RefreshDataSource {

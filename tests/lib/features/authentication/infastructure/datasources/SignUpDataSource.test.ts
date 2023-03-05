@@ -15,9 +15,10 @@ describe('Sign Up Datasource', () => {
 
     const client = mockClient(SignUpHappyFixture);
 
-    const signUpResult = await new UserSignUpDataSourceImpl(
-      client as any,
-    ).getSignUp('fakeEmail@fakeEmail.com', 'fakePassword');
+    const signUpResult = await new UserSignUpDataSourceImpl(client).getSignUp(
+      'fakeEmail@fakeEmail.com',
+      'fakePassword',
+    );
 
     const test = E.fold(
       error => `Error: ${error}`,

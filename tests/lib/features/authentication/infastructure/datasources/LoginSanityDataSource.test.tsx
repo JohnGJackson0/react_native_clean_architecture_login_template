@@ -1,6 +1,7 @@
 import LoginSanityDataSource from '../../../../../../lib/features/authentication/infrastructure/datasources/LoginSanityDataSource';
 import {LoginHappyFixture} from '../../../../../fixtures/LoginSanityFixture';
 import {mockClient} from '../../../../../utils/testUtils';
+import * as E from 'fp-ts/Either';
 
 describe('Login Sanity Data Source', () => {
   it('returns loginSanity DTO as long as response is ok', async () => {
@@ -16,33 +17,35 @@ describe('Login Sanity Data Source', () => {
       client as any,
     ).getLoginSanity('fakeJwt');
 
-    expect(loginSanityResult).toEqual(expectedLoginSanity);
+    const test = E.fold(
+      error => `Error: ${error}`,
+      value => value,
+    )(loginSanityResult);
+
+    expect(test).toEqual(expectedLoginSanity);
   });
 
-  it('throws with !ok response', async () => {
-    const client = {
-      fetch: jest.fn(() => Promise.reject('fakeError')),
-    };
+  it('throws correctly with network error', async () => {
+    const client = mockClient({});
+    client.fetch.mockRejectedValue({});
+    const loginSanityResult = new LoginSanityDataSource(client);
 
-    let thrown = false;
-    let message;
+    const result = await loginSanityResult.getLoginSanity('fakeJwt');
 
-    const loginSanityResult = new LoginSanityDataSource(client as any);
-    try {
-      await loginSanityResult.getLoginSanity('fakeJwt');
-    } catch (e) {
-      thrown = true;
-      message = e;
-    }
+    const test = E.fold(
+      error => `Error: ${error}`,
+      value => value,
+    )(result);
 
-    expect(thrown).toEqual(true);
-    expect(message).toEqual(message);
+    expect(test).toEqual(
+      'Error: Cannot fetch the specified resource most likely because of a network error.',
+    );
   });
 
   it('calls the client correctly', async () => {
     const client = mockClient(LoginHappyFixture);
 
-    await new LoginSanityDataSource(client as any).getLoginSanity('fakeJwt');
+    await new LoginSanityDataSource(client).getLoginSanity('fakeJwt');
 
     expect(client.fetch).toHaveBeenCalledWith(
       'https://iz1ul818p3.execute-api.us-east-1.amazonaws.com/Prod/loginSanity',
@@ -54,54 +57,36 @@ describe('Login Sanity Data Source', () => {
     expect(client.fetch).toHaveBeenCalledTimes(1);
   });
 
-  it('throws if the email is undefined', async () => {
-    const client = {
-      fetch: jest.fn(() =>
-        Promise.resolve({
-          json: jest.fn().mockResolvedValue({message: 'fakeMessage'}),
-        }),
-      ),
-    };
+  it('gives left of authorization failed without email passed in', async () => {
+    const client = mockClient({message: 'fakeMessage'});
 
-    let thrown = false;
-    let message;
+    const loginSanityResult = new LoginSanityDataSource(client);
 
-    const loginSanityResult = new LoginSanityDataSource(client as any);
-    try {
-      await loginSanityResult.getLoginSanity('fakeJwt');
-    } catch (e) {
-      thrown = true;
-      message = e;
-    }
+    const response = await loginSanityResult.getLoginSanity('fakeJwt');
 
-    expect(thrown).toEqual(true);
-    expect(message).toEqual('Authorization failed');
+    const test = E.fold(
+      error => `Error: ${error}`,
+      value => value,
+    )(response);
+
+    expect(test).toEqual('Error: Authorization failed');
   });
 
-  it('throws if the message is Authroization Failed', async () => {
-    const client = {
-      fetch: jest.fn(() =>
-        Promise.resolve({
-          json: jest.fn().mockResolvedValue({
-            message: 'Authorization failed',
-            email: 'fakeEmail@fakeEmail.com',
-          }),
-        }),
-      ),
-    };
+  it('returns left of authorization failed if the message is Authroization Failed', async () => {
+    const client = mockClient({
+      message: 'Authorization failed',
+      email: 'fakeEmail@fakeEmail.com',
+    });
 
-    let thrown = false;
-    let message;
+    const datasource = new LoginSanityDataSource(client);
 
-    const loginSanityResult = new LoginSanityDataSource(client as any);
-    try {
-      await loginSanityResult.getLoginSanity('fakeJwt');
-    } catch (e) {
-      thrown = true;
-      message = e;
-    }
+    const response = await datasource.getLoginSanity('fakeJwt');
 
-    expect(thrown).toEqual(true);
-    expect(message).toEqual('Authorization failed');
+    const test = E.fold(
+      error => `Error: ${error}`,
+      value => value,
+    )(response);
+
+    expect(test).toEqual('Error: Authorization failed');
   });
 });
