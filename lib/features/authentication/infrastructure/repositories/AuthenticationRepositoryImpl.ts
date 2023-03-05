@@ -1,4 +1,5 @@
 import {ConfirmDTO} from '../../domain/entities/ConfirmDTO';
+import {RefreshDTO} from '../../domain/entities/RefreshDTO';
 import {UserSignUpDTO} from '../../domain/entities/UserSignUpDTO';
 import AuthenticationRepository from '../../domain/repositories/AuthenticationRepository';
 import {
@@ -64,6 +65,13 @@ export default class AuthenticationRepositoryImpl
   };
 
   public getRefresh = async (refresh: string) => {
-    return await this.refreshDataSource.refreshJwt(refresh);
+    const datasource = await this.refreshDataSource.refreshJwt(refresh);
+
+    return E.fold(
+      error => {
+        throw error;
+      },
+      value => value as RefreshDTO,
+    )(datasource);
   };
 }

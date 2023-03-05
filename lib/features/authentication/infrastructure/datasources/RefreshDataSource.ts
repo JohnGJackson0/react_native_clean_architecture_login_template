@@ -1,5 +1,7 @@
 import {Client} from '../../../../core/types/client';
 import {RefreshDataSource} from './datasources.types';
+import * as E from 'fp-ts/Either';
+import {RefreshDTO} from '../../domain/entities/RefreshDTO';
 
 export default class RefreshDataSourceImpl implements RefreshDataSource {
   _client: Client;
@@ -8,7 +10,9 @@ export default class RefreshDataSourceImpl implements RefreshDataSource {
     this._client = client;
   }
 
-  refreshJwt = async (refreshToken: string): Promise<any> => {
+  refreshJwt = async (
+    refreshToken: string,
+  ): Promise<E.Either<string, RefreshDTO>> => {
     const payload = {
       refreshToken,
     };
@@ -22,11 +26,24 @@ export default class RefreshDataSourceImpl implements RefreshDataSource {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(payload),
       })
-      .then(resp => resp.json())
-      .then(data => {
-        return {
-          jwt: data?.response?.AuthenticationResult?.AccessToken,
-        };
+      .then(resp => {
+        if (!resp.ok) {
+          const errorResult = resp.json().then((data: any) => {
+            return E.left(data?.error);
+          });
+          return errorResult;
+        }
+
+        return resp.json().then((data: any) => {
+          return E.right({
+            jwt: data?.response?.AuthenticationResult?.AccessToken,
+          });
+        });
+      })
+      .catch(_ => {
+        return E.left(
+          `Cannot fetch the specified resource most likely because of a network error.`,
+        );
       });
   };
 }

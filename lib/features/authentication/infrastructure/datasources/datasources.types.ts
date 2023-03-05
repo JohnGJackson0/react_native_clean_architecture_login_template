@@ -17,7 +17,7 @@ export interface LoginSanityDataSource {
 }
 
 export interface RefreshDataSource {
-  refreshJwt: (refreshToken: string) => Promise<RefreshDTO>;
+  refreshJwt: (refreshToken: string) => Promise<E.Either<string, RefreshDTO>>;
 }
 
 export interface UserSignUpDataSource {

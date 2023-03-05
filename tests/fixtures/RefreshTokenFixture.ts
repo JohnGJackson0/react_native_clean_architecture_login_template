@@ -10,3 +10,7 @@ export const RefreshHappyFixture = {
     },
   },
 };
+
+export const RefreshErrorFixture = {
+  error: 'User does not exist.',
+};

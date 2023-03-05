@@ -1,6 +1,10 @@
 import {mockClient} from '../../../../../utils/testUtils';
-import {RefreshHappyFixture} from '../../../../../fixtures/RefreshTokenFixture';
+import {
+  RefreshErrorFixture,
+  RefreshHappyFixture,
+} from '../../../../../fixtures/RefreshTokenFixture';
 import RefreshDataSourceImpl from '../../../../../../lib/features/authentication/infrastructure/datasources/RefreshDataSource';
+import * as E from 'fp-ts/Either';
 
 describe('refreshTokenDTO', () => {
   it('returns new JWT when response is okay', async () => {
@@ -14,26 +18,44 @@ describe('refreshTokenDTO', () => {
       'fakeJwt',
     );
 
-    expect(refreshResult).toEqual(expectedConfirm);
+    const test = E.fold(
+      error => `Error: ${error}`,
+      value => value,
+    )(refreshResult);
+
+    expect(test).toEqual(expectedConfirm);
   });
 
-  it('throws with correct response', async () => {
-    const client = {
-      fetch: jest.fn(() => Promise.reject('fakeError')),
-    };
+  it('throws with correct response when status is not okay', async () => {
+    const client = mockClient(RefreshErrorFixture, false);
 
-    let thrown = false;
-    let response;
+    const refreshDataSource = await new RefreshDataSourceImpl(
+      client,
+    ).refreshJwt('token');
 
-    const refreshDataSource = new RefreshDataSourceImpl(client);
-    try {
-      await refreshDataSource.refreshJwt('');
-    } catch (e) {
-      thrown = true;
-      response = e;
-    }
+    const test = E.fold(
+      error => `Error: ${error}`,
+      value => value,
+    )(refreshDataSource);
 
-    expect(thrown).toEqual(true);
-    expect(response).toEqual('fakeError');
+    expect(test).toEqual('Error: User does not exist.');
+  });
+
+  it('throws with correct response when network error', async () => {
+    const client = mockClient({});
+    client.fetch.mockRejectedValue({});
+
+    const refreshDataSource = await new RefreshDataSourceImpl(
+      client,
+    ).refreshJwt('token');
+
+    const test = E.fold(
+      error => `Error: ${error}`,
+      value => value,
+    )(refreshDataSource);
+
+    expect(test).toEqual(
+      'Error: Cannot fetch the specified resource most likely because of a network error.',
+    );
   });
 });

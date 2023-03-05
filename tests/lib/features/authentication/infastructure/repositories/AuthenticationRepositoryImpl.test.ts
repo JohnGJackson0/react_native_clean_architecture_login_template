@@ -74,6 +74,10 @@ describe('Authentication repo', () => {
 
   it('calls the refresh with the correct parameters', () => {
     const authRepo = mockRepo();
+    authRepo.refreshDataSource.refreshJwt = jest
+      .fn()
+      .mockResolvedValue(E.right('refreshed'));
+
     authRepo.getRefresh('fakeRefresh');
 
     expect(authRepo.refreshDataSource.refreshJwt).toHaveBeenCalledWith(
