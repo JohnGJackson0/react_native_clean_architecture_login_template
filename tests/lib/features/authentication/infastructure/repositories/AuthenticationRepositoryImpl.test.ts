@@ -59,27 +59,25 @@ describe('Authentication repo', () => {
   });
 
   describe('ConfirmUser', () => {
-    it('throws when the confirm datasource returns left parameter', async () => {
+    it('return left when the confirm datasource returns left parameter', async () => {
       const authRepo = mockRepo();
 
       authRepo.confirmDataSource.getConfirm = jest
         .fn()
         .mockResolvedValue(E.left('fakeError'));
 
-      let throws = false;
-      let message = '';
-      try {
-        await authRepo.confirmUser(
-          'fakeEmail@fakeEmail.com',
-          'fakePassword',
-          'fakeConfirm',
-        );
-      } catch (e: any) {
-        throws = true;
-        message = e;
-      }
-      expect(throws).toEqual(true);
-      expect(message).toEqual('fakeError');
+      const confirmUserResponse = await authRepo.confirmUser(
+        'fakeEmail@fakeEmail.com',
+        'fakePassword',
+        'fakeConfirm',
+      );
+
+      const test = E.fold(
+        error => error,
+        value => value,
+      )(confirmUserResponse);
+
+      expect(test).toEqual('fakeError');
     });
 
     it('calls the confirm datasource with the correct email, password and confirm code', async () => {

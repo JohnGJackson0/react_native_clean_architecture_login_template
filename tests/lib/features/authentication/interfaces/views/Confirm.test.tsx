@@ -7,6 +7,7 @@ import {
 } from '../../../../../utils/render';
 import {createScreenTestProps} from '../../../../../utils/testUtils';
 import Confirm from '../../../../../../lib/features/authentication/interfaces/views/Confirm';
+import * as E from 'fp-ts/Either';
 
 const mockIOC = jest.fn();
 
@@ -27,10 +28,12 @@ describe('Confirm Presenation', () => {
       email: 'fakeEmail@fakeEmail.com',
       password: 'fakePassword',
     });
-    mockIOC.mockResolvedValue({
-      refreshToken: 'fakeRefresh',
-      jwt: 'fakeJWT',
-    });
+    mockIOC.mockResolvedValue(
+      E.right({
+        refreshToken: 'fakeRefresh',
+        jwt: 'fakeJWT',
+      }),
+    );
     const {queryByTestId, getByTestId} = render(<Confirm {...props} />);
     expect(queryByTestId('loading')).toBeFalsy();
     fireEvent.press(getByTestId('submit'));
@@ -54,10 +57,12 @@ describe('Confirm Presenation', () => {
       email: 'fakeEmail@fakeEmail.com',
       password: 'fakePassword',
     });
-    mockIOC.mockResolvedValue({
-      refreshToken: 'fakeRefresh',
-      jwt: 'fakeJWT',
-    });
+    mockIOC.mockResolvedValue(
+      E.right({
+        refreshToken: 'fakeRefresh',
+        jwt: 'fakeJWT',
+      }),
+    );
     const {getByText, getByTestId} = render(<Confirm {...props} />);
     fireEvent.press(getByText('Submit'));
 
@@ -99,15 +104,34 @@ describe('Confirm Presenation', () => {
     await waitFor(() => getByText('Error: Message'));
   });
 
+  it('properly shows a message on expected errors', async () => {
+    const props = createScreenTestProps({
+      email: 'fakeEmail@fakeEmail.com',
+      password: 'fakePassword',
+    });
+
+    mockIOC.mockResolvedValue(E.left('Error: Message'));
+    const {getByTestId, getByText, queryByText} = render(
+      <Confirm {...props} />,
+    );
+    expect(queryByText('Error: Message')).not.toBeTruthy();
+
+    fireEvent.press(getByTestId('submit'));
+
+    await waitFor(() => getByText('Error: Message'));
+  });
+
   it('properly calls the useCase', async () => {
     const props = createScreenTestProps({
       email: 'fakeEmail@fakeEmail.com',
       password: 'fakePassword',
     });
-    mockIOC.mockResolvedValue({
-      refreshToken: 'fakeRefresh',
-      jwt: 'fakeJWT',
-    });
+    mockIOC.mockResolvedValue(
+      E.right({
+        refreshToken: 'fakeRefresh',
+        jwt: 'fakeJWT',
+      }),
+    );
     const {getByText, getByTestId} = render(<Confirm {...props} />);
 
     fireEvent.changeText(getByTestId('confirm-input'), 'fakeCode');

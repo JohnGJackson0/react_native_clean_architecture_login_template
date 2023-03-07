@@ -5,7 +5,38 @@ import ConfirmUseCase from '../../../../../../lib/features/authentication/domain
 import * as E from 'fp-ts/Either';
 
 describe('confirm useCase', () => {
-  it('correctly throws on client side validation error', async () => {
+  it('correctly returns left on server side validation error', async () => {
+    const mockValidator: Validator = {
+      validateEmail: jest.fn(),
+      validatePassword: jest.fn(),
+      validateConfirmCode: jest.fn(() => {
+        // client side check is ok
+        return E.right(true);
+      }),
+    };
+
+    const repo = mock<AuthenticationRepository>();
+
+    repo.confirmUser
+      .calledWith(any(), any(), any())
+      .mockResolvedValue(E.left('fakeMessage'));
+
+    const response = await new ConfirmUseCase(repo, mockValidator).execute(
+      'fakeEmail@fakeEmail.com',
+      'fakePassword',
+      'mockedEmail',
+    );
+
+    const test = E.fold(
+      error => error,
+      value => value,
+    )(response);
+
+    expect(test).toEqual('fakeMessage');
+    expect(repo.confirmUser).toHaveBeenCalledTimes(1);
+  });
+
+  it('correctly returns left on client side validation error', async () => {
     const mockValidator: Validator = {
       validateEmail: jest.fn(),
       validatePassword: jest.fn(),
@@ -16,32 +47,18 @@ describe('confirm useCase', () => {
 
     const repo = mock<AuthenticationRepository>();
 
-    const expected = {
-      refreshToken: 'mockedRefresh',
-      jwtToken: 'mockedJwt',
-      email: 'mockedEmail',
-    };
+    const response = await new ConfirmUseCase(repo, mockValidator).execute(
+      'fakeEmail@fakeEmail.com',
+      'fakePassword',
+      'mockedEmail',
+    );
 
-    repo.confirmUser
-      .calledWith(any(), any(), any())
-      .mockResolvedValue(expected);
+    const test = E.fold(
+      error => `Error: ${error}`,
+      value => value,
+    )(response);
 
-    let throws = false;
-    let message = '';
-
-    try {
-      await new ConfirmUseCase(repo, mockValidator).execute(
-        'fakeEmail@fakeEmail.com',
-        'fakePassword',
-        'mockedEmail',
-      );
-    } catch (e: any) {
-      throws = true;
-      message = e;
-    }
-
-    expect(throws).toEqual(true);
-    expect(message).toEqual('fakeMessage');
+    expect(test).toEqual('Error: fakeMessage');
     expect(repo.confirmUser).toHaveBeenCalledTimes(0);
   });
 
@@ -56,11 +73,11 @@ describe('confirm useCase', () => {
 
     const repo = mock<AuthenticationRepository>();
 
-    const expected = {
+    const expected = E.right({
       refreshToken: 'mockedRefresh',
       jwtToken: 'mockedJwt',
       email: 'mockedEmail',
-    };
+    });
 
     repo.confirmUser
       .calledWith(any(), any(), any())
@@ -72,7 +89,12 @@ describe('confirm useCase', () => {
       'mockedEmail',
     );
 
-    expect(confirm).toEqual({
+    const test = E.fold(
+      error => `Error: ${error}`,
+      value => value,
+    )(confirm);
+
+    expect(test).toEqual({
       email: 'mockedEmail',
       jwtToken: 'mockedJwt',
       refreshToken: 'mockedRefresh',

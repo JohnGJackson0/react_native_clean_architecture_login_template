@@ -13,7 +13,7 @@ export default interface AuthenticationRepository {
     email: string,
     password: string,
     confirmCode: string,
-  ) => Promise<ConfirmDTO>;
+  ) => Promise<E.Either<string, ConfirmDTO>>;
   getLoginSanity: (jwtToken: string) => Promise<LoginSanityDTO>;
   getRefresh: (refresh: string) => Promise<RefreshDTO>;
 }

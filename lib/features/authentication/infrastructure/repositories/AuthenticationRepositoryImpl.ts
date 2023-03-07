@@ -42,19 +42,12 @@ export default class AuthenticationRepositoryImpl
     email: string,
     password: string,
     confirmCode: string,
-  ): Promise<ConfirmDTO> => {
-    const dataSource = await this.confirmDataSource.getConfirm(
+  ): Promise<E.Either<string, ConfirmDTO>> => {
+    return await this.confirmDataSource.getConfirm(
       email,
       password,
       confirmCode,
     );
-
-    return E.fold(
-      error => {
-        throw error;
-      },
-      value => value as ConfirmDTO,
-    )(dataSource);
   };
 
   public getLoginSanity = async (jwtToken: string) => {
