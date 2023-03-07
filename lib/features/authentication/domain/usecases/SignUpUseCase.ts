@@ -1,4 +1,5 @@
 import {Validator} from '../../../../core/services/validator';
+import {UserSignUpDTO} from '../entities/UserSignUpDTO';
 import AuthenticationRepository from '../repositories/AuthenticationRepository';
 import * as E from 'fp-ts/Either';
 
@@ -11,24 +12,20 @@ export default class SignUpUseCase {
     this.validator = validator;
   }
 
-  public execute = async (email: string, password: string) => {
+  public execute = async (
+    email: string,
+    password: string,
+  ): Promise<E.Either<string, UserSignUpDTO>> => {
     const emailValidator = this.validator.validateEmail(email);
     const passwordValidator = this.validator.validatePassword(password);
 
-    E.fold(
-      error => {
-        throw error;
-      },
-      value => value,
-    )(emailValidator);
+    if (E.isLeft(emailValidator)) {
+      return E.left(emailValidator.left);
+    }
 
-    E.fold(
-      error => {
-        throw error;
-      },
-      value => value,
-    )(passwordValidator);
-
+    if (E.isLeft(passwordValidator)) {
+      return E.left(passwordValidator.left);
+    }
     return await this.repository.userSignUp(email, password);
   };
 }

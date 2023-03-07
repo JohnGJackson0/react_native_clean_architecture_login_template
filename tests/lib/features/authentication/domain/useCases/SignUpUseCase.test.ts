@@ -5,81 +5,7 @@ import SignUpUseCase from '../../../../../../lib/features/authentication/domain/
 import {any, mock} from 'jest-mock-extended';
 import * as E from 'fp-ts/Either';
 
-describe('sign up useCase', () => {
-  it('throws with the correct message when client side validation for password is an error', async () => {
-    const mockValidator: Validator = {
-      validateEmail: jest.fn(() => {
-        return E.right(true);
-      }),
-      validatePassword: jest.fn(() => {
-        return E.left('mockMessagePassword');
-      }),
-      validateConfirmCode: jest.fn(),
-    };
-
-    const repo = mock<AuthenticationRepository>();
-
-    const expected = {
-      email: 'mockedEmail@mock.com',
-      password: 'mockedPassword',
-    };
-
-    repo.userSignUp.calledWith(any(), any()).mockResolvedValue(expected);
-
-    let hasError = false;
-    let message = '';
-
-    try {
-      await new SignUpUseCase(repo, mockValidator).execute(
-        'fakeEmail@fakeEmail.com',
-        'fakePassword',
-      );
-    } catch (e: any) {
-      hasError = true;
-      message = e;
-    }
-
-    expect(hasError).toEqual(true);
-    expect(message).toEqual('mockMessagePassword');
-  });
-
-  it('throws with the correct message when client side validation for email is an error', async () => {
-    const mockValidator: Validator = {
-      validateEmail: jest.fn(() => {
-        return E.left('mockMessageEmail');
-      }),
-      validatePassword: jest.fn(() => {
-        return E.right(true);
-      }),
-      validateConfirmCode: jest.fn(),
-    };
-
-    const repo = mock<AuthenticationRepository>();
-
-    const expected = {
-      email: 'mockedEmail@mock.com',
-      password: 'mockedPassword',
-    };
-
-    repo.userSignUp.calledWith(any(), any()).mockResolvedValue(expected);
-
-    let hasError = false;
-    let message = '';
-
-    try {
-      await new SignUpUseCase(repo, mockValidator).execute(
-        'fakeEmail@fakeEmail.com',
-        'fakePassword',
-      );
-    } catch (e: any) {
-      hasError = true;
-      message = e;
-    }
-
-    expect(hasError).toEqual(true);
-    expect(message).toEqual('mockMessageEmail');
-  });
-
+describe('Sign Up UseCase', () => {
   it('calls the API correctly when there is no client side validation error', async () => {
     const mockValidator: Validator = {
       validateEmail: jest.fn(() => {
@@ -93,20 +19,27 @@ describe('sign up useCase', () => {
 
     const repo = mock<AuthenticationRepository>();
 
-    const expected = {
-      email: 'mockedEmail@mock.com',
-      password: 'mockedPassword',
-    };
+    repo.userSignUp
+      .calledWith(any(), any())
+      .mockResolvedValue(E.right({email: 'mocked', password: 'mocked'}));
 
-    repo.userSignUp.calledWith(any(), any()).mockResolvedValue(expected);
+    const signUpUseCase = new SignUpUseCase(repo, mockValidator);
 
-    expect(repo.userSignUp).toBeCalledTimes(0);
-    const result = await new SignUpUseCase(repo, mockValidator).execute(
+    const result = await signUpUseCase.execute(
       'fakeEmail@fakeEmail.com',
       'fakePassword',
     );
 
-    expect(result).toEqual(expected);
+    const test = E.fold(
+      error => {
+        return error;
+      },
+      success => {
+        return success;
+      },
+    )(result);
+
+    expect(test).toEqual({email: 'mocked', password: 'mocked'});
     expect(repo.userSignUp).toBeCalledTimes(1);
     expect(repo.userSignUp).toHaveBeenCalledWith(
       'fakeEmail@fakeEmail.com',
@@ -126,20 +59,94 @@ describe('sign up useCase', () => {
 
     const repo = mock<AuthenticationRepository>();
 
-    const expected = {
-      email: 'mockedEmail@mock.com',
-      password: 'mockedPassword',
+    const signUpUseCase = new SignUpUseCase(repo, mockValidator);
+
+    await signUpUseCase.execute('fakeEmail@fakeEmail.com', 'fakePassword');
+
+    expect(repo.userSignUp).toBeCalledTimes(0);
+  });
+
+  it('returns left with valid message when email validation fails', async () => {
+    const mockValidator: Validator = {
+      validateEmail: jest.fn(() => {
+        return E.left('mockEmailError');
+      }),
+      validatePassword: jest.fn(() => {
+        return E.right(true);
+      }),
+      validateConfirmCode: jest.fn(),
     };
 
-    repo.userSignUp.calledWith(any(), any()).mockResolvedValue(expected);
+    const repo = mock<AuthenticationRepository>();
 
-    expect(repo.userSignUp).toBeCalledTimes(0);
-    try {
-      await new SignUpUseCase(repo, mockValidator).execute(
-        'fakeEmail@fakeEmail.com',
-        'fakePassword',
-      );
-    } catch (e) {}
-    expect(repo.userSignUp).toBeCalledTimes(0);
+    const signUpUseCase = new SignUpUseCase(repo, mockValidator);
+
+    const result = await signUpUseCase.execute(
+      'fakeEmail@fakeEmail.com',
+      'fakePassword',
+    );
+
+    const test = E.fold(
+      error => `Error: ${error}`,
+      value => value,
+    )(result);
+
+    expect(test).toEqual('Error: mockEmailError');
+  });
+
+  it('returns left with valid message when password validation fails', async () => {
+    const mockValidator: Validator = {
+      validateEmail: jest.fn(() => {
+        return E.right(true);
+      }),
+      validatePassword: jest.fn(() => {
+        return E.left('mockPasswordError');
+      }),
+      validateConfirmCode: jest.fn(),
+    };
+
+    const repo = mock<AuthenticationRepository>();
+
+    const signUpUseCase = new SignUpUseCase(repo, mockValidator);
+
+    const result = await signUpUseCase.execute(
+      'fakeEmail@fakeEmail.com',
+      'fakePassword',
+    );
+
+    const test = E.fold(
+      error => `Error: ${error}`,
+      value => value,
+    )(result);
+
+    expect(test).toEqual('Error: mockPasswordError');
+  });
+
+  it('returns left with valid email message when both email and password fails', async () => {
+    const mockValidator: Validator = {
+      validateEmail: jest.fn(() => {
+        return E.left('mockEmailError');
+      }),
+      validatePassword: jest.fn(() => {
+        return E.left('mockPasswordError');
+      }),
+      validateConfirmCode: jest.fn(),
+    };
+
+    const repo = mock<AuthenticationRepository>();
+
+    const signUpUseCase = new SignUpUseCase(repo, mockValidator);
+
+    const result = await signUpUseCase.execute(
+      'fakeEmail@fakeEmail.com',
+      'fakePassword',
+    );
+
+    const test = E.fold(
+      error => `Error: ${error}`,
+      value => value,
+    )(result);
+
+    expect(test).toEqual('Error: mockEmailError');
   });
 });

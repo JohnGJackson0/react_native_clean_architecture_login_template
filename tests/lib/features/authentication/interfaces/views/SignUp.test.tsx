@@ -7,10 +7,7 @@ import {
   waitForElementToBeRemoved,
 } from '../../../../../utils/render';
 import SignUp from '../../../../../../lib/features/authentication/interfaces/views/SignUp';
-
-jest.mock('@react-native-async-storage/async-storage', () =>
-  require('@react-native-async-storage/async-storage/jest/async-storage-mock'),
-);
+import * as E from 'fp-ts/Either';
 
 const mockIOC = jest.fn();
 
@@ -37,10 +34,12 @@ describe('signUp Presentation', () => {
 
   it('signs in successfully when useCase returns a user', async () => {
     const props = createScreenTestProps();
-    mockIOC.mockResolvedValue({
-      email: 'fakeEmail@fake.com',
-      password: 'fakePassword',
-    });
+    mockIOC.mockResolvedValue(
+      E.right({
+        email: 'fakeEmail@fake.com',
+        password: 'fakePassword',
+      }),
+    );
     const {getByText, getByTestId} = render(<SignUp {...props} />);
 
     expect(getByText('Sign Up')).toBeTruthy();
@@ -57,10 +56,12 @@ describe('signUp Presentation', () => {
 
   it('loads correctly on sign up', async () => {
     const props = createScreenTestProps();
-    mockIOC.mockResolvedValue({
-      email: 'fakeEmail@fake.com',
-      password: 'fakePassword',
-    });
+    mockIOC.mockResolvedValue(
+      E.right({
+        email: 'fakeEmail@fake.com',
+        password: 'fakePassword',
+      }),
+    );
     const {getByText, getByTestId, queryByTestId} = render(
       <SignUp {...props} />,
     );
@@ -78,10 +79,12 @@ describe('signUp Presentation', () => {
 
   it('is sending the correct data', async () => {
     const props = createScreenTestProps();
-    mockIOC.mockResolvedValue({
-      email: 'fakeEmail@fake.com',
-      password: 'fakePassword',
-    });
+    mockIOC.mockResolvedValue(
+      E.right({
+        email: 'fakeEmail@fake.com',
+        password: 'fakePassword',
+      }),
+    );
     const {getByTestId} = render(<SignUp {...props} />);
 
     fireEvent.changeText(getByTestId('email-input'), 'fakeEmail');
@@ -97,7 +100,7 @@ describe('signUp Presentation', () => {
     expect(mockIOC).toHaveBeenCalledWith('fakeEmail', 'fakePW');
   });
 
-  it('properly shows an error from useCase', async () => {
+  it('properly shows an error from useCase on unknown error', async () => {
     const props = createScreenTestProps();
     mockIOC.mockRejectedValue('Error: Message');
     const {getByTestId, getByText, queryByText} = render(<SignUp {...props} />);
@@ -107,12 +110,34 @@ describe('signUp Presentation', () => {
     await waitFor(() => getByText('Error: Message'));
   });
 
+  it('properly shows an error from useCase on known error', async () => {
+    const props = createScreenTestProps();
+    mockIOC.mockResolvedValue(E.left('Error: MockedMessage'));
+    const {getByTestId, getByText} = render(<SignUp {...props} />);
+
+    fireEvent.changeText(getByTestId('email-input'), 'fakeEmail');
+
+    fireEvent.changeText(getByTestId('password-input'), 'fakePW');
+
+    fireEvent.press(getByTestId('submit'));
+
+    expect(getByTestId('loading')).toBeTruthy();
+
+    await waitForElementToBeRemoved(() => getByTestId('loading'));
+
+    expect(mockIOC).toHaveBeenCalledWith('fakeEmail', 'fakePW');
+
+    expect(getByText('Error: MockedMessage')).toBeTruthy();
+  });
+
   it('uses the usecase signedup user and not whatever is in the input', async () => {
     const props = createScreenTestProps();
-    mockIOC.mockResolvedValue({
-      email: 'fakeEmail@fake.com',
-      password: 'fakePassword',
-    });
+    mockIOC.mockResolvedValue(
+      E.right({
+        email: 'fakeEmail@fake.com',
+        password: 'fakePassword',
+      }),
+    );
     const {getByTestId} = render(<SignUp {...props} />);
 
     fireEvent.changeText(getByTestId('email-input'), 'fakeEmail');

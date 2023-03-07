@@ -34,15 +34,8 @@ export default class AuthenticationRepositoryImpl
   public userSignUp = async (
     email: string,
     password: string,
-  ): Promise<UserSignUpDTO> => {
-    const datasource = await this.signUpDatasource.getSignUp(email, password);
-
-    return E.fold(
-      error => {
-        throw error;
-      },
-      value => value as UserSignUpDTO,
-    )(datasource);
+  ): Promise<E.Either<string, UserSignUpDTO>> => {
+    return await this.signUpDatasource.getSignUp(email, password);
   };
 
   public confirmUser = async (

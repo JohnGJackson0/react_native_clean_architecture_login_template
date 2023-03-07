@@ -19,11 +19,30 @@ describe('Authentication repo', () => {
       expect(authRepo.signUpDatasource.getSignUp).toHaveBeenCalledTimes(1);
     });
 
-    it('throws when the sign up datasource returns left parameter', async () => {
+    it('When the datasource returns Left UseCase does as well', async () => {
       const authRepo = mockRepo();
       authRepo.signUpDatasource.getSignUp = jest
         .fn()
         .mockResolvedValue(E.left('error'));
+
+      const userSignUpResult = await authRepo.userSignUp(
+        'fakeEmail@fakeEmail.com',
+        'fakePassword',
+      );
+
+      const result = E.fold(
+        error => `error: ${error}`,
+        value => value,
+      )(userSignUpResult);
+
+      expect(result).toEqual('error: error');
+    });
+
+    it('throws when the datasource shows network error', async () => {
+      const authRepo = mockRepo();
+      authRepo.signUpDatasource.getSignUp = jest
+        .fn()
+        .mockRejectedValue('Network error');
 
       let throws = false;
       let message = '';
@@ -35,7 +54,7 @@ describe('Authentication repo', () => {
       }
 
       expect(throws).toEqual(true);
-      expect(message).toEqual('error');
+      expect(message).toEqual('Network error');
     });
   });
 

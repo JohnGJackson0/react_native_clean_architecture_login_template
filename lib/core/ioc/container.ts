@@ -1,4 +1,4 @@
-import DIContainer, {object, IDIContainer, use} from 'rsdi';
+import DIContainer, {object, use} from 'rsdi';
 import UserSignUpDataSourceImpl from '../../features/authentication/infrastructure/datasources/SignUpDataSource';
 import AuthenticationRepositoryImpl from '../../features/authentication/infrastructure/repositories/AuthenticationRepositoryImpl';
 import SignUpUseCase from '../../features/authentication/domain/usecases/SignUpUseCase';
@@ -9,7 +9,7 @@ import LoginSanityDataSourceImpl from '../../features/authentication/infrastruct
 import LoginSanityUseCase from '../../features/authentication/domain/usecases/LoginSanityUseCase';
 import RefreshDataSourceImpl from '../../features/authentication/infrastructure/datasources/RefreshDataSource';
 
-export default function configureDI(): IDIContainer {
+export default function configureDI() {
   // TODO need types
   const container: any = new DIContainer();
 
