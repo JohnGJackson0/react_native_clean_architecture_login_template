@@ -56,14 +56,9 @@ export default class AuthenticationRepositoryImpl
     return await this.loginSanityDatasource.getLoginSanity(jwtToken);
   };
 
-  public getRefresh = async (refresh: string) => {
-    const datasource = await this.refreshDataSource.refreshJwt(refresh);
-
-    return E.fold(
-      error => {
-        throw error;
-      },
-      value => value as RefreshDTO,
-    )(datasource);
+  public getRefresh = async (
+    refresh: string,
+  ): Promise<E.Either<string, RefreshDTO>> => {
+    return await this.refreshDataSource.refreshJwt(refresh);
   };
 }
