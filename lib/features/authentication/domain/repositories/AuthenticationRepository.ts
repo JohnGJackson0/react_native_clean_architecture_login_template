@@ -14,6 +14,8 @@ export default interface AuthenticationRepository {
     password: string,
     confirmCode: string,
   ) => Promise<E.Either<string, ConfirmDTO>>;
-  getLoginSanity: (jwtToken: string) => Promise<LoginSanityDTO>;
+  getLoginSanity: (
+    jwtToken: string,
+  ) => Promise<E.Either<string, LoginSanityDTO>>;
   getRefresh: (refresh: string) => Promise<RefreshDTO>;
 }

@@ -50,17 +50,10 @@ export default class AuthenticationRepositoryImpl
     );
   };
 
-  public getLoginSanity = async (jwtToken: string) => {
-    const datasource = await this.loginSanityDatasource.getLoginSanity(
-      jwtToken,
-    );
-
-    return E.fold(
-      error => {
-        throw error;
-      },
-      value => value as LoginSanityDTO,
-    )(datasource);
+  public getLoginSanity = async (
+    jwtToken: string,
+  ): Promise<E.Either<string, LoginSanityDTO>> => {
+    return await this.loginSanityDatasource.getLoginSanity(jwtToken);
   };
 
   public getRefresh = async (refresh: string) => {

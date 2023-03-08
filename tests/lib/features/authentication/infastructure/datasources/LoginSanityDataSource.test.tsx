@@ -14,7 +14,7 @@ describe('Login Sanity Data Source', () => {
     const client = mockClient(LoginHappyFixture);
 
     const loginSanityResult = await new LoginSanityDataSource(
-      client as any,
+      client,
     ).getLoginSanity('fakeJwt');
 
     const test = E.fold(

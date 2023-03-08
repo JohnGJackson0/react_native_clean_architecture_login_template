@@ -29,7 +29,6 @@ function Home(): JSX.Element {
   return (
     <View style={styles.container}>
       {loading === 'pending' && <AtomActivityIndicator />}
-      <AtomText>Welcome!</AtomText>
       {loginSanity.email !== '' && <AtomText>{loginSanity.email}</AtomText>}
       {loginSanity.verifiedEmail === true && (
         <AtomText>Your Email has been verified.</AtomText>

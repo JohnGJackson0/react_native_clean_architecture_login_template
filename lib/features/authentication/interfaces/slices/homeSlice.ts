@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {AppIOCContainer} from '../../../../core/ioc/container';
+import * as E from 'fp-ts/Either';
 
 interface LoginSanity {
   email: string;
@@ -30,7 +31,14 @@ export const LoginSanityThunk = createAsyncThunk(
   async (_: LoginSanityThunkInput, {rejectWithValue}) => {
     try {
       const useCase = AppIOCContainer.get('LoginSanityUseCase');
-      return await useCase.execute(_.jwtToken);
+      const result = await useCase.execute(_.jwtToken);
+
+      return E.fold(
+        error => {
+          return rejectWithValue(error);
+        },
+        value => value as any,
+      )(result);
     } catch (e) {
       return rejectWithValue(e);
     }
