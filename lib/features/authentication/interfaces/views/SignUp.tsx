@@ -1,47 +1,67 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, TextInput, TouchableOpacity, View} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
-import {signUpUserThunk} from '../slices/signUpSlice';
-import {RootState} from '../store/store';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../navigators/Navigator';
 import AtomText from './atoms/atom-text';
 import AtomErrorText from './atoms/atom-error-text';
 import AtomActivityIndicator from './atoms/atom-activity-indicator';
+import {useAtom} from 'jotai';
+import * as E from 'fp-ts/Either';
+import {
+  SignUpUser,
+  UserSignUpLoading,
+  UserSignedUp,
+  userSignUpError,
+} from '../state/signUp';
+import {UserSignUpDTO} from '../../domain/entities/UserSignUpDTO';
 
 type SignUpProps = NativeStackScreenProps<RootStackParamList, 'SignUp'>;
 
 const SignUp: React.FC<SignUpProps> = ({navigation}) => {
-  const dispatch = useDispatch();
-  const signedUpUser = useSelector(
-    (state: RootState) => state.signUp.signedUpUser,
-  );
-
-  const loading = useSelector((state: RootState) => state.signUp.loading);
-
-  const errorMessage = useSelector((state: RootState) => state.signUp.error);
+  const [userSignUpResult, setSignUpUserResult] = useAtom(UserSignedUp);
+  const [signUpLoading, setSignUpLoading] = useAtom(UserSignUpLoading);
+  const [signUpError, setSignUpError] = useAtom(userSignUpError);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const onPress = () => {
-    // version conflict
-    // @ts-ignore
-    dispatch(signUpUserThunk({email, password}));
+  const onSignUpPressed = async () => {
+    setSignUpLoading(true);
+    let getSignUp;
+    try {
+      getSignUp = await SignUpUser(email, password);
+    } catch (e: unknown) {
+      setSignUpError((e ?? 'Unknown Error').toString());
+      setSignUpLoading(false);
+      return;
+    }
+
+    E.fold(
+      error => {
+        if (typeof error === 'string') {
+          setSignUpError(error);
+          setSignUpLoading(false);
+        }
+      },
+      (value: UserSignUpDTO) => {
+        setSignUpUserResult(value);
+        setSignUpLoading(false);
+      },
+    )(getSignUp);
   };
 
   useEffect(() => {
-    if (signedUpUser?.email !== '' || signedUpUser?.password !== '') {
+    if (userSignUpResult?.email !== '' || userSignUpResult?.password !== '') {
       navigation.navigate('Confirm', {
-        email: signedUpUser?.email,
-        password: signedUpUser?.password,
+        email: userSignUpResult?.email,
+        password: userSignUpResult?.password,
       });
     }
-  }, [email, navigation, password, signedUpUser]);
+  }, [email, navigation, password, userSignUpResult]);
 
   return (
     <View style={styles.signUpContainer}>
-      {loading === 'pending' && (
+      {signUpLoading === true && (
         <View style={styles.loading}>
           <AtomActivityIndicator size="large" />
         </View>
@@ -65,14 +85,12 @@ const SignUp: React.FC<SignUpProps> = ({navigation}) => {
 
         <TouchableOpacity
           testID="submit"
-          onPress={onPress}
+          onPress={onSignUpPressed}
           style={styles.button}>
           <AtomText>Submit</AtomText>
         </TouchableOpacity>
       </>
-      {errorMessage.toString() !== '' && (
-        <AtomErrorText>{errorMessage.toString()}</AtomErrorText>
-      )}
+      {signUpError !== '' && <AtomErrorText>{signUpError}</AtomErrorText>}
     </View>
   );
 };

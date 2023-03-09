@@ -16,7 +16,7 @@ const reducers = combineReducers({
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  blacklist: ['signUp', 'confirm', 'home'],
+  blacklist: ['signUp', 'confirm', 'home', 'app'],
 };
 const persistedReducer = persistReducer(persistConfig, reducers);
 

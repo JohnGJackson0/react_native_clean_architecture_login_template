@@ -22,6 +22,7 @@
     "fp-ts": "^2.13.1",
     "injection-js": "^2.4.0",
     "inversify": "^6.0.1",
+    "jotai": "^2.0.3",
     "react": "18.2.0",
     "react-native": "0.71.1",
     "react-native-safe-area-context": "^4.5.0",
