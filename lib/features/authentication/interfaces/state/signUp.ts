@@ -2,54 +2,47 @@ import {atom} from 'jotai';
 import {AppIOCContainer} from '../../../../core/ioc/container';
 import * as E from 'fp-ts/Either';
 import {UserSignUpDTO} from '../../domain/entities/UserSignUpDTO';
-// import {loadable} from 'jotai/utils';
 
-/*
-interface SignedUpUserState {
+interface User {
   email: string;
   password: string;
 }
-*/
-export const UserSignedUp = atom({email: '', password: ''});
-export const UserSignUpLoading = atom<boolean>(false);
-export const userSignUpError = atom<string>('');
-
-/*
-export const SignUpUserLoadableAsyncAtom = loadable(
-  atom(async (_get: unknown, email: string, password: string) =>
-    SignUpUser({email, password}),
-  ),
-);
-*/
-/*
-
-export const signUpErrorAtom = atom<string>('');
-export const signUpUserAtom = atom<SignedUpUserState>({
+const baseError = atom<string>('');
+const baseSignedUpUser = atom<User>({
   email: '',
   password: '',
 });
-export const signUpLoadingAtom = atom<boolean>(false);
+const baseLoading = atom<boolean>(false);
 
-export const SignUpUserTest = (_: SignedUpUserState) =>
-  atom(async () => {
-    SignUpUser(_);
-  });
+export const signedUpUserAtom = atom(get => get(baseSignedUpUser));
+export const errorAtom = atom(get => get(baseError));
+export const isLoadingAtom = atom(get => get(baseLoading));
 
-export const SignUpUserTestTwo = atom((_: SignedUpUserState) => SignUpUser(_));
-*/
-export const SignUpUser = async (
-  email: string,
-  password: string,
-): Promise<E.Either<string, UserSignUpDTO>> => {
-  const useCase = AppIOCContainer.get('SignUpUseCase');
-  const result = await useCase.execute(email, password);
+export const dispatchSignUpUseCaseAtom = atom(
+  null,
+  async (_get, set, payload: User) => {
+    set(baseLoading, true);
 
-  return E.fold(
-    (error: string) => {
-      return E.left(error);
-    },
-    (value: UserSignUpDTO) => {
-      return E.right(value);
-    },
-  )(result);
-};
+    try {
+      const signUpUseCase = await AppIOCContainer.get('SignUpUseCase').execute(
+        payload?.email,
+        payload?.password,
+      );
+      E.fold(
+        error => {
+          if (typeof error === 'string') {
+            set(baseError, error);
+          }
+        },
+        (value: UserSignUpDTO) => {
+          set(baseSignedUpUser, {email: value.email, password: value.password});
+          set(baseError, '');
+        },
+      )(signUpUseCase);
+    } catch (e: unknown) {
+      set(baseError, (e ?? 'Unknown Error').toString());
+    } finally {
+      set(baseLoading, false);
+    }
+  },
+);

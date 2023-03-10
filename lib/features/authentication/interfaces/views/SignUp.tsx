@@ -4,68 +4,42 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../navigators/Navigator';
 import AtomText from './atoms/atom-text';
 import AtomErrorText from './atoms/atom-error-text';
-import AtomActivityIndicator from './atoms/atom-activity-indicator';
 import {useAtom} from 'jotai';
-import * as E from 'fp-ts/Either';
 import {
-  SignUpUser,
-  UserSignUpLoading,
-  UserSignedUp,
-  userSignUpError,
+  dispatchSignUpUseCaseAtom,
+  errorAtom,
+  isLoadingAtom,
+  signedUpUserAtom,
 } from '../state/signUp';
-import {UserSignUpDTO} from '../../domain/entities/UserSignUpDTO';
+import AtomActivityIndicator from './atoms/atom-activity-indicator';
 
 type SignUpProps = NativeStackScreenProps<RootStackParamList, 'SignUp'>;
 
 const SignUp: React.FC<SignUpProps> = ({navigation}) => {
-  const [userSignUpResult, setSignUpUserResult] = useAtom(UserSignedUp);
-  const [signUpLoading, setSignUpLoading] = useAtom(UserSignUpLoading);
-  const [signUpError, setSignUpError] = useAtom(userSignUpError);
+  const [, dispatchSignUp] = useAtom(dispatchSignUpUseCaseAtom);
+  const [isLoading] = useAtom(isLoadingAtom);
+  const [signedUpUser] = useAtom(signedUpUserAtom);
+  const [error] = useAtom(errorAtom);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const onSignUpPressed = async () => {
-    setSignUpLoading(true);
-    let getSignUp;
-    try {
-      getSignUp = await SignUpUser(email, password);
-    } catch (e: unknown) {
-      setSignUpError((e ?? 'Unknown Error').toString());
-      setSignUpLoading(false);
-      return;
-    }
-
-    E.fold(
-      error => {
-        if (typeof error === 'string') {
-          setSignUpError(error);
-          setSignUpLoading(false);
-        }
-      },
-      (value: UserSignUpDTO) => {
-        setSignUpUserResult(value);
-        setSignUpLoading(false);
-      },
-    )(getSignUp);
+    dispatchSignUp({email: email, password: password});
   };
 
   useEffect(() => {
-    if (userSignUpResult?.email !== '' || userSignUpResult?.password !== '') {
+    if (signedUpUser?.email !== '' || signedUpUser?.password !== '') {
       navigation.navigate('Confirm', {
-        email: userSignUpResult?.email,
-        password: userSignUpResult?.password,
+        email: signedUpUser?.email,
+        password: signedUpUser?.password,
       });
     }
-  }, [email, navigation, password, userSignUpResult]);
+  }, [email, navigation, password, signedUpUser]);
 
   return (
     <View style={styles.signUpContainer}>
-      {signUpLoading === true && (
-        <View style={styles.loading}>
-          <AtomActivityIndicator size="large" />
-        </View>
-      )}
+      {isLoading && <AtomActivityIndicator />}
       <>
         <AtomText>Sign Up</AtomText>
         <TextInput
@@ -90,7 +64,7 @@ const SignUp: React.FC<SignUpProps> = ({navigation}) => {
           <AtomText>Submit</AtomText>
         </TouchableOpacity>
       </>
-      {signUpError !== '' && <AtomErrorText>{signUpError}</AtomErrorText>}
+      {error !== '' && <AtomErrorText>{error}</AtomErrorText>}
     </View>
   );
 };
