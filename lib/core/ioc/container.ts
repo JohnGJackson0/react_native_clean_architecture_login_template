@@ -8,6 +8,7 @@ import ConfirmUseCase from '../../features/authentication/domain/usecases/Confir
 import LoginSanityDataSourceImpl from '../../features/authentication/infrastructure/datasources/LoginSanityDataSource';
 import LoginSanityUseCase from '../../features/authentication/domain/usecases/LoginSanityUseCase';
 import RefreshDataSourceImpl from '../../features/authentication/infrastructure/datasources/RefreshDataSource';
+import {client} from '../services/request';
 
 export default function configureDI() {
   // TODO need types
@@ -26,9 +27,7 @@ export default function configureDI() {
         fetch: fetch,
       },
     ),
-    UserSignUpDataSource: object(UserSignUpDataSourceImpl).construct({
-      fetch: fetch,
-    }),
+    UserSignUpDataSource: object(UserSignUpDataSourceImpl).construct(client),
     LoginSanityDataSource: object(LoginSanityDataSourceImpl).construct({
       fetch: fetch,
     }),
