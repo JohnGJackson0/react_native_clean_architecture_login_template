@@ -1,8 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {confirmUserThunk} from '../slices/confirmSlice';
-import {useDispatch, useSelector} from 'react-redux';
-import {RootState} from '../store/store';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../navigators/Navigator';
 import {setUserTokens} from '../slices/appSlice';
@@ -12,44 +9,50 @@ import AtomActivityIndicator from './atoms/atom-activity-indicator';
 import AtomTitle from './atoms/atom-title';
 import AtomTextInput from './atoms/atom-input';
 import AtomButton from './atoms/atom-button';
+import {
+  dispatchConfirmUserAtom,
+  errorAtom,
+  isLoadingAtom,
+  tokensAtom,
+} from '../state/confirm';
+import {useAtom} from 'jotai';
+import {useDispatch} from 'react-redux';
 
 type ConfirmProps = NativeStackScreenProps<RootStackParamList, 'Confirm'>;
 
 // TODO resubmit on wrong confirm code
 const Confirm: React.FC<ConfirmProps> = props => {
-  const dispatch = useDispatch();
+  const [, dispatchConfirm] = useAtom(dispatchConfirmUserAtom);
+  const [isLoading] = useAtom(isLoadingAtom);
+  const [userTokens] = useAtom(tokensAtom);
+  const [error] = useAtom(errorAtom);
   const [confirm, setConfirm] = useState('');
-  const confirmedUser = useSelector((state: RootState) => state.confirm);
-  const onPress = () => {
-    dispatch(
-      // version conflict
-      // @ts-ignore
-      confirmUserThunk({
-        email: props.route.params.email,
-        password: props.route.params.password,
-        confirmCode: confirm,
-      }),
-    );
-  };
-  const loading = useSelector((state: RootState) => state.confirm.loading);
 
-  const errorMessage = useSelector((state: RootState) => state.confirm.error);
+  const dispatch = useDispatch();
+
+  const onPress = () => {
+    dispatchConfirm({
+      email: props.route.params.email,
+      password: props.route.params.password,
+      confirmCode: confirm,
+    });
+  };
 
   useEffect(() => {
-    if (confirmedUser?.tokens?.jwt !== '') {
+    if (userTokens?.jwt !== '') {
       dispatch(
         setUserTokens({
-          jwtToken: confirmedUser?.tokens?.jwt,
-          refreshToken: confirmedUser?.tokens?.refresh,
+          jwtToken: userTokens?.jwt,
+          refreshToken: userTokens?.refresh,
         }),
       );
       props.navigation.replace('Home');
     }
-  }, [confirmedUser, dispatch, props.navigation]);
+  }, [userTokens, dispatch, props.navigation]);
 
   return (
     <View style={styles.container}>
-      {loading === 'pending' && <AtomActivityIndicator />}
+      {isLoading && <AtomActivityIndicator />}
 
       <>
         <AtomTitle style={styles.confirmText}>Confirm Email</AtomTitle>
@@ -61,8 +64,8 @@ const Confirm: React.FC<ConfirmProps> = props => {
           value={confirm}
         />
         <AtomButton testID="submit" label={'Submit'} onPress={onPress} />
-        {errorMessage.toString() !== '' && (
-          <AtomErrorText>{errorMessage.toString()}</AtomErrorText>
+        {error.toString() !== '' && (
+          <AtomErrorText>{error.toString()}</AtomErrorText>
         )}
       </>
     </View>

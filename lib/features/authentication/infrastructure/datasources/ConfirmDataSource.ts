@@ -29,7 +29,7 @@ export default class ConfirmDataSourceImpl implements ConfirmDataSource {
       .then(response => {
         if (!response.ok) {
           const errorResult = response.json().then((data: any) => {
-            return E.left(data?.message);
+            return E.left(data?.error);
           });
           return errorResult;
         }

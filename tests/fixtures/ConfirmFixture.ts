@@ -13,5 +13,5 @@ export const ConfirmHappyFixture = {
 };
 
 export const ConfirmSadFixture = {
-  message: 'fakeError',
+  error: 'fakeError',
 };
