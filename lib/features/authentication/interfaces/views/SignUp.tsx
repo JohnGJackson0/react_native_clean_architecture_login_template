@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, TextInput, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../navigators/Navigator';
-import AtomText from './atoms/atom-text';
 import AtomErrorText from './atoms/atom-error-text';
 import {useAtom} from 'jotai';
 import {
@@ -12,6 +11,9 @@ import {
   signedUpUserAtom,
 } from '../state/signUp';
 import AtomActivityIndicator from './atoms/atom-activity-indicator';
+import AtomButton from './atoms/atom-button';
+import AtomTextInput from './atoms/atom-input';
+import AtomTitle from './atoms/atom-title';
 
 type SignUpProps = NativeStackScreenProps<RootStackParamList, 'SignUp'>;
 
@@ -41,28 +43,24 @@ const SignUp: React.FC<SignUpProps> = ({navigation}) => {
     <View style={styles.signUpContainer}>
       {isLoading && <AtomActivityIndicator />}
       <>
-        <AtomText>Sign Up</AtomText>
-        <TextInput
+        <AtomTitle>Sign Up</AtomTitle>
+
+        <AtomTextInput
           testID="email-input"
-          style={styles.input}
+          placeholder="Enter Email"
           onChangeText={setEmail}
           value={email}
         />
 
-        <TextInput
+        <AtomTextInput
+          placeholder={'Enter Password'}
           testID="password-input"
-          style={styles.input}
           onChangeText={setPassword}
           value={password}
           secureTextEntry={true}
         />
 
-        <TouchableOpacity
-          testID="submit"
-          onPress={onSignUpPressed}
-          style={styles.button}>
-          <AtomText>Submit</AtomText>
-        </TouchableOpacity>
+        <AtomButton testID="submit" label="submit" onPress={onSignUpPressed} />
       </>
       {error !== '' && <AtomErrorText>{error}</AtomErrorText>}
     </View>
@@ -70,35 +68,10 @@ const SignUp: React.FC<SignUpProps> = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  input: {
-    height: 40,
-    borderWidth: 1,
-    margin: 20,
-  },
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
-    alignContent: 'center',
-  },
   signUpContainer: {
     padding: 20,
     marginTop: '30%',
     flex: 1,
-  },
-  button: {
-    alignSelf: 'center',
-  },
-  signUp: {
-    alignSelf: 'center',
-    fontSize: 35,
-    marginBottom: 30,
-  },
-  loading: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
   },
 });
 

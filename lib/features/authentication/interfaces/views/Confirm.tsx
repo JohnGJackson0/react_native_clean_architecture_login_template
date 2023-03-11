@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, TextInput, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {confirmUserThunk} from '../slices/confirmSlice';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../store/store';
@@ -9,6 +9,9 @@ import {setUserTokens} from '../slices/appSlice';
 import AtomText from './atoms/atom-text';
 import AtomErrorText from './atoms/atom-error-text';
 import AtomActivityIndicator from './atoms/atom-activity-indicator';
+import AtomTitle from './atoms/atom-title';
+import AtomTextInput from './atoms/atom-input';
+import AtomButton from './atoms/atom-button';
 
 type ConfirmProps = NativeStackScreenProps<RootStackParamList, 'Confirm'>;
 
@@ -46,27 +49,18 @@ const Confirm: React.FC<ConfirmProps> = props => {
 
   return (
     <View style={styles.container}>
-      {loading === 'pending' && (
-        <View style={styles.loading}>
-          <AtomActivityIndicator size="large" />
-        </View>
-      )}
+      {loading === 'pending' && <AtomActivityIndicator />}
 
       <>
-        <AtomText style={styles.confirmText}>Confirm Email</AtomText>
+        <AtomTitle style={styles.confirmText}>Confirm Email</AtomTitle>
         <AtomText>Please confirm your email.</AtomText>
-        <TextInput
+        <AtomTextInput
           testID="confirm-input"
-          style={styles.input}
+          placeholder={'Enter Confirm Code'}
           onChangeText={setConfirm}
           value={confirm}
         />
-        <TouchableOpacity
-          testID="submit"
-          onPress={onPress}
-          style={styles.button}>
-          <AtomText>Submit</AtomText>
-        </TouchableOpacity>
+        <AtomButton testID="submit" label={'Submit'} onPress={onPress} />
         {errorMessage.toString() !== '' && (
           <AtomErrorText>{errorMessage.toString()}</AtomErrorText>
         )}
@@ -84,6 +78,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignContent: 'center',
+    padding: 20,
+    marginTop: '30%',
   },
   confirmText: {
     alignSelf: 'center',

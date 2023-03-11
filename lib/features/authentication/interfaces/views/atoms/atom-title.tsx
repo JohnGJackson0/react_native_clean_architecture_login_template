@@ -6,18 +6,18 @@ interface AtomTextProps {
   style?: TextStyle | TextStyle[];
 }
 
-const AtomText: React.FC<AtomTextProps> = ({children, style}) => {
+const AtomTitle: React.FC<AtomTextProps> = ({children, style}) => {
   return <Text style={[styles.text, style]}>{children}</Text>;
 };
 
 const styles = StyleSheet.create({
   text: {
-    fontSize: 16,
-    lineHeight: 24,
+    alignSelf: 'center',
+    fontSize: 34,
+    margin: 10,
     color: '#333',
     fontFamily: 'System',
-    margin: 5,
   },
 });
 
-export default AtomText;
+export default AtomTitle;
