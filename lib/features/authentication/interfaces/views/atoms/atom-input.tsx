@@ -39,13 +39,11 @@ const AtomTextInput: React.FC<AtomTextInputProps> = ({
 const styles = StyleSheet.create({
   input: {
     backgroundColor: '#FFFFFF',
-    borderRadius: 8,
     paddingVertical: 10,
     paddingHorizontal: 20,
     fontSize: 16,
     color: '#000000',
     marginBottom: 10,
-    border: 1,
   },
 });
 

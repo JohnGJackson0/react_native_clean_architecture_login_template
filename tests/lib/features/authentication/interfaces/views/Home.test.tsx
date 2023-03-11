@@ -16,10 +16,18 @@ jest.mock('../../../../../../lib/core/ioc/container', () => ({
 }));
 
 describe('Home Presentation', () => {
-  it('shows a loading indicator when rendering', () => {
-    const {getByTestId} = render(<Home />);
+  it('shows a loading indicator when rendering', async () => {
+    mockIOC.mockResolvedValue(
+      E.right({
+        email: 'testEmail@testEmail.com',
+        verifiedEmail: true,
+      }),
+    );
+    const {getByTestId, queryByTestId} = render(<Home />);
 
     expect(getByTestId('loading')).toBeTruthy();
+
+    await waitForElementToBeRemoved(() => queryByTestId('loading'));
   });
 
   it('shows email and verified info when finished loading', async () => {
