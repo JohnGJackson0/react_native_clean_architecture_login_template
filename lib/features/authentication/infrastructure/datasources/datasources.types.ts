@@ -3,6 +3,7 @@ import {ConfirmDTO} from '../../domain/entities/ConfirmDTO';
 import {LoginSanityDTO} from '../../domain/entities/LoginSanityDTO';
 import {RefreshDTO} from '../../domain/entities/RefreshDTO';
 import {UserSignUpDTO} from '../../domain/entities/UserSignUpDTO';
+import {UserAuthInfoDTO} from '../../domain/entities/UserAuthInfoDTO';
 
 export interface ConfirmDataSource {
   getConfirm: (
@@ -13,9 +14,7 @@ export interface ConfirmDataSource {
 }
 
 export interface LoginSanityDataSource {
-  getLoginSanity: (
-    jwtToken: string,
-  ) => Promise<E.Either<string, LoginSanityDTO>>;
+  getLoginSanity: () => Promise<E.Either<string, LoginSanityDTO>>;
 }
 
 export interface RefreshDataSource {
@@ -27,4 +26,8 @@ export interface UserSignUpDataSource {
     email: string,
     password: string,
   ) => Promise<E.Either<string, UserSignUpDTO>>;
+}
+
+export interface UserAuthInfoDataSource {
+  getAuthenticationInfo: () => Promise<E.Either<string, UserAuthInfoDTO>>;
 }

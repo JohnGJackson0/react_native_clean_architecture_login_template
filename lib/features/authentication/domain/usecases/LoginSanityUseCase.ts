@@ -6,7 +6,7 @@ export default class LoginSanityUseCase {
     this.repository = repo;
   }
 
-  public execute = async (jwtToken: string) => {
-    return await this.repository.getLoginSanity(jwtToken);
+  public execute = async () => {
+    return await this.repository.getLoginSanity();
   };
 }

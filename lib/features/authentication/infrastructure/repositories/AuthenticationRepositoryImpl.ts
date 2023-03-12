@@ -1,12 +1,14 @@
 import {ConfirmDTO} from '../../domain/entities/ConfirmDTO';
 import {LoginSanityDTO} from '../../domain/entities/LoginSanityDTO';
 import {RefreshDTO} from '../../domain/entities/RefreshDTO';
+import {UserAuthInfoDTO} from '../../domain/entities/UserAuthInfoDTO';
 import {UserSignUpDTO} from '../../domain/entities/UserSignUpDTO';
 import AuthenticationRepository from '../../domain/repositories/AuthenticationRepository';
 import {
   ConfirmDataSource,
   LoginSanityDataSource,
   RefreshDataSource,
+  UserAuthInfoDataSource,
   UserSignUpDataSource,
 } from '../datasources/datasources.types';
 import * as E from 'fp-ts/Either';
@@ -18,17 +20,20 @@ export default class AuthenticationRepositoryImpl
   confirmDataSource: ConfirmDataSource;
   loginSanityDatasource: LoginSanityDataSource;
   refreshDataSource: RefreshDataSource;
+  authInfoDataSource: UserAuthInfoDataSource;
 
   constructor(
     signUpDatasource: UserSignUpDataSource,
     confirmUserDataSource: ConfirmDataSource,
     loginSanityDataSource: LoginSanityDataSource,
     refreshDataSource: RefreshDataSource,
+    authInfoDataSource: UserAuthInfoDataSource,
   ) {
     this.signUpDatasource = signUpDatasource;
     this.confirmDataSource = confirmUserDataSource;
     this.loginSanityDatasource = loginSanityDataSource;
     this.refreshDataSource = refreshDataSource;
+    this.authInfoDataSource = authInfoDataSource;
   }
 
   public userSignUp = async (
@@ -50,15 +55,22 @@ export default class AuthenticationRepositoryImpl
     );
   };
 
-  public getLoginSanity = async (
-    jwtToken: string,
-  ): Promise<E.Either<string, LoginSanityDTO>> => {
-    return await this.loginSanityDatasource.getLoginSanity(jwtToken);
+  public getLoginSanity = async (): Promise<
+    E.Either<string, LoginSanityDTO>
+  > => {
+    return await this.loginSanityDatasource.getLoginSanity();
   };
 
   public getRefresh = async (
     refresh: string,
   ): Promise<E.Either<string, RefreshDTO>> => {
     return await this.refreshDataSource.refreshJwt(refresh);
+  };
+
+  public getUserAuthInfo = async (): Promise<
+    E.Either<string, UserAuthInfoDTO>
+  > => {
+    console.log('getUserAuthInfo');
+    return await this.authInfoDataSource.getAuthenticationInfo();
   };
 }

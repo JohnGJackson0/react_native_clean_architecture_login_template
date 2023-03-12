@@ -1,6 +1,7 @@
 import {ConfirmDTO} from '../entities/ConfirmDTO';
 import {LoginSanityDTO} from '../entities/LoginSanityDTO';
 import {RefreshDTO} from '../entities/RefreshDTO';
+import {UserAuthInfoDTO} from '../entities/UserAuthInfoDTO';
 import {UserSignUpDTO} from '../entities/UserSignUpDTO';
 import * as E from 'fp-ts/Either';
 
@@ -14,8 +15,7 @@ export default interface AuthenticationRepository {
     password: string,
     confirmCode: string,
   ) => Promise<E.Either<string, ConfirmDTO>>;
-  getLoginSanity: (
-    jwtToken: string,
-  ) => Promise<E.Either<string, LoginSanityDTO>>;
+  getLoginSanity: () => Promise<E.Either<string, LoginSanityDTO>>;
   getRefresh: (refresh: string) => Promise<E.Either<string, RefreshDTO>>;
+  getUserAuthInfo: () => Promise<E.Either<string, UserAuthInfoDTO>>;
 }

@@ -104,18 +104,16 @@ describe('Authentication repo', () => {
   });
 
   describe('LoginSanity', () => {
-    it('calls the login sanity with the correct jwt token', async () => {
+    it('calls the login sanity correctly', async () => {
       const authRepo = mockRepo();
 
       authRepo.loginSanityDatasource.getLoginSanity = jest
         .fn()
         .mockResolvedValue(E.right(''));
 
-      authRepo.getLoginSanity('fakeJwt');
+      authRepo.getLoginSanity();
 
-      expect(
-        authRepo.loginSanityDatasource.getLoginSanity,
-      ).toHaveBeenCalledWith('fakeJwt');
+      expect(authRepo.loginSanityDatasource.getLoginSanity).toHaveBeenCalled();
 
       expect(
         authRepo.loginSanityDatasource.getLoginSanity,

@@ -2,12 +2,15 @@ import * as E from 'fp-ts/Either';
 import {Client} from '../../../../core/types/client';
 import {ConfirmDTO} from '../../domain/entities/ConfirmDTO';
 import {ConfirmDataSource} from './datasources.types';
+import {EMAIL, JWTTOKEN, REFRESHTOKEN, Storage} from '../storage/storage.types';
 
 export default class ConfirmDataSourceImpl implements ConfirmDataSource {
   _client: Client;
+  storage: Storage;
 
-  constructor(client: Client) {
+  constructor(client: Client, storage: Storage) {
     this._client = client;
+    this.storage = storage;
   }
 
   getConfirm = async (
@@ -35,6 +38,16 @@ export default class ConfirmDataSourceImpl implements ConfirmDataSource {
         }
 
         const resp = response.json().then((data: any) => {
+          this.storage.set(
+            JWTTOKEN,
+            data?.response?.AuthenticationResult?.AccessToken,
+          );
+          this.storage.set(
+            REFRESHTOKEN,
+            data?.response?.AuthenticationResult?.RefreshToken,
+          );
+          this.storage.set(EMAIL, email);
+
           return E.right({
             refreshToken: data?.response?.AuthenticationResult?.RefreshToken,
             jwtToken: data?.response?.AuthenticationResult?.AccessToken,

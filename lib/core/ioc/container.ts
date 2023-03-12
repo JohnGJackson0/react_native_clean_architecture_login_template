@@ -9,6 +9,9 @@ import LoginSanityDataSourceImpl from '../../features/authentication/infrastruct
 import LoginSanityUseCase from '../../features/authentication/domain/usecases/LoginSanityUseCase';
 import RefreshDataSourceImpl from '../../features/authentication/infrastructure/datasources/RefreshDataSource';
 import {client} from '../services/request';
+import ReactNativeAsyncStorageImpl from '../../features/authentication/infrastructure/storage/reactNativeAsyncStorageImpl';
+import VerifyStoredAuthTokenUseCase from '../../features/authentication/domain/usecases/VerifyStoredAuthTokenUseCase';
+import UserAuthInfoDataSourceImpl from '../../features/authentication/infrastructure/datasources/UserAuthInfoDataSource';
 
 export default function configureDI() {
   // TODO need types
@@ -17,29 +20,34 @@ export default function configureDI() {
   container.add({
     ENV: 'PRODUCTION',
     Validator: object(ValidatorImpl),
+    Storage: ReactNativeAsyncStorageImpl,
     ConfirmDataSource: object(ConfirmDataSourceImpl).construct(
-      /**
-       * TODO look into using Axios as I think it may be
-       * better typescript / mock support
-       */
-
       {
         fetch: fetch,
       },
+      use('Storage'),
     ),
     UserSignUpDataSource: object(UserSignUpDataSourceImpl).construct(client),
-    LoginSanityDataSource: object(LoginSanityDataSourceImpl).construct({
-      fetch: fetch,
-    }),
+    LoginSanityDataSource: object(LoginSanityDataSourceImpl).construct(
+      {
+        fetch: fetch,
+      },
+      use('Storage'),
+    ),
     RefreshDataSource: object(RefreshDataSourceImpl).construct({
       fetch: fetch,
     }),
+    UserAuthInfoDataSource: object(UserAuthInfoDataSourceImpl).construct(
+      use('Storage'),
+    ),
     AuthRepo: object(AuthenticationRepositoryImpl).construct(
       use('UserSignUpDataSource'),
       use('ConfirmDataSource'),
       use('LoginSanityDataSource'),
       use('RefreshDataSource'),
+      use('UserAuthInfoDataSource'),
     ),
+
     SignUpUseCase: object(SignUpUseCase).construct(
       use('AuthRepo'),
       use('Validator'),
@@ -50,6 +58,9 @@ export default function configureDI() {
     ),
     // tests the authorizer / jwt refresh
     LoginSanityUseCase: object(LoginSanityUseCase).construct(use('AuthRepo')),
+    VerifyStoredAuthTokenUseCase: object(
+      VerifyStoredAuthTokenUseCase,
+    ).construct(use('AuthRepo')),
   });
 
   return container;

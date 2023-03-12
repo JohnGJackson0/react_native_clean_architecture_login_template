@@ -16,11 +16,16 @@ describe('Confirm DataSource', () => {
 
     const client = mockClient(ConfirmHappyFixture);
 
-    const signUpResult = await new ConfirmDataSourceImpl(client).getConfirm(
-      'fakeEmail@fakeEmail.com',
-      'fakePassword',
-      'fakeConfirm',
-    );
+    const storage = {
+      get: jest.fn(),
+      set: jest.fn(),
+      remove: jest.fn(),
+    };
+
+    const signUpResult = await new ConfirmDataSourceImpl(
+      client,
+      storage,
+    ).getConfirm('fakeEmail@fakeEmail.com', 'fakePassword', 'fakeConfirm');
 
     const test = E.fold(
       error => `Error: ${error}`,
@@ -30,10 +35,43 @@ describe('Confirm DataSource', () => {
     expect(test).toEqual(expectedConfirm);
   });
 
+  it('sets the correct values in storage', async () => {
+    const client = mockClient(ConfirmHappyFixture);
+
+    const storage = {
+      get: jest.fn(),
+      set: jest.fn(),
+      remove: jest.fn(),
+    };
+
+    await new ConfirmDataSourceImpl(client, storage).getConfirm(
+      'fakeEmail@fakeEmail.com',
+      'fakePassword',
+      'fakeConfirm',
+    );
+
+    expect(storage.set).toHaveBeenCalledTimes(3);
+    expect(storage.set).toHaveBeenCalledWith('JWTTOKEN', 'fakeAccessToken');
+    expect(storage.set).toHaveBeenCalledWith(
+      'REFRESHTOKEN',
+      'fakeRefreshToken',
+    );
+    expect(storage.set).toHaveBeenCalledWith(
+      'EMAIL',
+      'fakeEmail@fakeEmail.com',
+    );
+  });
+
   it('it displays the correct message on api responses that are not 200 status', async () => {
     const client = mockClient(ConfirmSadFixture, false);
 
-    const userConfirmDataSource = new ConfirmDataSourceImpl(client);
+    const storage = {
+      get: jest.fn(),
+      set: jest.fn(),
+      remove: jest.fn(),
+    };
+
+    const userConfirmDataSource = new ConfirmDataSourceImpl(client, storage);
 
     const response = await userConfirmDataSource.getConfirm('', '', '');
 
@@ -49,7 +87,13 @@ describe('Confirm DataSource', () => {
     const client = mockClient({});
     client.fetch.mockRejectedValue({});
 
-    const userConfirmDataSource = new ConfirmDataSourceImpl(client);
+    const storage = {
+      get: jest.fn(),
+      set: jest.fn(),
+      remove: jest.fn(),
+    };
+
+    const userConfirmDataSource = new ConfirmDataSourceImpl(client, storage);
 
     const response = await userConfirmDataSource.getConfirm('', '', '');
 
