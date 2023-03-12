@@ -1,42 +1,43 @@
 import React, {useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {RootState} from '../store/store';
-import {LoginSanityThunk} from '../slices/homeSlice';
 import AtomText from './atoms/atom-text';
 import AtomErrorText from './atoms/atom-error-text';
 import AtomActivityIndicator from './atoms/atom-activity-indicator';
+import {
+  dispatchLoginSanityUseCaseAtom,
+  errorAtom,
+  isLoadingAtom,
+  userDataAtom,
+} from '../state/home';
+import {useAtom} from 'jotai';
 
 function Home(): JSX.Element {
-  const dispatch = useDispatch();
-  const loading = useSelector((state: RootState) => state.home.loading);
-
-  const errorMessage = useSelector((state: RootState) => state.home.error);
-
-  const loginSanity = useSelector((state: RootState) => state.home.loginSanity);
+  const [, dispatchLoginSanity] = useAtom(dispatchLoginSanityUseCaseAtom);
+  const [isLoading] = useAtom(isLoadingAtom);
+  const [userData] = useAtom(userDataAtom);
+  const [error] = useAtom(errorAtom);
 
   const userAuthToken = useSelector((state: RootState) => state.app.jwtToken);
 
   useEffect(() => {
-    dispatch(
-      // @ts-ignore
-      LoginSanityThunk({
-        jwtToken: userAuthToken,
-      }),
-    );
-  }, [dispatch, userAuthToken]);
+    dispatchLoginSanity({
+      jwtToken: userAuthToken,
+    });
+  }, [dispatchLoginSanity, userAuthToken]);
 
   return (
     <View style={styles.container}>
-      {loading === 'pending' && <AtomActivityIndicator />}
-      {loginSanity.email !== '' && <AtomText>{loginSanity.email}</AtomText>}
-      {loginSanity.verifiedEmail === true && (
+      {isLoading && <AtomActivityIndicator />}
+      {userData?.email !== undefined && <AtomText>{userData?.email}</AtomText>}
+      {userData?.verifiedEmail === true && (
         <AtomText>Your Email has been verified.</AtomText>
       )}
-      {loginSanity.verifiedEmail === false && (
+      {userData?.verifiedEmail === false && (
         <AtomText>Please verify your email.</AtomText>
       )}
-      {errorMessage !== '' && <AtomErrorText>{errorMessage}</AtomErrorText>}
+      {error !== '' && <AtomErrorText>{error}</AtomErrorText>}
     </View>
   );
 }
