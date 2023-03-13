@@ -19,10 +19,6 @@ export const AppStack = () => {
   const Stack = createNativeStackNavigator<RootStackParamList>();
 
   useEffect(() => {
-    console.log(isUserLoggedIn);
-  }, [isUserLoggedIn]);
-
-  useEffect(() => {
     userLoggedIn();
   }, []);
 

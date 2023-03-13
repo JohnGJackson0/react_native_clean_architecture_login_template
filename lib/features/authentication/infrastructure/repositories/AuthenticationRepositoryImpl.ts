@@ -70,7 +70,6 @@ export default class AuthenticationRepositoryImpl
   public getUserAuthInfo = async (): Promise<
     E.Either<string, UserAuthInfoDTO>
   > => {
-    console.log('getUserAuthInfo');
     return await this.authInfoDataSource.getAuthenticationInfo();
   };
 }

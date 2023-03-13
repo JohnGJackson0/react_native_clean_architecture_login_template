@@ -1,17 +1,27 @@
-import {Client} from '../../../../core/types/client';
+import {ClientReq} from '../../../../core/services/request';
 import {LoginSanityDTO} from '../../domain/entities/LoginSanityDTO';
 import {JWTTOKEN, Storage} from '../storage/storage.types';
 import {LoginSanityDataSource} from './datasources.types';
 import * as E from 'fp-ts/Either';
 
+type JSONResponse = {
+  message: string;
+  email: string;
+  verifiedEmail: string;
+};
+
+type JSONErrorResponse = {
+  error: string;
+};
+
 export default class LoginSanityDataSourceImpl
   implements LoginSanityDataSource
 {
-  _client: Client;
+  client: ClientReq;
   storage: Storage;
 
-  constructor(client: Client, storage: Storage) {
-    this._client = client;
+  constructor(client: ClientReq, storage: Storage) {
+    this.client = client;
     this.storage = storage;
   }
 
@@ -25,38 +35,31 @@ export default class LoginSanityDataSourceImpl
     const url =
       'https://iz1ul818p3.execute-api.us-east-1.amazonaws.com/Prod/loginSanity';
 
-    return await this._client
-      .fetch(url, {
+    const response = await this.client.request<JSONResponse, JSONErrorResponse>(
+      url,
+      {
         method: 'POST',
         headers: {'Content-Type': 'application/json', Authorization: JWT},
-      })
-      .then(resp => {
-        if (!resp.ok) {
-          const errorResult = resp.json().then((data: any) => {
-            return E.left(data?.message);
-          });
-          return errorResult;
-        }
-        return resp.json().then((data: any) => {
-          if (
-            data?.message === 'Authorization failed' ||
-            data?.email === undefined
-          ) {
-            return E.left('Authorization failed');
-          }
-          const isEmailVerified = data?.verifiedEmail === 'true';
+      },
+    );
 
-          return E.right({
-            message: data?.message,
-            email: data?.email,
-            verifiedEmail: isEmailVerified,
-          });
+    type errorResp = JSONErrorResponse | string;
+
+    return E.fold(
+      (error: errorResp) => {
+        if (typeof error === 'string') {
+          return E.left(error);
+        }
+
+        return E.left(error.error);
+      },
+      (value: JSONResponse) => {
+        return E.right({
+          message: value?.message ?? '',
+          email: value?.email ?? '',
+          verifiedEmail: value?.verifiedEmail === 'true',
         });
-      })
-      .catch(_ => {
-        return E.left(
-          `Cannot fetch the specified resource most likely because of a network error.`,
-        );
-      });
+      },
+    )(response);
   };
 }

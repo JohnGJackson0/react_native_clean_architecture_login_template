@@ -29,9 +29,7 @@ export default function configureDI() {
     ),
     UserSignUpDataSource: object(UserSignUpDataSourceImpl).construct(client),
     LoginSanityDataSource: object(LoginSanityDataSourceImpl).construct(
-      {
-        fetch: fetch,
-      },
+      client,
       use('Storage'),
     ),
     RefreshDataSource: object(RefreshDataSourceImpl).construct({
