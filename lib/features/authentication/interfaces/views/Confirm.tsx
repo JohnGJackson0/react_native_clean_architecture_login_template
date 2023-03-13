@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../navigators/Navigator';
-import {setUserTokens} from '../slices/appSlice';
 import AtomText from './atoms/atom-text';
 import AtomErrorText from './atoms/atom-error-text';
 import AtomActivityIndicator from './atoms/atom-activity-indicator';
@@ -16,7 +15,6 @@ import {
   tokensAtom,
 } from '../state/confirm';
 import {useAtom} from 'jotai';
-import {useDispatch} from 'react-redux';
 
 type ConfirmProps = NativeStackScreenProps<RootStackParamList, 'Confirm'>;
 
@@ -28,8 +26,6 @@ const Confirm: React.FC<ConfirmProps> = props => {
   const [error] = useAtom(errorAtom);
   const [confirm, setConfirm] = useState('');
 
-  const dispatch = useDispatch();
-
   const onPress = () => {
     dispatchConfirm({
       email: props.route.params.email,
@@ -40,15 +36,9 @@ const Confirm: React.FC<ConfirmProps> = props => {
 
   useEffect(() => {
     if (userTokens?.jwt !== '') {
-      dispatch(
-        setUserTokens({
-          jwtToken: userTokens?.jwt,
-          refreshToken: userTokens?.refresh,
-        }),
-      );
       props.navigation.replace('Home');
     }
-  }, [userTokens, dispatch, props.navigation]);
+  }, [userTokens, props.navigation]);
 
   return (
     <View style={styles.container}>

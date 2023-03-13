@@ -1,7 +1,5 @@
 import React, {useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useSelector} from 'react-redux';
-import {RootState} from '../store/store';
 import AtomText from './atoms/atom-text';
 import AtomErrorText from './atoms/atom-error-text';
 import AtomActivityIndicator from './atoms/atom-activity-indicator';
@@ -19,13 +17,9 @@ function Home(): JSX.Element {
   const [userData] = useAtom(userDataAtom);
   const [error] = useAtom(errorAtom);
 
-  const userAuthToken = useSelector((state: RootState) => state.app.jwtToken);
-
   useEffect(() => {
-    dispatchLoginSanity({
-      jwtToken: userAuthToken,
-    });
-  }, [dispatchLoginSanity, userAuthToken]);
+    dispatchLoginSanity();
+  }, [dispatchLoginSanity]);
 
   return (
     <View style={styles.container}>

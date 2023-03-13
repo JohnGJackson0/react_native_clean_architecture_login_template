@@ -31,11 +31,13 @@ export const mockRepo = () => {
   };
   const mockLoginSanityDataSource = {getLoginSanity: jest.fn()};
   const mockRefreshDataSource = {refreshJwt: jest.fn()};
+  const mockUserAuthInfoDataSource = {getAuthenticationInfo: jest.fn()};
 
   return new AuthenticationRepositoryImpl(
     mockSignUpDataSource,
     mockConfirmDataSource,
     mockLoginSanityDataSource,
     mockRefreshDataSource,
+    mockUserAuthInfoDataSource,
   );
 };
