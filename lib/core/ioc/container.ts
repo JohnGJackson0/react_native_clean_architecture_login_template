@@ -30,9 +30,7 @@ export default function configureDI() {
       client,
       use('Storage'),
     ),
-    RefreshDataSource: object(RefreshDataSourceImpl).construct({
-      fetch: fetch,
-    }),
+    RefreshDataSource: object(RefreshDataSourceImpl).construct(client),
     UserAuthInfoDataSource: object(UserAuthInfoDataSourceImpl).construct(
       use('Storage'),
     ),

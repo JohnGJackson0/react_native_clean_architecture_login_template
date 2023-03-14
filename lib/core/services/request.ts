@@ -1,4 +1,5 @@
 import * as E from 'fp-ts/Either';
+import {Client} from '../types/client';
 
 async function request<TResponse, TFailResponse>(
   url: string,
@@ -22,13 +23,6 @@ async function request<TResponse, TFailResponse>(
   }
 }
 
-export interface ClientReq {
-  request<TResponse, TFailResponse>(
-    url: string,
-    config?: RequestInit,
-  ): Promise<E.Either<TFailResponse | string, TResponse>>;
-}
-
-export const client: ClientReq = {
+export const client: Client = {
   request: request,
 };

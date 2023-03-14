@@ -1,7 +1,8 @@
-// TODO switch to service/request for proper types
+import * as E from 'fp-ts/Either';
+
 export interface Client {
-  fetch: (
-    input: RequestInfo,
-    init?: RequestInit | undefined,
-  ) => Promise<Response | any>;
+  request<TResponse, TFailResponse>(
+    url: string,
+    config?: RequestInit,
+  ): Promise<E.Either<TFailResponse | string, TResponse>>;
 }

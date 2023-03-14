@@ -1,4 +1,4 @@
-import {ClientReq} from '../../../../core/services/request';
+import {Client} from '../../../../core/types/client';
 import {LoginSanityDTO} from '../../domain/entities/LoginSanityDTO';
 import {JWTTOKEN, Storage} from '../storage/storage.types';
 import {LoginSanityDataSource} from './datasources.types';
@@ -17,10 +17,10 @@ type JSONErrorResponse = {
 export default class LoginSanityDataSourceImpl
   implements LoginSanityDataSource
 {
-  client: ClientReq;
+  client: Client;
   storage: Storage;
 
-  constructor(client: ClientReq, storage: Storage) {
+  constructor(client: Client, storage: Storage) {
     this.client = client;
     this.storage = storage;
   }

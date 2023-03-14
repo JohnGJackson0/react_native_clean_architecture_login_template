@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import {ConfirmDTO} from '../../domain/entities/ConfirmDTO';
 import {ConfirmDataSource} from './datasources.types';
 import {EMAIL, JWTTOKEN, REFRESHTOKEN, Storage} from '../storage/storage.types';
-import {ClientReq} from '../../../../core/services/request';
+import {Client} from '../../../../core/types/client';
 
 interface ApiResponse {
   message: string;
@@ -23,10 +23,10 @@ interface ApiError {
 }
 
 export default class ConfirmDataSourceImpl implements ConfirmDataSource {
-  client: ClientReq;
+  client: Client;
   storage: Storage;
 
-  constructor(client: ClientReq, storage: Storage) {
+  constructor(client: Client, storage: Storage) {
     this.client = client;
     this.storage = storage;
   }

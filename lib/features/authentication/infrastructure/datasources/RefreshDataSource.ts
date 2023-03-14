@@ -1,13 +1,30 @@
-import {Client} from '../../../../core/types/client';
 import {RefreshDataSource} from './datasources.types';
 import * as E from 'fp-ts/Either';
 import {RefreshDTO} from '../../domain/entities/RefreshDTO';
+import {Client} from '../../../../core/types/client';
+
+interface ApiResponse {
+  message: string;
+  response: {
+    ChallengeParameters: {};
+    AuthenticationResult: {
+      AccessToken: string;
+      ExpiresIn: number;
+      TokenType: string;
+      IdToken: string;
+    };
+  };
+}
+
+interface ApiError {
+  error: string;
+}
 
 export default class RefreshDataSourceImpl implements RefreshDataSource {
-  _client: Client;
+  client: Client;
 
   constructor(client: Client) {
-    this._client = client;
+    this.client = client;
   }
 
   refreshJwt = async (
@@ -20,30 +37,22 @@ export default class RefreshDataSourceImpl implements RefreshDataSource {
     const url =
       'https://iz1ul818p3.execute-api.us-east-1.amazonaws.com/Prod/refresh';
 
-    return await this._client
-      .fetch(url, {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(payload),
-      })
-      .then(resp => {
-        if (!resp.ok) {
-          const errorResult = resp.json().then((data: any) => {
-            return E.left(data?.error);
-          });
-          return errorResult;
-        }
+    const response = await this.client.request<ApiResponse, ApiError>(url, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(payload),
+    });
 
-        return resp.json().then((data: any) => {
-          return E.right({
-            jwt: data?.response?.AuthenticationResult?.AccessToken,
-          });
-        });
-      })
-      .catch(_ => {
-        return E.left(
-          `Cannot fetch the specified resource most likely because of a network error.`,
-        );
-      });
+    return E.fold(
+      (error: ApiError | string) => {
+        if (typeof error === 'string') {
+          return E.left(error);
+        }
+        return E.left(error.error);
+      },
+      (_data: ApiResponse) => {
+        return E.right(true);
+      },
+    )(response);
   };
 }

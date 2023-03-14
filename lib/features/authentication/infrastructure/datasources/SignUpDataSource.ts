@@ -1,4 +1,4 @@
-import {ClientReq} from '../../../../core/services/request';
+import {Client} from '../../../../core/types/client';
 import {UserSignUpDTO} from '../../domain/entities/UserSignUpDTO';
 import {UserSignUpDataSource} from './datasources.types';
 import * as E from 'fp-ts/Either';
@@ -28,7 +28,7 @@ type JSONErrorResponse = {
 export default class UserSignUpDataSourceImpl implements UserSignUpDataSource {
   _client;
 
-  constructor(client: ClientReq) {
+  constructor(client: Client) {
     this._client = client;
   }
 

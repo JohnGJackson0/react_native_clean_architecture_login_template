@@ -1,3 +1,1 @@
-export interface RefreshDTO {
-  jwt: string;
-}
+export type RefreshDTO = boolean;
