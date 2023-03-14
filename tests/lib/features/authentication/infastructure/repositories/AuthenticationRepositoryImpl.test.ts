@@ -128,11 +128,9 @@ describe('Authentication repo', () => {
         .fn()
         .mockResolvedValue(E.right('refreshed'));
 
-      authRepo.getRefresh('fakeRefresh');
+      authRepo.getRefresh();
 
-      expect(authRepo.refreshDataSource.refreshJwt).toHaveBeenCalledWith(
-        'fakeRefresh',
-      );
+      expect(authRepo.refreshDataSource.refreshJwt).toHaveBeenCalled();
 
       expect(authRepo.refreshDataSource.refreshJwt).toHaveBeenCalledTimes(1);
     });
