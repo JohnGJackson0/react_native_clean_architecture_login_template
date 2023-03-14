@@ -22,9 +22,7 @@ export default function configureDI() {
     Validator: object(ValidatorImpl),
     Storage: ReactNativeAsyncStorageImpl,
     ConfirmDataSource: object(ConfirmDataSourceImpl).construct(
-      {
-        fetch: fetch,
-      },
+      client,
       use('Storage'),
     ),
     UserSignUpDataSource: object(UserSignUpDataSourceImpl).construct(client),

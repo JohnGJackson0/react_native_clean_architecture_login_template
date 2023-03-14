@@ -1,12 +1,6 @@
 import {atom} from 'jotai';
 import * as E from 'fp-ts/Either';
-import {ConfirmDTO} from '../../domain/entities/ConfirmDTO';
 import {AppIOCContainer} from '../../../../core/ioc/container';
-
-interface UserTokens {
-  jwt: string;
-  refresh: string;
-}
 
 interface payload {
   email: string;
@@ -14,13 +8,13 @@ interface payload {
   confirmCode: string;
 }
 
-const baseTokens = atom<UserTokens>({jwt: '', refresh: ''});
+const baseSuccess = atom<boolean>(false);
 const baseError = atom<string>('');
 const baseLoading = atom<boolean>(false);
 
 export const errorAtom = atom(get => get(baseError));
 export const isLoadingAtom = atom(get => get(baseLoading));
-export const tokensAtom = atom(get => get(baseTokens));
+export const successAtom = atom(get => get(baseSuccess));
 
 export const dispatchConfirmUserAtom = atom(
   null,
@@ -28,7 +22,7 @@ export const dispatchConfirmUserAtom = atom(
     set(baseLoading, true);
 
     try {
-      const confirmUseCaseRespone: E.Either<string, ConfirmDTO> =
+      const confirmUseCaseResponse: E.Either<string, boolean> =
         await AppIOCContainer.get('ConfirmUseCase').execute(
           payload?.email,
           payload?.password,
@@ -41,11 +35,11 @@ export const dispatchConfirmUserAtom = atom(
             set(baseError, error.toString());
           }
         },
-        (value: ConfirmDTO) => {
+        (value: boolean) => {
           set(baseError, '');
-          set(baseTokens, {jwt: value.jwtToken, refresh: value.refreshToken});
+          set(baseSuccess, value);
         },
-      )(confirmUseCaseRespone);
+      )(confirmUseCaseResponse);
     } catch (e: unknown) {
       set(baseError, (e ?? 'unknown error')?.toString());
     } finally {

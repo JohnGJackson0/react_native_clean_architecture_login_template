@@ -1,15 +1,33 @@
 import * as E from 'fp-ts/Either';
-import {Client} from '../../../../core/types/client';
 import {ConfirmDTO} from '../../domain/entities/ConfirmDTO';
 import {ConfirmDataSource} from './datasources.types';
 import {EMAIL, JWTTOKEN, REFRESHTOKEN, Storage} from '../storage/storage.types';
+import {ClientReq} from '../../../../core/services/request';
+
+interface ApiResponse {
+  message: string;
+  response: {
+    ChallengeParameters: {};
+    AuthenticationResult: {
+      AccessToken: string;
+      ExpiresIn: number;
+      TokenType: string;
+      RefreshToken: string;
+      IdToken: string;
+    };
+  };
+}
+
+interface ApiError {
+  error: string;
+}
 
 export default class ConfirmDataSourceImpl implements ConfirmDataSource {
-  _client: Client;
+  client: ClientReq;
   storage: Storage;
 
-  constructor(client: Client, storage: Storage) {
-    this._client = client;
+  constructor(client: ClientReq, storage: Storage) {
+    this.client = client;
     this.storage = storage;
   }
 
@@ -23,44 +41,33 @@ export default class ConfirmDataSourceImpl implements ConfirmDataSource {
 
     const payload = {email, password, confirmationCode: confirmCode};
 
-    return await this._client
-      .fetch(url, {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(payload),
-      })
-      .then(response => {
-        if (!response.ok) {
-          const errorResult = response.json().then((data: any) => {
-            return E.left(data?.error);
-          });
-          return errorResult;
+    const response = await this.client.request<ApiResponse, ApiError>(url, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(payload),
+    });
+
+    return E.fold(
+      (error: ApiError | string) => {
+        if (typeof error === 'string') {
+          return E.left(error);
         }
 
-        const resp = response.json().then((data: any) => {
-          this.storage.set(
-            JWTTOKEN,
-            data?.response?.AuthenticationResult?.AccessToken,
-          );
-          this.storage.set(
-            REFRESHTOKEN,
-            data?.response?.AuthenticationResult?.RefreshToken,
-          );
-          this.storage.set(EMAIL, email);
-
-          return E.right({
-            refreshToken: data?.response?.AuthenticationResult?.RefreshToken,
-            jwtToken: data?.response?.AuthenticationResult?.AccessToken,
-            email: email,
-          });
-        });
-
-        return resp;
-      })
-      .catch(_ => {
-        return E.left(
-          `Cannot fetch the specified resource most likely because of a network error.`,
+        return E.left(error.error);
+      },
+      (data: ApiResponse) => {
+        this.storage.set(
+          JWTTOKEN,
+          data?.response?.AuthenticationResult?.AccessToken,
         );
-      });
+        this.storage.set(
+          REFRESHTOKEN,
+          data?.response?.AuthenticationResult?.RefreshToken,
+        );
+        this.storage.set(EMAIL, email);
+
+        return E.right(true);
+      },
+    )(response);
   };
 }

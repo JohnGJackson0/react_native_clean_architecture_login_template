@@ -12,7 +12,7 @@ import {
   dispatchConfirmUserAtom,
   errorAtom,
   isLoadingAtom,
-  tokensAtom,
+  successAtom,
 } from '../state/confirm';
 import {useAtom} from 'jotai';
 
@@ -22,7 +22,7 @@ type ConfirmProps = NativeStackScreenProps<RootStackParamList, 'Confirm'>;
 const Confirm: React.FC<ConfirmProps> = props => {
   const [, dispatchConfirm] = useAtom(dispatchConfirmUserAtom);
   const [isLoading] = useAtom(isLoadingAtom);
-  const [userTokens] = useAtom(tokensAtom);
+  const [isSuccessful] = useAtom(successAtom);
   const [error] = useAtom(errorAtom);
   const [confirm, setConfirm] = useState('');
 
@@ -35,10 +35,10 @@ const Confirm: React.FC<ConfirmProps> = props => {
   };
 
   useEffect(() => {
-    if (userTokens?.jwt !== '') {
+    if (isSuccessful) {
       props.navigation.replace('Home');
     }
-  }, [userTokens, props.navigation]);
+  }, [isSuccessful, props.navigation]);
 
   return (
     <View style={styles.container}>

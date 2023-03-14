@@ -1,20 +1,12 @@
-import {
-  ConfirmHappyFixture,
-  ConfirmSadFixture,
-} from '../../../../../fixtures/ConfirmFixture';
+import {ConfirmHappyFixture} from '../../../../../fixtures/ConfirmFixture';
 import ConfirmDataSourceImpl from '../../../../../../lib/features/authentication/infrastructure/datasources/ConfirmDataSource';
-import {mockClient} from '../../../../../utils/testUtils';
 import * as E from 'fp-ts/Either';
 
 describe('Confirm DataSource', () => {
-  it('returns email and password as long as response is ok', async () => {
-    const expectedConfirm = {
-      refreshToken: 'fakeRefreshToken',
-      jwtToken: 'fakeAccessToken',
-      email: 'fakeEmail@fakeEmail.com',
+  it('returns right|true as long as response is ok', async () => {
+    const client = {
+      request: jest.fn().mockResolvedValue(E.right(ConfirmHappyFixture)),
     };
-
-    const client = mockClient(ConfirmHappyFixture);
 
     const storage = {
       get: jest.fn(),
@@ -32,11 +24,13 @@ describe('Confirm DataSource', () => {
       value => value,
     )(signUpResult);
 
-    expect(test).toEqual(expectedConfirm);
+    expect(test).toEqual(true);
   });
 
   it('sets the correct values in storage', async () => {
-    const client = mockClient(ConfirmHappyFixture);
+    const client = {
+      request: jest.fn().mockResolvedValue(E.right(ConfirmHappyFixture)),
+    };
 
     const storage = {
       get: jest.fn(),
@@ -62,8 +56,10 @@ describe('Confirm DataSource', () => {
     );
   });
 
-  it('it displays the correct message on api responses that are not 200 status', async () => {
-    const client = mockClient(ConfirmSadFixture, false);
+  it('it displays the correct message on api responses that are rejected from request service', async () => {
+    const client = {
+      request: jest.fn().mockResolvedValue(E.left('fakeError')),
+    };
 
     const storage = {
       get: jest.fn(),
@@ -81,29 +77,5 @@ describe('Confirm DataSource', () => {
     )(response);
 
     expect(test).toEqual('Error: fakeError');
-  });
-
-  it('displays the correct message on network errors', async () => {
-    const client = mockClient({});
-    client.fetch.mockRejectedValue({});
-
-    const storage = {
-      get: jest.fn(),
-      set: jest.fn(),
-      remove: jest.fn(),
-    };
-
-    const userConfirmDataSource = new ConfirmDataSourceImpl(client, storage);
-
-    const response = await userConfirmDataSource.getConfirm('', '', '');
-
-    const test = E.fold(
-      error => `Error: ${error}`,
-      value => value,
-    )(response);
-
-    expect(test).toEqual(
-      'Error: Cannot fetch the specified resource most likely because of a network error.',
-    );
   });
 });

@@ -11,7 +11,7 @@ type JSONResponse = {
 };
 
 type JSONErrorResponse = {
-  error: string;
+  message: string;
 };
 
 export default class LoginSanityDataSourceImpl
@@ -51,7 +51,7 @@ export default class LoginSanityDataSourceImpl
           return E.left(error);
         }
 
-        return E.left(error.error);
+        return E.left(error?.message);
       },
       (value: JSONResponse) => {
         return E.right({
