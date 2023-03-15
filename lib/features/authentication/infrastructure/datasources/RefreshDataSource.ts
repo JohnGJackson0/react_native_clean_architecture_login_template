@@ -2,7 +2,7 @@ import {RefreshDataSource} from './datasources.types';
 import * as E from 'fp-ts/Either';
 import {RefreshDTO} from '../../domain/entities/RefreshDTO';
 import {Client} from '../../../../core/types/client';
-import {REFRESHTOKEN, Storage} from '../storage/storage.types';
+import {JWTTOKEN, REFRESHTOKEN, Storage} from '../storage/storage.types';
 
 interface ApiResponse {
   message: string;
@@ -57,7 +57,11 @@ export default class RefreshDataSourceImpl implements RefreshDataSource {
         }
         return E.left(error.error);
       },
-      (_data: ApiResponse) => {
+      (data: ApiResponse) => {
+        this.storage.set(
+          JWTTOKEN,
+          data.response.AuthenticationResult.AccessToken,
+        );
         return E.right(true);
       },
     )(response);

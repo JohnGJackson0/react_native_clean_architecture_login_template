@@ -128,11 +128,26 @@ describe('Authentication repo', () => {
         .fn()
         .mockResolvedValue(E.right('refreshed'));
 
-      authRepo.getRefresh();
+      authRepo.refreshSession();
 
       expect(authRepo.refreshDataSource.refreshJwt).toHaveBeenCalled();
 
       expect(authRepo.refreshDataSource.refreshJwt).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('Logout', () => {
+    it('calls the logout with the correct parameters', async () => {
+      const authRepo = mockRepo();
+      authRepo.logoutDataSource.logout = jest
+        .fn()
+        .mockResolvedValue(E.right(true));
+
+      await authRepo.logout();
+
+      expect(authRepo.logoutDataSource.logout).toHaveBeenCalledWith();
+
+      expect(authRepo.logoutDataSource.logout).toHaveBeenCalledTimes(1);
     });
   });
 });

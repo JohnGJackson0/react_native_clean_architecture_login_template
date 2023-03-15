@@ -1,4 +1,5 @@
 import AuthenticationRepository from '../repositories/AuthenticationRepository';
+import * as E from 'fp-ts/Either';
 export default class LoginSanityUseCase {
   repository: AuthenticationRepository;
 
@@ -7,6 +8,13 @@ export default class LoginSanityUseCase {
   }
 
   public execute = async () => {
-    return await this.repository.getLoginSanity();
+    const loginSanity = await this.repository.getLoginSanity();
+
+    if (E.isLeft(loginSanity)) {
+      await this.repository.refreshSession();
+      return await this.repository.getLoginSanity();
+    }
+
+    return loginSanity;
   };
 }

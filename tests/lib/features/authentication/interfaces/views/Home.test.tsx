@@ -2,6 +2,7 @@ import React from 'react';
 import * as E from 'fp-ts/Either';
 import {render, waitForElementToBeRemoved} from '../../../../../utils/render';
 import Home from '../../../../../../lib/features/authentication/interfaces/views/Home';
+import {createScreenTestProps} from '../../../../../utils/testUtils';
 
 const mockIOC = jest.fn();
 jest.mock('../../../../../../lib/core/ioc/container', () => ({
@@ -23,7 +24,9 @@ describe('Home Presentation', () => {
         verifiedEmail: true,
       }),
     );
-    const {getByTestId, queryByTestId} = render(<Home />);
+    const props = createScreenTestProps();
+
+    const {getByTestId, queryByTestId} = render(<Home {...props} />);
 
     expect(getByTestId('loading')).toBeTruthy();
 
@@ -31,13 +34,14 @@ describe('Home Presentation', () => {
   });
 
   it('shows email and verified info when finished loading', async () => {
+    const props = createScreenTestProps();
     mockIOC.mockResolvedValue(
       E.right({
         email: 'testEmail@testEmail.com',
         verifiedEmail: true,
       }),
     );
-    const {getByTestId, queryByTestId, getByText} = render(<Home />);
+    const {getByTestId, queryByTestId, getByText} = render(<Home {...props} />);
 
     expect(getByTestId('loading')).toBeTruthy();
 
@@ -51,13 +55,15 @@ describe('Home Presentation', () => {
   });
 
   it('shows an error message when useCase returns left', async () => {
+    const props = createScreenTestProps();
     mockIOC.mockResolvedValue(E.left('Error: fake error'));
-    const {queryByTestId, getByText} = render(<Home />);
+    const {queryByTestId, getByText} = render(<Home {...props} />);
     await waitForElementToBeRemoved(() => queryByTestId('loading'));
     expect(getByText('Error: fake error')).toBeTruthy();
   });
 
   it('it shows please validate your email if it is not validated', async () => {
+    const props = createScreenTestProps();
     mockIOC.mockResolvedValue(
       E.right({
         email: 'testEmail@testEmail.com',
@@ -65,7 +71,7 @@ describe('Home Presentation', () => {
       }),
     );
     const {getByTestId, queryByTestId, getByText, queryByText} = render(
-      <Home />,
+      <Home {...props} />,
     );
 
     expect(getByTestId('loading')).toBeTruthy();

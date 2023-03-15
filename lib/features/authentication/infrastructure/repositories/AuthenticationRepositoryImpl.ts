@@ -65,7 +65,7 @@ export default class AuthenticationRepositoryImpl
     return await this.loginSanityDatasource.getLoginSanity();
   };
 
-  public getRefresh = async (): Promise<E.Either<string, RefreshDTO>> => {
+  public refreshSession = async (): Promise<E.Either<string, RefreshDTO>> => {
     return await this.refreshDataSource.refreshJwt();
   };
 

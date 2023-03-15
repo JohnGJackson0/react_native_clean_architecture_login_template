@@ -73,11 +73,7 @@ describe('confirm useCase', () => {
 
     const repo = mock<AuthenticationRepository>();
 
-    const expected = E.right({
-      refreshToken: 'mockedRefresh',
-      jwtToken: 'mockedJwt',
-      email: 'mockedEmail',
-    });
+    const expected = E.right(true);
 
     repo.confirmUser
       .calledWith(any(), any(), any())
@@ -94,11 +90,7 @@ describe('confirm useCase', () => {
       value => value,
     )(confirm);
 
-    expect(test).toEqual({
-      email: 'mockedEmail',
-      jwtToken: 'mockedJwt',
-      refreshToken: 'mockedRefresh',
-    });
+    expect(test).toEqual(true);
 
     expect(repo.confirmUser).toBeCalledTimes(1);
     expect(repo.confirmUser).toHaveBeenCalledWith(
