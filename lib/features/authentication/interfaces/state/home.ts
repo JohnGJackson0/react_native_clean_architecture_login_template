@@ -16,6 +16,29 @@ export const userDataAtom = atom(get => get(baseUserData));
 export const errorAtom = atom(get => get(baseError));
 export const isLoadingAtom = atom(get => get(baseLoading));
 
+export const dispatchLogoutUseCaseAtom = atom(null, async (_get, set) => {
+  set(baseLoading, true);
+  try {
+    const result = await AppIOCContainer.get('LogoutUseCase').execute();
+
+    E.fold(
+      (error: unknown) => {
+        if (typeof error === 'string') {
+          set(baseError, error.toString());
+        }
+      },
+      (_value: boolean) => {
+        set(baseError, '');
+        set(baseUserData, null);
+      },
+    )(result);
+  } catch (e) {
+    set(baseError, (e ?? 'unknown error')?.toString());
+  } finally {
+    set(baseLoading, false);
+  }
+});
+
 export const dispatchLoginSanityUseCaseAtom = atom(null, async (_get, set) => {
   set(baseLoading, true);
   try {

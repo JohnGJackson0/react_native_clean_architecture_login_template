@@ -31,3 +31,7 @@ export interface UserSignUpDataSource {
 export interface UserAuthInfoDataSource {
   getAuthenticationInfo: () => Promise<E.Either<string, UserAuthInfoDTO>>;
 }
+
+export interface LogoutDataSource {
+  logout: () => Promise<E.Either<string, boolean>>;
+}

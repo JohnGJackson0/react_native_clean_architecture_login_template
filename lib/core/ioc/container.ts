@@ -12,6 +12,8 @@ import {client} from '../services/request';
 import ReactNativeAsyncStorageImpl from '../../features/authentication/infrastructure/storage/reactNativeAsyncStorageImpl';
 import VerifyStoredAuthTokenUseCase from '../../features/authentication/domain/usecases/VerifyStoredAuthTokenUseCase';
 import UserAuthInfoDataSourceImpl from '../../features/authentication/infrastructure/datasources/UserAuthInfoDataSource';
+import LogoutDataSourceImpl from '../../features/authentication/infrastructure/datasources/LogoutDataSource';
+import LogoutUseCase from '../../features/authentication/domain/usecases/LogoutUseCase';
 
 export default function configureDI() {
   // TODO need types
@@ -21,6 +23,7 @@ export default function configureDI() {
     ENV: 'PRODUCTION',
     Validator: object(ValidatorImpl),
     Storage: ReactNativeAsyncStorageImpl,
+    logoutDataSource: object(LogoutDataSourceImpl).construct(use('Storage')),
     ConfirmDataSource: object(ConfirmDataSourceImpl).construct(
       client,
       use('Storage'),
@@ -43,6 +46,7 @@ export default function configureDI() {
       use('LoginSanityDataSource'),
       use('RefreshDataSource'),
       use('UserAuthInfoDataSource'),
+      use('logoutDataSource'),
     ),
 
     SignUpUseCase: object(SignUpUseCase).construct(
@@ -55,6 +59,7 @@ export default function configureDI() {
     ),
     // tests the authorizer / jwt refresh
     LoginSanityUseCase: object(LoginSanityUseCase).construct(use('AuthRepo')),
+    LogoutUseCase: object(LogoutUseCase).construct(use('AuthRepo')),
     VerifyStoredAuthTokenUseCase: object(
       VerifyStoredAuthTokenUseCase,
     ).construct(use('AuthRepo')),

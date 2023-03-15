@@ -5,14 +5,21 @@ import AtomErrorText from './atoms/atom-error-text';
 import AtomActivityIndicator from './atoms/atom-activity-indicator';
 import {
   dispatchLoginSanityUseCaseAtom,
+  dispatchLogoutUseCaseAtom,
   errorAtom,
   isLoadingAtom,
   userDataAtom,
 } from '../state/home';
 import {useAtom} from 'jotai';
+import AtomButton from './atoms/atom-button';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {RootStackParamList} from '../navigators/Navigator';
 
-function Home(): JSX.Element {
+type HomeProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
+
+const Home: React.FC<HomeProps> = ({navigation}) => {
   const [, dispatchLoginSanity] = useAtom(dispatchLoginSanityUseCaseAtom);
+  const [, dispatchLogout] = useAtom(dispatchLogoutUseCaseAtom);
   const [isLoading] = useAtom(isLoadingAtom);
   const [userData] = useAtom(userDataAtom);
   const [error] = useAtom(errorAtom);
@@ -20,6 +27,11 @@ function Home(): JSX.Element {
   useEffect(() => {
     dispatchLoginSanity();
   }, [dispatchLoginSanity]);
+
+  const handleLogout = async () => {
+    dispatchLogout();
+    navigation.navigate('SignUp');
+  };
 
   return (
     <View style={styles.container}>
@@ -31,10 +43,11 @@ function Home(): JSX.Element {
       {userData?.verifiedEmail === false && (
         <AtomText>Please verify your email.</AtomText>
       )}
+      <AtomButton label="Logout" onPress={handleLogout} />
       {error !== '' && <AtomErrorText>{error}</AtomErrorText>}
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {

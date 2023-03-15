@@ -7,6 +7,7 @@ import AuthenticationRepository from '../../domain/repositories/AuthenticationRe
 import {
   ConfirmDataSource,
   LoginSanityDataSource,
+  LogoutDataSource,
   RefreshDataSource,
   UserAuthInfoDataSource,
   UserSignUpDataSource,
@@ -21,6 +22,7 @@ export default class AuthenticationRepositoryImpl
   loginSanityDatasource: LoginSanityDataSource;
   refreshDataSource: RefreshDataSource;
   authInfoDataSource: UserAuthInfoDataSource;
+  logoutDataSource: LogoutDataSource;
 
   constructor(
     signUpDatasource: UserSignUpDataSource,
@@ -28,12 +30,14 @@ export default class AuthenticationRepositoryImpl
     loginSanityDataSource: LoginSanityDataSource,
     refreshDataSource: RefreshDataSource,
     authInfoDataSource: UserAuthInfoDataSource,
+    logoutDataSource: LogoutDataSource,
   ) {
     this.signUpDatasource = signUpDatasource;
     this.confirmDataSource = confirmUserDataSource;
     this.loginSanityDatasource = loginSanityDataSource;
     this.refreshDataSource = refreshDataSource;
     this.authInfoDataSource = authInfoDataSource;
+    this.logoutDataSource = logoutDataSource;
   }
 
   public userSignUp = async (
@@ -69,5 +73,9 @@ export default class AuthenticationRepositoryImpl
     E.Either<string, UserAuthInfoDTO>
   > => {
     return await this.authInfoDataSource.getAuthenticationInfo();
+  };
+
+  public logout = async (): Promise<E.Either<string, boolean>> => {
+    return await this.logoutDataSource.logout();
   };
 }
