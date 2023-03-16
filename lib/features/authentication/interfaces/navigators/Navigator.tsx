@@ -5,7 +5,7 @@ import Home from '../views/Home';
 import Confirm from '../views/Confirm';
 import {AppIOCContainer} from '../../../../core/ioc/container';
 import * as E from 'fp-ts/Either';
-import SplashScreen from '../views/SplashScreen';
+import SplashScreen from '../views/molecules/SplashScreen';
 
 export type RootStackParamList = {
   SignUp: undefined;

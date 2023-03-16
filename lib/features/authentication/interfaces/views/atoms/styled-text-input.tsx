@@ -7,7 +7,7 @@ import {
   TextStyle,
 } from 'react-native';
 
-interface AtomTextInputProps extends TextInputProps {
+interface StyledTextInputProps extends TextInputProps {
   placeholder: string;
   value: string;
   onChangeText: (text: string) => void;
@@ -15,7 +15,7 @@ interface AtomTextInputProps extends TextInputProps {
   secure?: boolean;
 }
 
-const AtomTextInput: React.FC<AtomTextInputProps> = ({
+const StyledTextInput: React.FC<StyledTextInputProps> = ({
   placeholder,
   value,
   onChangeText,
@@ -47,4 +47,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AtomTextInput;
+export default StyledTextInput;

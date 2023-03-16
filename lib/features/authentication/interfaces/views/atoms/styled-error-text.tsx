@@ -1,12 +1,12 @@
 import React from 'react';
 import {Text, StyleSheet, TextStyle} from 'react-native';
 
-interface AtomTextProps {
+interface ErrorTextProps {
   children: string;
   style?: TextStyle | TextStyle[];
 }
 
-const AtomText: React.FC<AtomTextProps> = ({children, style}) => {
+const StyledErrorText: React.FC<ErrorTextProps> = ({children, style}) => {
   return <Text style={[styles.text, style]}>{children}</Text>;
 };
 
@@ -14,10 +14,9 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     lineHeight: 24,
-    color: '#333',
+    color: '#FF3B30',
     fontFamily: 'System',
-    margin: 5,
   },
 });
 
-export default AtomText;
+export default StyledErrorText;

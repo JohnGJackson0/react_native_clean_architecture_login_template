@@ -1,12 +1,12 @@
 import React from 'react';
 import {View, ActivityIndicator, StyleSheet} from 'react-native';
 
-interface AtomActivityIndicatorProps {
+interface ActivityIndicatorProps {
   size?: 'small' | 'large';
   color?: string;
 }
 
-const AtomActivityIndicator: React.FC<AtomActivityIndicatorProps> = ({
+const StyledLoader: React.FC<ActivityIndicatorProps> = ({
   size = 'large',
   color = '#000000',
 }) => {
@@ -27,4 +27,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AtomActivityIndicator;
+export default StyledLoader;

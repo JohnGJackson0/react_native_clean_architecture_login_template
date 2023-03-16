@@ -1,23 +1,23 @@
 import React from 'react';
 import {Text, StyleSheet, TextStyle} from 'react-native';
 
-interface AtomTextProps {
+interface TextProps {
   children: string;
   style?: TextStyle | TextStyle[];
 }
 
-const AtomTitle: React.FC<AtomTextProps> = ({children, style}) => {
+const StyledText: React.FC<TextProps> = ({children, style}) => {
   return <Text style={[styles.text, style]}>{children}</Text>;
 };
 
 const styles = StyleSheet.create({
   text: {
-    alignSelf: 'center',
-    fontSize: 34,
-    margin: 10,
+    fontSize: 16,
+    lineHeight: 24,
     color: '#333',
     fontFamily: 'System',
+    margin: 5,
   },
 });
 
-export default AtomTitle;
+export default StyledText;

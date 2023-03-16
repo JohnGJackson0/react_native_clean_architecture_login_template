@@ -1,8 +1,7 @@
 import React, {useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
-import AtomText from './atoms/atom-text';
-import AtomErrorText from './atoms/atom-error-text';
-import AtomActivityIndicator from './atoms/atom-activity-indicator';
+import StyledText from './atoms/styled-text';
+import StyledErrorText from './atoms/styled-error-text';
 import {
   dispatchLoginSanityUseCaseAtom,
   dispatchLogoutUseCaseAtom,
@@ -11,9 +10,10 @@ import {
   userDataAtom,
 } from '../state/home';
 import {useAtom} from 'jotai';
-import AtomButton from './atoms/atom-button';
+import StyledButton from './atoms/styled-button';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../navigators/Navigator';
+import StyledLoader from './atoms/styled-loader';
 
 type HomeProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
@@ -35,16 +35,18 @@ const Home: React.FC<HomeProps> = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      {isLoading && <AtomActivityIndicator />}
-      {userData?.email !== undefined && <AtomText>{userData?.email}</AtomText>}
+      {isLoading && <StyledLoader />}
+      {userData?.email !== undefined && (
+        <StyledText>{userData?.email}</StyledText>
+      )}
       {userData?.verifiedEmail === true && (
-        <AtomText>Your Email has been verified.</AtomText>
+        <StyledText>Your Email has been verified.</StyledText>
       )}
       {userData?.verifiedEmail === false && (
-        <AtomText>Please verify your email.</AtomText>
+        <StyledText>Please verify your email.</StyledText>
       )}
-      <AtomButton label="Logout" onPress={handleLogout} />
-      {error !== '' && <AtomErrorText>{error}</AtomErrorText>}
+      <StyledButton label="Logout" onPress={handleLogout} />
+      {error !== '' && <StyledErrorText>{error}</StyledErrorText>}
     </View>
   );
 };

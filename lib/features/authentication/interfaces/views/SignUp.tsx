@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../navigators/Navigator';
-import AtomErrorText from './atoms/atom-error-text';
+import StyledErrorText from './atoms/styled-error-text';
 import {useAtom} from 'jotai';
 import {
   dispatchSignUpUseCaseAtom,
@@ -10,10 +10,10 @@ import {
   isLoadingAtom,
   signedUpUserAtom,
 } from '../state/signUp';
-import AtomActivityIndicator from './atoms/atom-activity-indicator';
-import AtomButton from './atoms/atom-button';
-import AtomTextInput from './atoms/atom-input';
-import AtomTitle from './atoms/atom-title';
+import StyledLoader from './atoms/styled-loader';
+import StyledButton from './atoms/styled-button';
+import StyledInput from './atoms/styled-text-input';
+import StyledTitle from './atoms/styled-title';
 
 type SignUpProps = NativeStackScreenProps<RootStackParamList, 'SignUp'>;
 
@@ -41,18 +41,18 @@ const SignUp: React.FC<SignUpProps> = ({navigation}) => {
 
   return (
     <View style={styles.signUpContainer}>
-      {isLoading && <AtomActivityIndicator />}
+      {isLoading && <StyledLoader />}
       <>
-        <AtomTitle>Sign Up</AtomTitle>
+        <StyledTitle>Sign Up</StyledTitle>
 
-        <AtomTextInput
+        <StyledInput
           testID="email-input"
           placeholder="Enter Email"
           onChangeText={setEmail}
           value={email}
         />
 
-        <AtomTextInput
+        <StyledInput
           placeholder={'Enter Password'}
           testID="password-input"
           onChangeText={setPassword}
@@ -60,9 +60,13 @@ const SignUp: React.FC<SignUpProps> = ({navigation}) => {
           secureTextEntry={true}
         />
 
-        <AtomButton testID="submit" label="submit" onPress={onSignUpPressed} />
+        <StyledButton
+          testID="submit"
+          label="submit"
+          onPress={onSignUpPressed}
+        />
       </>
-      {error !== '' && <AtomErrorText>{error}</AtomErrorText>}
+      {error !== '' && <StyledErrorText>{error}</StyledErrorText>}
     </View>
   );
 };

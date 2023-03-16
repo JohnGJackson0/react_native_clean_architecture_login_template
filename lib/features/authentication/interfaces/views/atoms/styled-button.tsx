@@ -9,7 +9,7 @@ import {
   GestureResponderEvent,
 } from 'react-native';
 
-interface AtomButtonProps {
+interface ButtonProps {
   label: string;
   onPress: (event: GestureResponderEvent) => void;
   buttonStyle?: StyleProp<ViewStyle>;
@@ -17,7 +17,7 @@ interface AtomButtonProps {
   testID?: string;
 }
 
-const AtomButton: React.FC<AtomButtonProps> = ({
+const StyledButton: React.FC<ButtonProps> = ({
   label,
   onPress,
   buttonStyle,
@@ -50,4 +50,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AtomButton;
+export default StyledButton;

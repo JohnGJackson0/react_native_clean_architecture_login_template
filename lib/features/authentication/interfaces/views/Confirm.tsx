@@ -2,12 +2,11 @@ import React, {useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../navigators/Navigator';
-import AtomText from './atoms/atom-text';
-import AtomErrorText from './atoms/atom-error-text';
-import AtomActivityIndicator from './atoms/atom-activity-indicator';
-import AtomTitle from './atoms/atom-title';
-import AtomTextInput from './atoms/atom-input';
-import AtomButton from './atoms/atom-button';
+import StyledText from './atoms/styled-text';
+import StyledErrorText from './atoms/styled-error-text';
+import StyledTitle from './atoms/styled-title';
+import StringInput from './atoms/styled-text-input';
+import StyledButton from './atoms/styled-button';
 import {
   dispatchConfirmUserAtom,
   errorAtom,
@@ -15,6 +14,7 @@ import {
   successAtom,
 } from '../state/confirm';
 import {useAtom} from 'jotai';
+import StyledLoader from './atoms/styled-loader';
 
 type ConfirmProps = NativeStackScreenProps<RootStackParamList, 'Confirm'>;
 
@@ -42,20 +42,20 @@ const Confirm: React.FC<ConfirmProps> = props => {
 
   return (
     <View style={styles.container}>
-      {isLoading && <AtomActivityIndicator />}
+      {isLoading && <StyledLoader />}
 
       <>
-        <AtomTitle style={styles.confirmText}>Confirm Email</AtomTitle>
-        <AtomText>Please confirm your email.</AtomText>
-        <AtomTextInput
+        <StyledTitle style={styles.confirmText}>Confirm Email</StyledTitle>
+        <StyledText>Please confirm your email.</StyledText>
+        <StringInput
           testID="confirm-input"
           placeholder={'Enter Confirm Code'}
           onChangeText={setConfirm}
           value={confirm}
         />
-        <AtomButton testID="submit" label={'Submit'} onPress={onPress} />
+        <StyledButton testID="submit" label={'Submit'} onPress={onPress} />
         {error.toString() !== '' && (
-          <AtomErrorText>{error.toString()}</AtomErrorText>
+          <StyledErrorText>{error.toString()}</StyledErrorText>
         )}
       </>
     </View>
