@@ -14,6 +14,7 @@ import StyledLoader from './atoms/styled-loader';
 import StyledButton from './atoms/styled-button';
 import StyledInput from './atoms/styled-text-input';
 import StyledTitle from './atoms/styled-title';
+import StyledButtonText from './atoms/styled-button-text';
 
 type SignUpProps = NativeStackScreenProps<RootStackParamList, 'SignUp'>;
 
@@ -38,6 +39,10 @@ const SignUp: React.FC<SignUpProps> = ({navigation}) => {
       });
     }
   }, [email, navigation, password, signedUpUser]);
+
+  const handleLogIn = () => {
+    navigation.navigate('Login');
+  };
 
   return (
     <View style={styles.signUpContainer}>
@@ -66,6 +71,10 @@ const SignUp: React.FC<SignUpProps> = ({navigation}) => {
           onPress={onSignUpPressed}
         />
       </>
+      <View style={styles.loginButtonContainer}>
+        <StyledButtonText label="Log In" onPress={handleLogIn} />
+      </View>
+
       {error !== '' && <StyledErrorText>{error}</StyledErrorText>}
     </View>
   );
@@ -76,6 +85,9 @@ const styles = StyleSheet.create({
     padding: 20,
     marginTop: '30%',
     flex: 1,
+  },
+  loginButtonContainer: {
+    marginTop: 20,
   },
 });
 

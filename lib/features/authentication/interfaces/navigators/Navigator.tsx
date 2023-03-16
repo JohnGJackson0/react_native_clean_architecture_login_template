@@ -6,11 +6,13 @@ import Confirm from '../views/Confirm';
 import {AppIOCContainer} from '../../../../core/ioc/container';
 import * as E from 'fp-ts/Either';
 import SplashScreen from '../views/molecules/SplashScreen';
+import Login from '../views/Login';
 
 export type RootStackParamList = {
   SignUp: undefined;
   Confirm: {email: string; password: string};
   Home: undefined;
+  Login: undefined;
 };
 
 export const AppStack = () => {
@@ -53,6 +55,7 @@ export const AppStack = () => {
           />
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="SignUp" component={SignUp} />
+          <Stack.Screen name="Login" component={Login} />
         </Stack.Navigator>
       )}
     </>

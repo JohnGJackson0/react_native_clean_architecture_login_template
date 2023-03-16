@@ -153,4 +153,13 @@ describe('signUp Presentation', () => {
       password: 'fakePassword',
     });
   });
+
+  it('navigate to login when user clicks on login', async () => {
+    const props = createScreenTestProps();
+    const {getByText} = render(<SignUp {...props} />);
+
+    fireEvent.press(getByText('Log In'));
+
+    expect(props.navigation.navigate).toHaveBeenCalledWith('Login');
+  });
 });
