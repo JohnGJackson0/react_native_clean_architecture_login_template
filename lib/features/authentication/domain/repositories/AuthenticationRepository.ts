@@ -19,4 +19,8 @@ export default interface AuthenticationRepository {
   refreshSession: () => Promise<E.Either<string, RefreshDTO>>;
   getUserAuthInfo: () => Promise<E.Either<string, UserAuthInfoDTO>>;
   logout: () => Promise<E.Either<string, boolean>>;
+  login: (
+    email: string,
+    password: string,
+  ) => Promise<E.Either<string, boolean>>;
 }

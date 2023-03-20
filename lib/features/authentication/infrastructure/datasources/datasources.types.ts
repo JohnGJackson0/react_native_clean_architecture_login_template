@@ -13,6 +13,13 @@ export interface ConfirmDataSource {
   ) => Promise<E.Either<string, ConfirmDTO>>;
 }
 
+export interface LoginDataSource {
+  login: (
+    email: string,
+    password: string,
+  ) => Promise<E.Either<string, boolean>>;
+}
+
 export interface LoginSanityDataSource {
   getLoginSanity: () => Promise<E.Either<string, LoginSanityDTO>>;
 }

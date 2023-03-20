@@ -14,6 +14,8 @@ import VerifyStoredAuthTokenUseCase from '../../features/authentication/domain/u
 import UserAuthInfoDataSourceImpl from '../../features/authentication/infrastructure/datasources/UserAuthInfoDataSource';
 import LogoutDataSourceImpl from '../../features/authentication/infrastructure/datasources/LogoutDataSource';
 import LogoutUseCase from '../../features/authentication/domain/usecases/LogoutUseCase';
+import LoginDataSourceImpl from '../../features/authentication/infrastructure/datasources/LoginDataSource';
+import LoginUseCase from '../../features/authentication/domain/usecases/LoginUseCase';
 
 export default function configureDI() {
   // TODO need types
@@ -40,6 +42,10 @@ export default function configureDI() {
     UserAuthInfoDataSource: object(UserAuthInfoDataSourceImpl).construct(
       use('Storage'),
     ),
+    LoginDataSource: object(LoginDataSourceImpl).construct(
+      client,
+      use('Storage'),
+    ),
     AuthRepo: object(AuthenticationRepositoryImpl).construct(
       use('UserSignUpDataSource'),
       use('ConfirmDataSource'),
@@ -47,6 +53,7 @@ export default function configureDI() {
       use('RefreshDataSource'),
       use('UserAuthInfoDataSource'),
       use('logoutDataSource'),
+      use('LoginDataSource'),
     ),
 
     SignUpUseCase: object(SignUpUseCase).construct(
@@ -60,6 +67,10 @@ export default function configureDI() {
     // tests the authorizer / jwt refresh
     LoginSanityUseCase: object(LoginSanityUseCase).construct(use('AuthRepo')),
     LogoutUseCase: object(LogoutUseCase).construct(use('AuthRepo')),
+    LoginUseCase: object(LoginUseCase).construct(
+      use('AuthRepo'),
+      use('Validator'),
+    ),
     VerifyStoredAuthTokenUseCase: object(
       VerifyStoredAuthTokenUseCase,
     ).construct(use('AuthRepo')),

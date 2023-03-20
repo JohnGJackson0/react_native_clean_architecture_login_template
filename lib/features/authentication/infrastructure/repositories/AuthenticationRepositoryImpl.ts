@@ -6,6 +6,7 @@ import {UserSignUpDTO} from '../../domain/entities/UserSignUpDTO';
 import AuthenticationRepository from '../../domain/repositories/AuthenticationRepository';
 import {
   ConfirmDataSource,
+  LoginDataSource,
   LoginSanityDataSource,
   LogoutDataSource,
   RefreshDataSource,
@@ -23,6 +24,7 @@ export default class AuthenticationRepositoryImpl
   refreshDataSource: RefreshDataSource;
   authInfoDataSource: UserAuthInfoDataSource;
   logoutDataSource: LogoutDataSource;
+  loginDataSource: LoginDataSource;
 
   constructor(
     signUpDatasource: UserSignUpDataSource,
@@ -31,6 +33,7 @@ export default class AuthenticationRepositoryImpl
     refreshDataSource: RefreshDataSource,
     authInfoDataSource: UserAuthInfoDataSource,
     logoutDataSource: LogoutDataSource,
+    loginDataSource: LoginDataSource,
   ) {
     this.signUpDatasource = signUpDatasource;
     this.confirmDataSource = confirmUserDataSource;
@@ -38,6 +41,7 @@ export default class AuthenticationRepositoryImpl
     this.refreshDataSource = refreshDataSource;
     this.authInfoDataSource = authInfoDataSource;
     this.logoutDataSource = logoutDataSource;
+    this.loginDataSource = loginDataSource;
   }
 
   public userSignUp = async (
@@ -77,5 +81,12 @@ export default class AuthenticationRepositoryImpl
 
   public logout = async (): Promise<E.Either<string, boolean>> => {
     return await this.logoutDataSource.logout();
+  };
+
+  public login = async (
+    email: string,
+    password: string,
+  ): Promise<E.Either<string, boolean>> => {
+    return await this.loginDataSource.login(email, password);
   };
 }
