@@ -10,6 +10,7 @@ import {
   LoginSanityDataSource,
   LogoutDataSource,
   RefreshDataSource,
+  ResetPasswordDataSource,
   UserAuthInfoDataSource,
   UserSignUpDataSource,
 } from '../datasources/datasources.types';
@@ -25,6 +26,7 @@ export default class AuthenticationRepositoryImpl
   authInfoDataSource: UserAuthInfoDataSource;
   logoutDataSource: LogoutDataSource;
   loginDataSource: LoginDataSource;
+  resetPasswordDataSource: ResetPasswordDataSource;
 
   constructor(
     signUpDatasource: UserSignUpDataSource,
@@ -34,6 +36,7 @@ export default class AuthenticationRepositoryImpl
     authInfoDataSource: UserAuthInfoDataSource,
     logoutDataSource: LogoutDataSource,
     loginDataSource: LoginDataSource,
+    resetPasswordDataSource: ResetPasswordDataSource,
   ) {
     this.signUpDatasource = signUpDatasource;
     this.confirmDataSource = confirmUserDataSource;
@@ -42,6 +45,7 @@ export default class AuthenticationRepositoryImpl
     this.authInfoDataSource = authInfoDataSource;
     this.logoutDataSource = logoutDataSource;
     this.loginDataSource = loginDataSource;
+    this.resetPasswordDataSource = resetPasswordDataSource;
   }
 
   public userSignUp = async (
@@ -88,5 +92,11 @@ export default class AuthenticationRepositoryImpl
     password: string,
   ): Promise<E.Either<string, boolean>> => {
     return await this.loginDataSource.login(email, password);
+  };
+
+  public resetPassword = async (
+    email: string,
+  ): Promise<E.Either<string, boolean>> => {
+    return await this.resetPasswordDataSource.resetPassword(email);
   };
 }

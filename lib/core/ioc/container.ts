@@ -17,6 +17,7 @@ import LogoutUseCase from '../../features/authentication/domain/usecases/LogoutU
 import LoginDataSourceImpl from '../../features/authentication/infrastructure/datasources/LoginDataSource';
 import LoginUseCase from '../../features/authentication/domain/usecases/LoginUseCase';
 import ResetPasswordDataSourceImpl from '../../features/authentication/infrastructure/datasources/ResetPasswordDataSource';
+import ResetPasswordUseCase from '../../features/authentication/domain/usecases/ResetPasswordUseCase';
 
 export default function configureDI() {
   // TODO need types
@@ -58,6 +59,7 @@ export default function configureDI() {
       use('UserAuthInfoDataSource'),
       use('logoutDataSource'),
       use('LoginDataSource'),
+      use('resetPasswordDataSource'),
     ),
     SignUpUseCase: object(SignUpUseCase).construct(
       use('AuthRepo'),
@@ -71,6 +73,10 @@ export default function configureDI() {
     LoginSanityUseCase: object(LoginSanityUseCase).construct(use('AuthRepo')),
     LogoutUseCase: object(LogoutUseCase).construct(use('AuthRepo')),
     LoginUseCase: object(LoginUseCase).construct(
+      use('AuthRepo'),
+      use('Validator'),
+    ),
+    ResetPasswordUseCase: object(ResetPasswordUseCase).construct(
       use('AuthRepo'),
       use('Validator'),
     ),

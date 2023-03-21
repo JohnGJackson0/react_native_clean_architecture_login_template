@@ -33,6 +33,8 @@ export const mockRepo = () => {
   const mockRefreshDataSource = {refreshJwt: jest.fn()};
   const mockUserAuthInfoDataSource = {getAuthenticationInfo: jest.fn()};
   const mockLogoutDataSource = {logout: jest.fn()};
+  const mockLoginDataSource = {login: jest.fn()};
+  const mockResetDataSource = {resetPassword: jest.fn()};
 
   return new AuthenticationRepositoryImpl(
     mockSignUpDataSource,
@@ -41,5 +43,7 @@ export const mockRepo = () => {
     mockRefreshDataSource,
     mockUserAuthInfoDataSource,
     mockLogoutDataSource,
+    mockLoginDataSource,
+    mockResetDataSource,
   );
 };

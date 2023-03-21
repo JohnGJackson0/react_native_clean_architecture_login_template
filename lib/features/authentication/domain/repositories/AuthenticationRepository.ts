@@ -23,4 +23,5 @@ export default interface AuthenticationRepository {
     email: string,
     password: string,
   ) => Promise<E.Either<string, boolean>>;
+  resetPassword: (email: string) => Promise<E.Either<string, boolean>>;
 }

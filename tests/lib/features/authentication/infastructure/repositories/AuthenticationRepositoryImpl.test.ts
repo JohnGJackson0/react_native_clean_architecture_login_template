@@ -150,4 +150,41 @@ describe('Authentication repo', () => {
       expect(authRepo.logoutDataSource.logout).toHaveBeenCalledTimes(1);
     });
   });
+
+  describe('Login Repo', () => {
+    it('calls reset with the correct paramaters', async () => {
+      const authRepo = mockRepo();
+      authRepo.loginDataSource.login = jest
+        .fn()
+        .mockResolvedValue(E.right(true));
+
+      await authRepo.login('fakeEmail@fakeEmail.com', 'fakePassword');
+
+      expect(authRepo.loginDataSource.login).toHaveBeenCalledWith(
+        'fakeEmail@fakeEmail.com',
+        'fakePassword',
+      );
+
+      expect(authRepo.loginDataSource.login).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('Reset Password Repo', () => {
+    it('calls reset with the correct paramaters', async () => {
+      const authRepo = mockRepo();
+      authRepo.resetPasswordDataSource.resetPassword = jest
+        .fn()
+        .mockResolvedValue(E.right(true));
+
+      await authRepo.resetPassword('fakeEmail@fakeEmail.com');
+
+      expect(
+        authRepo.resetPasswordDataSource.resetPassword,
+      ).toHaveBeenCalledWith('fakeEmail@fakeEmail.com');
+
+      expect(
+        authRepo.resetPasswordDataSource.resetPassword,
+      ).toHaveBeenCalledTimes(1);
+    });
+  });
 });
