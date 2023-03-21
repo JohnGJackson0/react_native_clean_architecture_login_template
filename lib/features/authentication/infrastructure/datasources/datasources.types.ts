@@ -42,3 +42,7 @@ export interface UserAuthInfoDataSource {
 export interface LogoutDataSource {
   logout: () => Promise<E.Either<string, boolean>>;
 }
+
+export interface ResetPasswordDataSource {
+  resetPassword: (email: string) => Promise<E.Either<string, boolean>>;
+}

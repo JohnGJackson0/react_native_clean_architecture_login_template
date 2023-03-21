@@ -16,6 +16,7 @@ import LogoutDataSourceImpl from '../../features/authentication/infrastructure/d
 import LogoutUseCase from '../../features/authentication/domain/usecases/LogoutUseCase';
 import LoginDataSourceImpl from '../../features/authentication/infrastructure/datasources/LoginDataSource';
 import LoginUseCase from '../../features/authentication/domain/usecases/LoginUseCase';
+import ResetPasswordDataSourceImpl from '../../features/authentication/infrastructure/datasources/ResetPasswordDataSource';
 
 export default function configureDI() {
   // TODO need types
@@ -26,6 +27,9 @@ export default function configureDI() {
     Validator: object(ValidatorImpl),
     Storage: ReactNativeAsyncStorageImpl,
     logoutDataSource: object(LogoutDataSourceImpl).construct(use('Storage')),
+    resetPasswordDataSource: object(ResetPasswordDataSourceImpl).construct(
+      client,
+    ),
     ConfirmDataSource: object(ConfirmDataSourceImpl).construct(
       client,
       use('Storage'),
@@ -55,7 +59,6 @@ export default function configureDI() {
       use('logoutDataSource'),
       use('LoginDataSource'),
     ),
-
     SignUpUseCase: object(SignUpUseCase).construct(
       use('AuthRepo'),
       use('Validator'),
