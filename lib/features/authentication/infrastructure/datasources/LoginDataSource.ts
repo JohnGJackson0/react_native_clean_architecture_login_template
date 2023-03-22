@@ -55,7 +55,6 @@ export default class LoginDataSourceImpl implements LoginDataSource {
         return E.left(error.error);
       },
       (data: ApiResponse) => {
-        console.log(data);
         this.storage.set(
           JWTTOKEN,
           data?.reponse?.AuthenticationResult?.AccessToken,
