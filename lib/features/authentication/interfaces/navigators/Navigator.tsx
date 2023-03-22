@@ -7,12 +7,16 @@ import {AppIOCContainer} from '../../../../core/ioc/container';
 import * as E from 'fp-ts/Either';
 import SplashScreen from '../views/molecules/SplashScreen';
 import Login from '../views/Login';
+import ResetPassword from '../views/ResetPassword';
+import PasswordResetVerification from '../views/PasswordResetVerification';
 
 export type RootStackParamList = {
   SignUp: undefined;
   Confirm: {email: string; password: string};
   Home: undefined;
   Login: undefined;
+  ResetPassword: undefined;
+  PasswordResetVerification: {email: string};
 };
 
 export const AppStack = () => {
@@ -56,6 +60,12 @@ export const AppStack = () => {
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="SignUp" component={SignUp} />
           <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="ResetPassword" component={ResetPassword} />
+          <Stack.Screen
+            initialParams={{email: ''}}
+            name="PasswordResetVerification"
+            component={PasswordResetVerification}
+          />
         </Stack.Navigator>
       )}
     </>

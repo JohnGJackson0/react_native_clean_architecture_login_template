@@ -34,6 +34,10 @@ const Login: React.FC<LoginProps> = ({navigation}) => {
     navigation.navigate('SignUp');
   };
 
+  const handleResetPasswordPressed = () => {
+    navigation.navigate('ResetPassword');
+  };
+
   useEffect(() => {
     if (isSignedIn === true) {
       navigation.navigate('Home');
@@ -66,6 +70,12 @@ const Login: React.FC<LoginProps> = ({navigation}) => {
       <View style={styles.signUpButtonContainer}>
         <StyledButtonText label="Sign Up" onPress={handleSignUpPressed} />
       </View>
+      <View style={styles.resetPasswordButtonContainer}>
+        <StyledButtonText
+          label="Forgot Password"
+          onPress={handleResetPasswordPressed}
+        />
+      </View>
       {error !== '' && <StyledErrorText>{error}</StyledErrorText>}
     </View>
   );
@@ -78,6 +88,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   signUpButtonContainer: {
+    marginTop: 20,
+  },
+  resetPasswordButtonContainer: {
     marginTop: 20,
   },
 });

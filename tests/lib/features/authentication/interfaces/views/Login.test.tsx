@@ -30,6 +30,7 @@ describe('login Presentation', () => {
     expect(getByTestId('email-input')).toBeTruthy();
     expect(getByText('Login')).toBeTruthy();
     expect(getByText('Sign Up')).toBeTruthy();
+    expect(getByText('Forgot Password')).toBeTruthy();
   });
 
   it('navigates to sign up when sign up button is pressed', () => {
@@ -84,5 +85,15 @@ describe('login Presentation', () => {
     await waitForElementToBeRemoved(() => getByTestId('loading'));
 
     expect(mockIOC).toBeCalledWith('fakeEmail', 'fakePW');
+  });
+
+  it('should navigate to forgot password when pressed', () => {
+    mockIOC.mockResolvedValue(E.right(true));
+    const props = createScreenTestProps();
+    const {getByText} = render(<Login {...props} />);
+
+    fireEvent.press(getByText('Forgot Password'));
+
+    expect(props.navigation.navigate).toBeCalledWith('ResetPassword');
   });
 });
