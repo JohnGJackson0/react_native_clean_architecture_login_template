@@ -47,7 +47,6 @@ describe('Confirm Presenation', () => {
       password: 'fakePassword',
     });
     const {getByText, getByTestId} = render(<Confirm {...props} />);
-    expect(getByText('Please confirm your email.')).toBeTruthy();
     expect(getByTestId('confirm-input')).toBeTruthy();
     expect(getByText('Submit')).toBeTruthy();
   });

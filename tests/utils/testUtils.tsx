@@ -35,6 +35,9 @@ export const mockRepo = () => {
   const mockLogoutDataSource = {logout: jest.fn()};
   const mockLoginDataSource = {login: jest.fn()};
   const mockResetDataSource = {resetPassword: jest.fn()};
+  const mockconfirmChangePasswordDataSource = {
+    confirmPasswordReset: jest.fn(),
+  };
 
   return new AuthenticationRepositoryImpl(
     mockSignUpDataSource,
@@ -45,5 +48,6 @@ export const mockRepo = () => {
     mockLogoutDataSource,
     mockLoginDataSource,
     mockResetDataSource,
+    mockconfirmChangePasswordDataSource,
   );
 };

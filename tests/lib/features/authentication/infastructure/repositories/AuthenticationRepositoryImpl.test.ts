@@ -187,4 +187,31 @@ describe('Authentication repo', () => {
       ).toHaveBeenCalledTimes(1);
     });
   });
+
+  describe('Confirm Password Reset Repo', () => {
+    it('calls confirm password reset datasource with the correct parameters', async () => {
+      const authRepo = mockRepo();
+      authRepo.confirmChangePasswordDataSource.confirmPasswordReset = jest
+        .fn()
+        .mockResolvedValue(E.right(true));
+
+      await authRepo.confirmPasswordReset(
+        'fakeEmail@fakeEmail.com',
+        '123456',
+        'fakeNewPassword',
+      );
+
+      expect(
+        authRepo.confirmChangePasswordDataSource.confirmPasswordReset,
+      ).toHaveBeenCalledWith(
+        'fakeEmail@fakeEmail.com',
+        '123456',
+        'fakeNewPassword',
+      );
+
+      expect(
+        authRepo.confirmChangePasswordDataSource.confirmPasswordReset,
+      ).toHaveBeenCalledTimes(1);
+    });
+  });
 });

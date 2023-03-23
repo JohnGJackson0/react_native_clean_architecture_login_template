@@ -5,6 +5,7 @@ import {UserAuthInfoDTO} from '../../domain/entities/UserAuthInfoDTO';
 import {UserSignUpDTO} from '../../domain/entities/UserSignUpDTO';
 import AuthenticationRepository from '../../domain/repositories/AuthenticationRepository';
 import {
+  ConfirmChangePasswordDataSource,
   ConfirmDataSource,
   LoginDataSource,
   LoginSanityDataSource,
@@ -27,6 +28,7 @@ export default class AuthenticationRepositoryImpl
   logoutDataSource: LogoutDataSource;
   loginDataSource: LoginDataSource;
   resetPasswordDataSource: ResetPasswordDataSource;
+  confirmChangePasswordDataSource: ConfirmChangePasswordDataSource;
 
   constructor(
     signUpDatasource: UserSignUpDataSource,
@@ -37,6 +39,7 @@ export default class AuthenticationRepositoryImpl
     logoutDataSource: LogoutDataSource,
     loginDataSource: LoginDataSource,
     resetPasswordDataSource: ResetPasswordDataSource,
+    confirmChangePasswordDataSource: ConfirmChangePasswordDataSource,
   ) {
     this.signUpDatasource = signUpDatasource;
     this.confirmDataSource = confirmUserDataSource;
@@ -46,6 +49,7 @@ export default class AuthenticationRepositoryImpl
     this.logoutDataSource = logoutDataSource;
     this.loginDataSource = loginDataSource;
     this.resetPasswordDataSource = resetPasswordDataSource;
+    this.confirmChangePasswordDataSource = confirmChangePasswordDataSource;
   }
 
   public userSignUp = async (
@@ -98,5 +102,17 @@ export default class AuthenticationRepositoryImpl
     email: string,
   ): Promise<E.Either<string, boolean>> => {
     return await this.resetPasswordDataSource.resetPassword(email);
+  };
+
+  public confirmPasswordReset = async (
+    email: string,
+    verificationCode: string,
+    newPassword: string,
+  ): Promise<E.Either<string, string>> => {
+    return await this.confirmChangePasswordDataSource.confirmPasswordReset(
+      email,
+      verificationCode,
+      newPassword,
+    );
   };
 }
