@@ -18,6 +18,7 @@ import LoginDataSourceImpl from '../../features/authentication/infrastructure/da
 import LoginUseCase from '../../features/authentication/domain/usecases/LoginUseCase';
 import ResetPasswordDataSourceImpl from '../../features/authentication/infrastructure/datasources/ResetPasswordDataSource';
 import ResetPasswordUseCase from '../../features/authentication/domain/usecases/ResetPasswordUseCase';
+import ConfirmChangePasswordDataSourceImpl from '../../features/authentication/infrastructure/datasources/ConfirmChangePasswordDataSource';
 
 export default function configureDI() {
   // TODO need types
@@ -36,6 +37,9 @@ export default function configureDI() {
       use('Storage'),
     ),
     UserSignUpDataSource: object(UserSignUpDataSourceImpl).construct(client),
+    ConfirmChangePasswordDataSource: object(
+      ConfirmChangePasswordDataSourceImpl,
+    ).construct(client, use('Storage')),
     LoginSanityDataSource: object(LoginSanityDataSourceImpl).construct(
       client,
       use('Storage'),

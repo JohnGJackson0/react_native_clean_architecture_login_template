@@ -46,3 +46,11 @@ export interface LogoutDataSource {
 export interface ResetPasswordDataSource {
   resetPassword: (email: string) => Promise<E.Either<string, boolean>>;
 }
+
+export interface ConfirmChangePasswordDataSource {
+  confirmPasswordReset: (
+    email: string,
+    verificationCode: string,
+    newPassword: string,
+  ) => Promise<E.Either<string, string>>;
+}
