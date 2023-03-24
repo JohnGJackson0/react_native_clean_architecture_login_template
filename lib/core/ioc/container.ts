@@ -19,6 +19,7 @@ import LoginUseCase from '../../features/authentication/domain/usecases/LoginUse
 import ResetPasswordDataSourceImpl from '../../features/authentication/infrastructure/datasources/ResetPasswordDataSource';
 import ResetPasswordUseCase from '../../features/authentication/domain/usecases/ResetPasswordUseCase';
 import ConfirmChangePasswordDataSourceImpl from '../../features/authentication/infrastructure/datasources/ConfirmChangePasswordDataSource';
+import ConfirmPasswordResetUseCase from '../../features/authentication/domain/usecases/ConfirmPasswordResetUseCase';
 
 export default function configureDI() {
   // TODO need types
@@ -64,6 +65,7 @@ export default function configureDI() {
       use('logoutDataSource'),
       use('LoginDataSource'),
       use('resetPasswordDataSource'),
+      use('ConfirmChangePasswordDataSource'),
     ),
     SignUpUseCase: object(SignUpUseCase).construct(
       use('AuthRepo'),
@@ -87,6 +89,10 @@ export default function configureDI() {
     VerifyStoredAuthTokenUseCase: object(
       VerifyStoredAuthTokenUseCase,
     ).construct(use('AuthRepo')),
+    ConfirmPasswordResetUseCase: object(ConfirmPasswordResetUseCase).construct(
+      use('AuthRepo'),
+      use('Validator'),
+    ),
   });
 
   return container;
