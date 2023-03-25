@@ -9,6 +9,7 @@ import SplashScreen from '../views/molecules/SplashScreen';
 import Login from '../views/Login';
 import ResetPassword from '../views/ResetPassword';
 import PasswordResetVerification from '../views/PasswordResetVerification';
+import Welcome from '../views/Welcome';
 
 export type RootStackParamList = {
   SignUp: undefined;
@@ -17,6 +18,7 @@ export type RootStackParamList = {
   Login: undefined;
   ResetPassword: undefined;
   PasswordResetVerification: {email: string};
+  Welcome: undefined;
 };
 
 export const AppStack = () => {
@@ -47,11 +49,7 @@ export const AppStack = () => {
       {isUserLoggedIn === null ? (
         <SplashScreen />
       ) : (
-        <Stack.Navigator
-          initialRouteName={isUserLoggedIn ? 'Home' : 'SignUp'}
-          screenOptions={{
-            headerShown: false,
-          }}>
+        <Stack.Navigator initialRouteName={isUserLoggedIn ? 'Home' : 'Welcome'}>
           <Stack.Screen
             name="Confirm"
             component={Confirm}
@@ -65,6 +63,16 @@ export const AppStack = () => {
             initialParams={{email: ''}}
             name="PasswordResetVerification"
             component={PasswordResetVerification}
+          />
+          <Stack.Screen
+            name="Welcome"
+            component={Welcome}
+            options={{
+              headerShown: false,
+              headerStyle: {
+                backgroundColor: '#000000',
+              },
+            }}
           />
         </Stack.Navigator>
       )}

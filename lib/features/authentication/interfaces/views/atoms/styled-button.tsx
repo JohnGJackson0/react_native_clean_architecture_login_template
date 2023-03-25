@@ -8,6 +8,7 @@ import {
   TextStyle,
   GestureResponderEvent,
 } from 'react-native';
+import {colors} from '../../../../../../tests/lib/features/authentication/interfaces/theme/colors';
 
 interface ButtonProps {
   label: string;
@@ -38,14 +39,14 @@ const styles = StyleSheet.create({
   button: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#007AFF',
+    backgroundColor: colors.buttonbackground,
     borderRadius: 8,
     paddingVertical: 10,
     paddingHorizontal: 20,
   },
   label: {
     fontSize: 16,
-    color: '#FFFFFF',
+    color: colors.buttonLabel,
     fontWeight: 'bold',
   },
 });
