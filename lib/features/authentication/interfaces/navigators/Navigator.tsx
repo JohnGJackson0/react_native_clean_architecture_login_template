@@ -10,6 +10,7 @@ import Login from '../views/Login';
 import ResetPassword from '../views/ResetPassword';
 import PasswordResetVerification from '../views/PasswordResetVerification';
 import Welcome from '../views/Welcome';
+import {colors} from '../../../../../tests/lib/features/authentication/interfaces/theme/colors';
 
 export type RootStackParamList = {
   SignUp: undefined;
@@ -49,7 +50,17 @@ export const AppStack = () => {
       {isUserLoggedIn === null ? (
         <SplashScreen />
       ) : (
-        <Stack.Navigator initialRouteName={isUserLoggedIn ? 'Home' : 'Welcome'}>
+        <Stack.Navigator
+          initialRouteName={isUserLoggedIn ? 'Home' : 'Welcome'}
+          screenOptions={{
+            headerStyle: {
+              backgroundColor: colors.background,
+            },
+            headerTintColor: colors.title,
+            headerTitleStyle: {
+              fontSize: 33,
+            },
+          }}>
           <Stack.Screen
             name="Confirm"
             component={Confirm}

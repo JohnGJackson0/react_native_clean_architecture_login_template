@@ -4,6 +4,7 @@ import StyledButton from './atoms/styled-button';
 import {RootStackParamList} from '../navigators/Navigator';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {colors} from '../../../../../tests/lib/features/authentication/interfaces/theme/colors';
+import Overlay from './atoms/Overlay';
 
 type WelcomeProps = NativeStackScreenProps<RootStackParamList, 'Welcome'>;
 
@@ -21,15 +22,14 @@ const Welcome: React.FC<WelcomeProps> = ({navigation}) => {
         style={styles.image}
         source={require('../../../../assets/Logo_A.png')}
       />
-
-      <View style={styles.authOverlay}>
+      <Overlay>
         <View style={styles.loginContainer}>
           <StyledButton label="Login" onPress={handleLoginPressed} />
         </View>
         <View style={styles.signUpContainer}>
           <StyledButton label="Sign Up" onPress={handleSignUpPressed} />
         </View>
-      </View>
+      </Overlay>
     </View>
   );
 };
@@ -45,15 +45,10 @@ const styles = StyleSheet.create({
   signUpContainer: {
     margin: 20,
   },
-  authOverlay: {
-    marginTop: '30%',
-    backgroundColor: colors.overlay,
-    margin: 20,
-    borderRadius: 20,
-  },
   image: {
     height: 300,
     width: '100%',
+    marginBottom: '30%',
   },
 });
 

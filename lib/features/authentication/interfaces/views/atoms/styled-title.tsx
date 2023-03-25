@@ -1,5 +1,6 @@
 import React from 'react';
 import {Text, StyleSheet, TextStyle} from 'react-native';
+import {colors} from '../../../../../../tests/lib/features/authentication/interfaces/theme/colors';
 
 interface TextProps {
   children: string;
@@ -15,7 +16,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     fontSize: 34,
     margin: 10,
-    color: '#333',
+    color: colors.title,
     fontFamily: 'System',
   },
 });

@@ -1,5 +1,6 @@
 import React from 'react';
 import {Text, StyleSheet, TextStyle} from 'react-native';
+import {colors} from '../../../../../../tests/lib/features/authentication/interfaces/theme/colors';
 
 interface ErrorTextProps {
   children: string;
@@ -14,7 +15,8 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     lineHeight: 24,
-    color: '#FF3B30',
+    color: colors.error,
+    fontWeight: 'bold',
     fontFamily: 'System',
   },
 });

@@ -4,7 +4,6 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../navigators/Navigator';
 import StyledButton from './atoms/styled-button';
 import StyledInput from './atoms/styled-text-input';
-import StyledTitle from './atoms/styled-title';
 import StyledButtonText from './atoms/styled-button-text';
 import {useAtom} from 'jotai';
 import {
@@ -15,6 +14,8 @@ import {
 } from '../state/login';
 import StyledErrorText from './atoms/styled-error-text';
 import StyledLoader from './atoms/styled-loader';
+import {colors} from '../../../../../tests/lib/features/authentication/interfaces/theme/colors';
+import Overlay from './atoms/Overlay';
 
 type LoginProps = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
@@ -47,10 +48,9 @@ const Login: React.FC<LoginProps> = ({navigation}) => {
   return (
     <View style={styles.loginContainer}>
       {isLoading && <StyledLoader />}
-      <>
-        <StyledTitle>Log In</StyledTitle>
-
+      <Overlay>
         <StyledInput
+          labelText="Email*"
           testID="email-input"
           placeholder="Enter Email"
           onChangeText={setEmail}
@@ -58,15 +58,25 @@ const Login: React.FC<LoginProps> = ({navigation}) => {
         />
 
         <StyledInput
+          labelText="Password*"
           placeholder={'Enter Password'}
           testID="password-input"
           onChangeText={setPassword}
           value={password}
           secureTextEntry={true}
         />
+        <StyledButton
+          buttonStyle={styles.loginButton}
+          testID="login"
+          label="Login"
+          onPress={onLoginPressed}
+        />
+      </Overlay>
 
-        <StyledButton testID="login" label="Login" onPress={onLoginPressed} />
-      </>
+      <View style={styles.errorContainer}>
+        {error !== '' && <StyledErrorText>{error}</StyledErrorText>}
+      </View>
+
       <View style={styles.signUpButtonContainer}>
         <StyledButtonText label="Sign Up" onPress={handleSignUpPressed} />
       </View>
@@ -76,21 +86,29 @@ const Login: React.FC<LoginProps> = ({navigation}) => {
           onPress={handleResetPasswordPressed}
         />
       </View>
-      {error !== '' && <StyledErrorText>{error}</StyledErrorText>}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   loginContainer: {
+    backgroundColor: colors.background,
     padding: 20,
-    marginTop: '30%',
     flex: 1,
+    paddingTop: '20%',
   },
   signUpButtonContainer: {
-    marginTop: 20,
+    marginTop: 5,
   },
   resetPasswordButtonContainer: {
+    marginTop: 20,
+  },
+  loginButton: {
+    marginTop: 20,
+  },
+  errorContainer: {
+    height: 60,
+    marginVertical: 10,
     marginTop: 20,
   },
 });
