@@ -55,9 +55,7 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({navigation}) => {
           </View>
         </Overlay>
       </>
-      <View style={styles.errorContainer}>
-        {error !== '' && <StyledErrorText>{error}</StyledErrorText>}
-      </View>
+      <StyledErrorText>{error}</StyledErrorText>
     </View>
   );
 };
@@ -70,11 +68,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   resetPasswordButton: {
-    marginTop: 20,
-  },
-  errorContainer: {
-    height: 60,
-    marginVertical: 10,
     marginTop: 20,
   },
 });

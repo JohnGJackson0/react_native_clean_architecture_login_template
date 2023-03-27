@@ -75,9 +75,8 @@ const SignUp: React.FC<SignUpProps> = ({navigation}) => {
         </View>
       </Overlay>
 
-      <View style={styles.errorContainer}>
-        {error !== '' && <StyledErrorText>{error}</StyledErrorText>}
-      </View>
+      <StyledErrorText>{error}</StyledErrorText>
+
       <View style={styles.loginButtonContainer}>
         <StyledButtonText label="Log In" onPress={handleLogIn} />
       </View>
@@ -93,11 +92,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   loginButtonContainer: {
-    marginTop: 20,
-  },
-  errorContainer: {
-    height: 60,
-    marginVertical: 10,
     marginTop: 20,
   },
   signUpButton: {
