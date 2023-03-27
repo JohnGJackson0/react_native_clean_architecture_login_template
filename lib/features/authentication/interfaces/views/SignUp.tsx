@@ -13,8 +13,9 @@ import {
 import StyledLoader from './atoms/styled-loader';
 import StyledButton from './atoms/styled-button';
 import StyledInput from './atoms/styled-text-input';
-import StyledTitle from './atoms/styled-title';
 import StyledButtonText from './atoms/styled-button-text';
+import {colors} from '../../../../../tests/lib/features/authentication/interfaces/theme/colors';
+import Overlay from './atoms/Overlay';
 
 type SignUpProps = NativeStackScreenProps<RootStackParamList, 'SignUp'>;
 
@@ -47,10 +48,9 @@ const SignUp: React.FC<SignUpProps> = ({navigation}) => {
   return (
     <View style={styles.signUpContainer}>
       {isLoading && <StyledLoader />}
-      <>
-        <StyledTitle>Sign Up</StyledTitle>
-
+      <Overlay>
         <StyledInput
+          labelText="Email*"
           testID="email-input"
           placeholder="Enter Email"
           onChangeText={setEmail}
@@ -58,6 +58,7 @@ const SignUp: React.FC<SignUpProps> = ({navigation}) => {
         />
 
         <StyledInput
+          labelText="Password*"
           placeholder={'Enter Password'}
           testID="password-input"
           onChangeText={setPassword}
@@ -65,28 +66,41 @@ const SignUp: React.FC<SignUpProps> = ({navigation}) => {
           secureTextEntry={true}
         />
 
-        <StyledButton
-          testID="submit"
-          label="submit"
-          onPress={onSignUpPressed}
-        />
-      </>
+        <View style={styles.signUpButton}>
+          <StyledButton
+            testID="submit"
+            label="SignUp"
+            onPress={onSignUpPressed}
+          />
+        </View>
+      </Overlay>
+
+      <View style={styles.errorContainer}>
+        {error !== '' && <StyledErrorText>{error}</StyledErrorText>}
+      </View>
       <View style={styles.loginButtonContainer}>
         <StyledButtonText label="Log In" onPress={handleLogIn} />
       </View>
-
-      {error !== '' && <StyledErrorText>{error}</StyledErrorText>}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   signUpContainer: {
+    backgroundColor: colors.background,
     padding: 20,
-    marginTop: '30%',
+    paddingTop: '20%',
     flex: 1,
   },
   loginButtonContainer: {
+    marginTop: 20,
+  },
+  errorContainer: {
+    height: 60,
+    marginVertical: 10,
+    marginTop: 20,
+  },
+  signUpButton: {
     marginTop: 20,
   },
 });
