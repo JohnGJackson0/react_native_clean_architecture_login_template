@@ -67,9 +67,17 @@ export const AppStack = () => {
             initialParams={{email: '', password: ''}}
           />
           <Stack.Screen name="Home" component={Home} />
-          <Stack.Screen name="SignUp" component={SignUp} />
+          <Stack.Screen
+            name="SignUp"
+            component={SignUp}
+            options={{title: 'Sign up'}}
+          />
           <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="ResetPassword" component={ResetPassword} />
+          <Stack.Screen
+            name="ResetPassword"
+            component={ResetPassword}
+            options={{title: 'Reset Password'}}
+          />
           <Stack.Screen
             initialParams={{email: ''}}
             name="PasswordResetVerification"

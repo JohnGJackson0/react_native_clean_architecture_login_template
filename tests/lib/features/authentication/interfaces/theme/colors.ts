@@ -11,4 +11,5 @@ export const colors = {
   inputCursorColor: 'white',
   inputLabelColor: 'gray',
   error: '#FF3B30',
+  loadingIndicator: '#FFF',
 };

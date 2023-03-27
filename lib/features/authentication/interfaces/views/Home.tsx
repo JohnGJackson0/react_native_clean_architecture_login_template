@@ -14,6 +14,7 @@ import StyledButton from './atoms/styled-button';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../navigators/Navigator';
 import StyledLoader from './atoms/styled-loader';
+import {colors} from '../../../../../tests/lib/features/authentication/interfaces/theme/colors';
 
 type HomeProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
@@ -54,7 +55,7 @@ const Home: React.FC<HomeProps> = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: colors.background,
     alignContent: 'center',
     justifyContent: 'center',
   },

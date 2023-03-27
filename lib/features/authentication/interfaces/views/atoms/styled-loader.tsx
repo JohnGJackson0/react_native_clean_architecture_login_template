@@ -1,5 +1,6 @@
 import React from 'react';
-import {View, ActivityIndicator, StyleSheet} from 'react-native';
+import {ActivityIndicator, StyleSheet} from 'react-native';
+import {colors} from '../../../../../../tests/lib/features/authentication/interfaces/theme/colors';
 
 interface ActivityIndicatorProps {
   size?: 'small' | 'large';
@@ -8,12 +9,15 @@ interface ActivityIndicatorProps {
 
 const StyledLoader: React.FC<ActivityIndicatorProps> = ({
   size = 'large',
-  color = '#000000',
+  color = colors.loadingIndicator,
 }) => {
   return (
-    <View style={styles.container}>
-      <ActivityIndicator size={size} color={color} testID="loading" />
-    </View>
+    <ActivityIndicator
+      style={styles.container}
+      size={size}
+      color={color}
+      testID="loading"
+    />
   );
 };
 
@@ -24,6 +28,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
+    zIndex: 99,
   },
 });
 

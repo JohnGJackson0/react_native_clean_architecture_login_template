@@ -25,7 +25,6 @@ describe('login Presentation', () => {
   it('shows elements on page when initially loaded', () => {
     const props = createScreenTestProps();
     const {getByText, getByTestId} = render(<Login {...props} />);
-    expect(getByText('Log In')).toBeTruthy();
     expect(getByTestId('password-input')).toBeTruthy();
     expect(getByTestId('email-input')).toBeTruthy();
     expect(getByText('Login')).toBeTruthy();

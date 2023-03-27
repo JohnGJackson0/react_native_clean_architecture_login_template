@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, StyleSheet, TextStyle} from 'react-native';
+import {Text, StyleSheet, TextStyle, View} from 'react-native';
 import {colors} from '../../../../../../tests/lib/features/authentication/interfaces/theme/colors';
 
 interface ErrorTextProps {
@@ -8,7 +8,11 @@ interface ErrorTextProps {
 }
 
 const StyledErrorText: React.FC<ErrorTextProps> = ({children, style}) => {
-  return <Text style={[styles.text, style]}>{children}</Text>;
+  return (
+    <View style={styles.errorContainer}>
+      {children !== '' && <Text style={[styles.text, style]}>{children}</Text>}
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -18,6 +22,11 @@ const styles = StyleSheet.create({
     color: colors.error,
     fontWeight: 'bold',
     fontFamily: 'System',
+  },
+  errorContainer: {
+    height: 60,
+    marginVertical: 10,
+    marginTop: 20,
   },
 });
 

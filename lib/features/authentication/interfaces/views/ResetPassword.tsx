@@ -4,7 +4,6 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../navigators/Navigator';
 import StyledButton from './atoms/styled-button';
 import StyledInput from './atoms/styled-text-input';
-import StyledTitle from './atoms/styled-title';
 import {useAtom} from 'jotai';
 import StyledErrorText from './atoms/styled-error-text';
 import StyledLoader from './atoms/styled-loader';
@@ -14,6 +13,8 @@ import {
   isLoadingAtom,
   isSubmittedAtom,
 } from '../state/resetPassword';
+import {colors} from '../../../../../tests/lib/features/authentication/interfaces/theme/colors';
+import Overlay from './atoms/Overlay';
 
 type ResetPasswordProps = NativeStackScreenProps<
   RootStackParamList,
@@ -41,27 +42,40 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({navigation}) => {
     <View style={styles.resetContainer}>
       {isLoading && <StyledLoader />}
       <>
-        <StyledTitle>Reset Your Password</StyledTitle>
+        <Overlay>
+          <StyledInput
+            testID="email-input"
+            placeholder="Enter Email"
+            onChangeText={setEmail}
+            value={email}
+          />
 
-        <StyledInput
-          testID="email-input"
-          placeholder="Enter Email"
-          onChangeText={setEmail}
-          value={email}
-        />
-
-        <StyledButton label="Reset Password" onPress={OnResetPressed} />
+          <View style={styles.resetPasswordButton}>
+            <StyledButton label="Reset Password" onPress={OnResetPressed} />
+          </View>
+        </Overlay>
       </>
-      {error !== '' && <StyledErrorText>{error}</StyledErrorText>}
+      <View style={styles.errorContainer}>
+        {error !== '' && <StyledErrorText>{error}</StyledErrorText>}
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   resetContainer: {
+    backgroundColor: colors.background,
     padding: 20,
-    marginTop: '30%',
+    paddingTop: '20%',
     flex: 1,
+  },
+  resetPasswordButton: {
+    marginTop: 20,
+  },
+  errorContainer: {
+    height: 60,
+    marginVertical: 10,
+    marginTop: 20,
   },
 });
 

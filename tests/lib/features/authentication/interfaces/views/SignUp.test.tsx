@@ -25,8 +25,7 @@ jest.mock('../../../../../../lib/core/ioc/container', () => ({
 describe('signUp Presentation', () => {
   it('shows elements on page when initially loaded', () => {
     const props = createScreenTestProps();
-    const {getByText, getByTestId} = render(<SignUp {...props} />);
-    expect(getByText('Sign Up')).toBeTruthy();
+    const {getByTestId} = render(<SignUp {...props} />);
     expect(getByTestId('password-input')).toBeTruthy();
     expect(getByTestId('email-input')).toBeTruthy();
     expect(getByTestId('submit')).toBeTruthy();
@@ -40,9 +39,7 @@ describe('signUp Presentation', () => {
         password: 'fakePassword',
       }),
     );
-    const {getByText, getByTestId} = render(<SignUp {...props} />);
-
-    expect(getByText('Sign Up')).toBeTruthy();
+    const {getByTestId} = render(<SignUp {...props} />);
 
     fireEvent.press(getByTestId('submit'));
 
@@ -62,11 +59,9 @@ describe('signUp Presentation', () => {
         password: 'fakePassword',
       }),
     );
-    const {getByText, getByTestId, queryByTestId} = render(
-      <SignUp {...props} />,
-    );
+    const {getByTestId, queryByTestId} = render(<SignUp {...props} />);
 
-    expect(getByText('Sign Up')).toBeTruthy();
+    expect(queryByTestId('loading')).toBeFalsy();
 
     fireEvent.press(getByTestId('submit'));
 

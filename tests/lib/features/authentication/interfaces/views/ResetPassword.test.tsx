@@ -27,7 +27,6 @@ describe('ResetPassword Presentation', () => {
 
     const {getByText, getByTestId} = render(<ResetPassword {...props} />);
 
-    expect(getByText('Reset Your Password')).toBeTruthy();
     expect(getByTestId('email-input')).toBeTruthy();
     expect(getByText('Reset Password')).toBeTruthy();
   });
