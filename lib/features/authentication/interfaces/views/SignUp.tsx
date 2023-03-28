@@ -22,7 +22,7 @@ type SignUpProps = NativeStackScreenProps<RootStackParamList, 'SignUp'>;
 const SignUp: React.FC<SignUpProps> = ({navigation}) => {
   const [, dispatchSignUp] = useAtom(dispatchSignUpUseCaseAtom);
   const [isLoading] = useAtom(isLoadingAtom);
-  const [signedUpUser] = useAtom(signedUpUserAtom);
+  const [signedUpUser, setSignedUpUser] = useAtom(signedUpUserAtom);
   const [error] = useAtom(errorAtom);
 
   const [email, setEmail] = useState('');
@@ -34,12 +34,13 @@ const SignUp: React.FC<SignUpProps> = ({navigation}) => {
 
   useEffect(() => {
     if (signedUpUser?.email !== '' || signedUpUser?.password !== '') {
+      setSignedUpUser({email: '', password: ''});
       navigation.navigate('Confirm', {
         email: signedUpUser?.email,
         password: signedUpUser?.password,
       });
     }
-  }, [email, navigation, password, signedUpUser]);
+  }, [email, navigation, password, signedUpUser, setSignedUpUser]);
 
   const handleLogIn = () => {
     navigation.navigate('Login');

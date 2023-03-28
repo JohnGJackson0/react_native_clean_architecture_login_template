@@ -31,7 +31,7 @@ const Home: React.FC<HomeProps> = ({navigation}) => {
 
   const handleLogout = async () => {
     dispatchLogout();
-    navigation.navigate('SignUp');
+    navigation.navigate('Welcome');
   };
 
   return (

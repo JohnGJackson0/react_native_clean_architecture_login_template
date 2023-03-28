@@ -66,8 +66,11 @@ describe('Confirm Presenation', () => {
     fireEvent.press(getByText('Submit'));
 
     await waitForElementToBeRemoved(() => getByTestId('loading'));
-    expect(props.navigation.replace).toHaveBeenCalledWith('Home');
-    expect(props.navigation.replace).toHaveBeenCalledTimes(1);
+    expect(props.navigation.reset).toHaveBeenCalledWith({
+      index: 0,
+      routes: [{name: 'Home'}],
+    });
+    expect(props.navigation.reset).toHaveBeenCalledTimes(1);
   });
 
   it('does not navigate to home on an error', async () => {

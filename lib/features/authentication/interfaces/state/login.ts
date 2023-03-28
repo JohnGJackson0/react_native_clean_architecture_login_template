@@ -7,10 +7,9 @@ interface User {
   password: string;
 }
 const baseError = atom<string>('');
-const baseIsSignedIn = atom<boolean>(false);
+export const isSignedInAtom = atom<boolean>(false);
 const baseLoading = atom<boolean>(false);
 
-export const isSignedInAtom = atom(get => get(baseIsSignedIn));
 export const errorAtom = atom(get => get(baseError));
 export const isLoadingAtom = atom(get => get(baseLoading));
 
@@ -31,7 +30,7 @@ export const dispatchSignUpUseCaseAtom = atom(
           }
         },
         (value: boolean) => {
-          set(baseIsSignedIn, value);
+          set(isSignedInAtom, value);
           set(baseError, '');
         },
       )(loginUseCase);

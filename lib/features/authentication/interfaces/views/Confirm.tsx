@@ -21,7 +21,7 @@ type ConfirmProps = NativeStackScreenProps<RootStackParamList, 'Confirm'>;
 const Confirm: React.FC<ConfirmProps> = props => {
   const [, dispatchConfirm] = useAtom(dispatchConfirmUserAtom);
   const [isLoading] = useAtom(isLoadingAtom);
-  const [isSuccessful] = useAtom(successAtom);
+  const [isSuccessful, setIsSuccessful] = useAtom(successAtom);
   const [error] = useAtom(errorAtom);
   const [confirm, setConfirm] = useState('');
 
@@ -35,9 +35,13 @@ const Confirm: React.FC<ConfirmProps> = props => {
 
   useEffect(() => {
     if (isSuccessful) {
-      props.navigation.replace('Home');
+      setIsSuccessful(false);
+      props.navigation.reset({
+        index: 0,
+        routes: [{name: 'Home'}],
+      });
     }
-  }, [isSuccessful, props.navigation]);
+  }, [isSuccessful, setIsSuccessful, props.navigation]);
 
   return (
     <View style={styles.container}>

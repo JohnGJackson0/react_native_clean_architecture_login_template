@@ -25,7 +25,7 @@ const Login: React.FC<LoginProps> = ({navigation}) => {
   const [, dispatchSignUp] = useAtom(dispatchSignUpUseCaseAtom);
   const [error] = useAtom(errorAtom);
   const [isLoading] = useAtom(isLoadingAtom);
-  const [isSignedIn] = useAtom(isSignedInAtom);
+  const [isSignedIn, setIsSignedIn] = useAtom(isSignedInAtom);
 
   const onLoginPressed = async () => {
     dispatchSignUp({email, password});
@@ -41,9 +41,13 @@ const Login: React.FC<LoginProps> = ({navigation}) => {
 
   useEffect(() => {
     if (isSignedIn === true) {
-      navigation.navigate('Home');
+      setIsSignedIn(false);
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'Home'}],
+      });
     }
-  }, [isSignedIn, navigation]);
+  }, [isSignedIn, setIsSignedIn, navigation]);
 
   return (
     <View style={styles.loginContainer}>

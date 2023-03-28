@@ -8,13 +8,12 @@ interface payload {
   confirmCode: string;
 }
 
-const baseSuccess = atom<boolean>(false);
+export const successAtom = atom<boolean>(false);
 const baseError = atom<string>('');
 const baseLoading = atom<boolean>(false);
 
 export const errorAtom = atom(get => get(baseError));
 export const isLoadingAtom = atom(get => get(baseLoading));
-export const successAtom = atom(get => get(baseSuccess));
 
 export const dispatchConfirmUserAtom = atom(
   null,
@@ -37,7 +36,7 @@ export const dispatchConfirmUserAtom = atom(
         },
         (value: boolean) => {
           set(baseError, '');
-          set(baseSuccess, value);
+          set(successAtom, value);
         },
       )(confirmUseCaseResponse);
     } catch (e: unknown) {

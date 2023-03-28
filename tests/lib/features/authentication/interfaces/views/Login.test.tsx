@@ -46,7 +46,10 @@ describe('login Presentation', () => {
     const {getByText, getByTestId} = render(<Login {...props} />);
     fireEvent.press(getByText('Login'));
     await waitForElementToBeRemoved(() => getByTestId('loading'));
-    expect(props.navigation.navigate).toBeCalledWith('Home');
+    expect(props.navigation.reset).toBeCalledWith({
+      index: 0,
+      routes: [{name: 'Home'}],
+    });
   });
 
   it('loads correctly', async () => {
