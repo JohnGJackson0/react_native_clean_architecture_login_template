@@ -12,4 +12,5 @@ export const colors = {
   inputLabelColor: 'gray',
   error: '#FF3B30',
   loadingIndicator: '#FFF',
+  success: 'green',
 };

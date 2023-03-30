@@ -82,6 +82,7 @@ export const AppStack = () => {
             initialParams={{email: ''}}
             name="PasswordResetVerification"
             component={PasswordResetVerification}
+            options={{title: 'Password Reset Confirm'}}
           />
           <Stack.Screen
             name="Welcome"

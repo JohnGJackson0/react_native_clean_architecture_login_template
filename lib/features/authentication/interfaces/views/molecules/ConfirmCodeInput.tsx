@@ -1,7 +1,7 @@
 import React, {Dispatch, SetStateAction} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import StyledTextInput from '../atoms/styled-text-input';
-import StyledText from '../atoms/styled-text';
+import {colors} from '../../../../../../tests/lib/features/authentication/interfaces/theme/colors';
 
 type ConfirmCodeInputProps = {
   setConfirm: Dispatch<SetStateAction<string>>;
@@ -14,7 +14,7 @@ export const ConfirmCodeInput: React.FC<ConfirmCodeInputProps> = ({
 }) => {
   return (
     <View style={styles.container}>
-      <StyledText>Enter the confirmation code</StyledText>
+      <Text style={styles.label}>Enter the confirmation code</Text>
       <StyledTextInput
         testID="confirm-input"
         placeholder={'Enter Confirm Code'}
@@ -27,6 +27,11 @@ export const ConfirmCodeInput: React.FC<ConfirmCodeInputProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 20,
+    marginBottom: 20,
+  },
+  label: {
+    color: colors.inputLabelColor,
+    marginBottom: 6,
+    marginTop: 9,
   },
 });

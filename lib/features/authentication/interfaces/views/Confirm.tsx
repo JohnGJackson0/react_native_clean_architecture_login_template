@@ -14,6 +14,8 @@ import {
 import {useAtom} from 'jotai';
 import StyledLoader from './atoms/styled-loader';
 import {ConfirmCodeInput} from './molecules/ConfirmCodeInput';
+import StyledText from './atoms/styled-text';
+import {isConfirmedAtom} from '../state/resetPasswordConfirm';
 
 type ConfirmProps = NativeStackScreenProps<RootStackParamList, 'Confirm'>;
 
@@ -24,6 +26,7 @@ const Confirm: React.FC<ConfirmProps> = props => {
   const [isSuccessful, setIsSuccessful] = useAtom(successAtom);
   const [error] = useAtom(errorAtom);
   const [confirm, setConfirm] = useState('');
+  const [isConfirmed] = useAtom(isConfirmedAtom);
 
   const onPress = () => {
     dispatchConfirm({
@@ -51,9 +54,8 @@ const Confirm: React.FC<ConfirmProps> = props => {
         <StyledTitle style={styles.confirmText}>Confirm Email</StyledTitle>
         <ConfirmCodeInput setConfirm={setConfirm} confirm={confirm} />
         <StyledButton testID="submit" label={'Submit'} onPress={onPress} />
-        {error.toString() !== '' && (
-          <StyledErrorText>{error.toString()}</StyledErrorText>
-        )}
+        {isConfirmed && <StyledText>Password Reset Sucessful</StyledText>}
+        <StyledErrorText>{error.toString()}</StyledErrorText>
       </>
     </View>
   );
