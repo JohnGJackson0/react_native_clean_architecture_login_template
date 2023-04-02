@@ -11,6 +11,7 @@ import {
 
 interface ButtonProps {
   label: string;
+  color?: string;
   onPress: (event: GestureResponderEvent) => void;
   buttonStyle?: StyleProp<ViewStyle>;
   labelStyle?: StyleProp<TextStyle>;
@@ -35,17 +36,9 @@ const StyledButtonText: React.FC<ButtonProps> = ({
 };
 
 const styles = StyleSheet.create({
-  button: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 8,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-  },
+  button: {},
   label: {
     fontSize: 16,
-    color: 'blue',
-    fontWeight: 'bold',
   },
 });
 

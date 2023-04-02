@@ -40,9 +40,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: colors.buttonBackground,
-    borderRadius: 8,
+    borderRadius: 15,
     paddingVertical: 10,
     paddingHorizontal: 20,
+    height: 45,
   },
   label: {
     fontSize: 16,

@@ -13,8 +13,8 @@ const StyledTitle: React.FC<TextProps> = ({children, style}) => {
 
 const styles = StyleSheet.create({
   text: {
-    alignSelf: 'center',
     fontSize: 34,
+    fontWeight: '600',
     margin: 10,
     color: colors.title,
     fontFamily: 'System',

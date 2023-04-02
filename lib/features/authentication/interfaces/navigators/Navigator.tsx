@@ -51,7 +51,7 @@ export const AppStack = () => {
         <SplashScreen />
       ) : (
         <Stack.Navigator
-          initialRouteName={isUserLoggedIn ? 'Home' : 'Welcome'}
+          initialRouteName={isUserLoggedIn ? 'Home' : 'Login'}
           screenOptions={{
             headerStyle: {
               backgroundColor: colors.background,
@@ -72,7 +72,13 @@ export const AppStack = () => {
             component={SignUp}
             options={{title: 'Sign up'}}
           />
-          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen
+            name="Login"
+            component={Login}
+            options={{
+              headerShown: false,
+            }}
+          />
           <Stack.Screen
             name="ResetPassword"
             component={ResetPassword}

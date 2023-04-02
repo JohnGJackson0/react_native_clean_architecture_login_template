@@ -49,18 +49,17 @@ const styles = StyleSheet.create({
     backgroundColor: colors.inputBackgroundColor,
     borderColor: colors.inputBorderColor,
     color: colors.inputTextColor,
-    paddingVertical: 10,
+    paddingVertical: 15,
     paddingHorizontal: 20,
     fontSize: 16,
     marginBottom: 10,
-    borderRadius: 10,
+    borderRadius: 15,
     borderWidth: 1,
     marginVertical: 5,
   },
   label: {
     color: colors.inputLabelColor,
-    marginBottom: 6,
-    marginTop: 9,
+    paddingVertical: 5,
   },
 });
 

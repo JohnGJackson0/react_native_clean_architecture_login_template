@@ -27,24 +27,24 @@ describe('login Presentation', () => {
     const {getByText, getByTestId} = render(<Login {...props} />);
     expect(getByTestId('password-input')).toBeTruthy();
     expect(getByTestId('email-input')).toBeTruthy();
-    expect(getByText('Login')).toBeTruthy();
-    expect(getByText('Sign Up')).toBeTruthy();
-    expect(getByText('Forgot Password')).toBeTruthy();
+    expect(getByText('Sign up')).toBeTruthy();
+    expect(getByText('Forgot Password?')).toBeTruthy();
   });
 
   it('navigates to sign up when sign up button is pressed', () => {
     const props = createScreenTestProps();
-    const {getByText} = render(<Login {...props} />);
-    expect(getByText('Sign Up')).toBeTruthy();
-    fireEvent.press(getByText('Sign Up'));
+    const {getByText, debug} = render(<Login {...props} />);
+    debug();
+    expect(getByText('Sign up')).toBeTruthy();
+    fireEvent.press(getByText('Sign up'));
     expect(props.navigation.navigate).toHaveBeenCalledWith('SignUp');
   });
 
   it('navigates to home when useCase returns right|true', async () => {
     mockIOC.mockResolvedValue(E.right(true));
     const props = createScreenTestProps();
-    const {getByText, getByTestId} = render(<Login {...props} />);
-    fireEvent.press(getByText('Login'));
+    const {getByTestId} = render(<Login {...props} />);
+    fireEvent.press(getByTestId('login'));
     await waitForElementToBeRemoved(() => getByTestId('loading'));
     expect(props.navigation.reset).toBeCalledWith({
       index: 0,
@@ -55,11 +55,9 @@ describe('login Presentation', () => {
   it('loads correctly', async () => {
     mockIOC.mockResolvedValue(E.right(true));
     const props = createScreenTestProps();
-    const {getByText, getByTestId, queryByTestId} = render(
-      <Login {...props} />,
-    );
+    const {getByTestId, queryByTestId} = render(<Login {...props} />);
     expect(queryByTestId('loading')).toBeFalsy();
-    fireEvent.press(getByText('Login'));
+    fireEvent.press(getByTestId('login'));
     expect(getByTestId('loading')).toBeTruthy();
     await waitForElementToBeRemoved(() => getByTestId('loading'));
     expect(queryByTestId('loading')).toBeFalsy();
@@ -69,7 +67,7 @@ describe('login Presentation', () => {
     mockIOC.mockResolvedValue(E.left('fakeError'));
     const props = createScreenTestProps();
     const {getByText, getByTestId} = render(<Login {...props} />);
-    fireEvent.press(getByText('Login'));
+    fireEvent.press(getByTestId('login'));
     await waitForElementToBeRemoved(() => getByTestId('loading'));
     expect(getByText('fakeError')).toBeTruthy();
   });
@@ -77,13 +75,13 @@ describe('login Presentation', () => {
   it('calls the login useCase with form input', async () => {
     mockIOC.mockResolvedValue(E.right(true));
     const props = createScreenTestProps();
-    const {getByText, getByTestId} = render(<Login {...props} />);
+    const {getByTestId} = render(<Login {...props} />);
 
     fireEvent.changeText(getByTestId('email-input'), 'fakeEmail');
 
     fireEvent.changeText(getByTestId('password-input'), 'fakePW');
 
-    fireEvent.press(getByText('Login'));
+    fireEvent.press(getByTestId('login'));
     await waitForElementToBeRemoved(() => getByTestId('loading'));
 
     expect(mockIOC).toBeCalledWith('fakeEmail', 'fakePW');
@@ -94,7 +92,7 @@ describe('login Presentation', () => {
     const props = createScreenTestProps();
     const {getByText} = render(<Login {...props} />);
 
-    fireEvent.press(getByText('Forgot Password'));
+    fireEvent.press(getByText('Forgot Password?'));
 
     expect(props.navigation.navigate).toBeCalledWith('ResetPassword');
   });

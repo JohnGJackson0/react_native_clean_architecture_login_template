@@ -15,7 +15,8 @@ import {
 import StyledErrorText from './atoms/styled-error-text';
 import StyledLoader from './atoms/styled-loader';
 import {colors} from '../../../../../tests/lib/features/authentication/interfaces/theme/colors';
-import Overlay from './atoms/Overlay';
+import StyledTitle from './atoms/styled-title';
+import ButtonLabel from './molecules/LabelButton';
 
 type LoginProps = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
@@ -52,40 +53,45 @@ const Login: React.FC<LoginProps> = ({navigation}) => {
   return (
     <View style={styles.loginContainer}>
       {isLoading && <StyledLoader />}
-      <Overlay>
-        <StyledInput
-          labelText="Email*"
-          testID="email-input"
-          placeholder="Enter Email"
-          onChangeText={setEmail}
-          value={email}
-        />
 
-        <StyledInput
-          labelText="Password*"
-          placeholder={'Enter Password'}
-          testID="password-input"
-          onChangeText={setPassword}
-          value={password}
-          secureTextEntry={true}
-        />
-        <StyledButton
-          buttonStyle={styles.loginButton}
-          testID="login"
-          label="Login"
-          onPress={onLoginPressed}
-        />
-      </Overlay>
+      <StyledTitle style={styles.signInTitle}>Sign in</StyledTitle>
 
+      <StyledInput
+        labelText="Email"
+        testID="email-input"
+        placeholder="Enter Email"
+        onChangeText={setEmail}
+        value={email}
+      />
+
+      <StyledInput
+        labelText="Password"
+        placeholder={'Enter Password'}
+        testID="password-input"
+        onChangeText={setPassword}
+        value={password}
+        secureTextEntry={true}
+      />
+      <View style={styles.forgotPassword}>
+        <StyledButtonText
+          label="Forgot Password?"
+          onPress={handleResetPasswordPressed}
+        />
+      </View>
+
+      <StyledButton
+        buttonStyle={styles.loginButton}
+        testID="login"
+        label="Sign in"
+        onPress={onLoginPressed}
+      />
       {<StyledErrorText>{error}</StyledErrorText>}
 
       <View style={styles.signUpButtonContainer}>
-        <StyledButtonText label="Sign Up" onPress={handleSignUpPressed} />
-      </View>
-      <View style={styles.resetPasswordButtonContainer}>
-        <StyledButtonText
-          label="Forgot Password"
-          onPress={handleResetPasswordPressed}
+        <ButtonLabel
+          label="Don't Have an account yet?"
+          buttonLabel="Sign up"
+          onPress={handleSignUpPressed}
         />
       </View>
     </View>
@@ -94,19 +100,30 @@ const Login: React.FC<LoginProps> = ({navigation}) => {
 
 const styles = StyleSheet.create({
   loginContainer: {
+    flex: 1,
     backgroundColor: colors.background,
     padding: 20,
-    flex: 1,
     paddingTop: '20%',
   },
+  signInTitle: {
+    marginBottom: 40,
+  },
   signUpButtonContainer: {
-    marginTop: 5,
+    position: 'absolute',
+    bottom: 0,
+    flexDirection: 'row',
+    height: 80,
+    alignSelf: 'center',
   },
   resetPasswordButtonContainer: {
     marginTop: 20,
   },
   loginButton: {
     marginTop: 20,
+  },
+  forgotPassword: {
+    alignSelf: 'flex-end',
+    marginBottom: 3,
   },
 });
 
