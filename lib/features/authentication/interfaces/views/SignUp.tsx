@@ -13,9 +13,9 @@ import {
 import StyledLoader from './atoms/styled-loader';
 import StyledButton from './atoms/styled-button';
 import StyledInput from './atoms/styled-text-input';
-import StyledButtonText from './atoms/styled-button-text';
 import {colors} from '../../../../../tests/lib/features/authentication/interfaces/theme/colors';
-import Overlay from './atoms/Overlay';
+import StyledTitle from './atoms/styled-title';
+import ButtonLabel from './molecules/LabelButton';
 
 type SignUpProps = NativeStackScreenProps<RootStackParamList, 'SignUp'>;
 
@@ -49,37 +49,42 @@ const SignUp: React.FC<SignUpProps> = ({navigation}) => {
   return (
     <View style={styles.signUpContainer}>
       {isLoading && <StyledLoader />}
-      <Overlay>
-        <StyledInput
-          labelText="Email*"
-          testID="email-input"
-          placeholder="Enter Email"
-          onChangeText={setEmail}
-          value={email}
-        />
 
-        <StyledInput
-          labelText="Password*"
-          placeholder={'Enter Password'}
-          testID="password-input"
-          onChangeText={setPassword}
-          value={password}
-          secureTextEntry={true}
-        />
+      <StyledTitle style={styles.signUpTitle}>Sign Up</StyledTitle>
 
-        <View style={styles.signUpButton}>
-          <StyledButton
-            testID="submit"
-            label="SignUp"
-            onPress={onSignUpPressed}
-          />
-        </View>
-      </Overlay>
+      <StyledInput
+        labelText="Email"
+        testID="email-input"
+        placeholder="Enter Email"
+        onChangeText={setEmail}
+        value={email}
+      />
+
+      <StyledInput
+        labelText="Password"
+        placeholder={'Enter Password'}
+        testID="password-input"
+        onChangeText={setPassword}
+        value={password}
+        secureTextEntry={true}
+      />
+
+      <View style={styles.signUpButton}>
+        <StyledButton
+          testID="submit"
+          label="Sign up"
+          onPress={onSignUpPressed}
+        />
+      </View>
 
       <StyledErrorText>{error}</StyledErrorText>
 
       <View style={styles.loginButtonContainer}>
-        <StyledButtonText label="Log In" onPress={handleLogIn} />
+        <ButtonLabel
+          label="Already Have an account?"
+          buttonLabel="Log in"
+          onPress={handleLogIn}
+        />
       </View>
     </View>
   );
@@ -92,11 +97,18 @@ const styles = StyleSheet.create({
     paddingTop: '20%',
     flex: 1,
   },
-  loginButtonContainer: {
-    marginTop: 20,
-  },
   signUpButton: {
     marginTop: 20,
+  },
+  signUpTitle: {
+    marginBottom: 40,
+  },
+  loginButtonContainer: {
+    position: 'absolute',
+    bottom: 0,
+    flexDirection: 'row',
+    height: 80,
+    alignSelf: 'center',
   },
 });
 

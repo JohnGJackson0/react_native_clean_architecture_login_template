@@ -70,7 +70,9 @@ export const AppStack = () => {
           <Stack.Screen
             name="SignUp"
             component={SignUp}
-            options={{title: 'Sign up'}}
+            options={{
+              headerShown: false,
+            }}
           />
           <Stack.Screen
             name="Login"

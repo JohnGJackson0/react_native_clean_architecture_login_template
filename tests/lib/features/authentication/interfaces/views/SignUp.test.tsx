@@ -153,7 +153,7 @@ describe('signUp Presentation', () => {
     const props = createScreenTestProps();
     const {getByText} = render(<SignUp {...props} />);
 
-    fireEvent.press(getByText('Log In'));
+    fireEvent.press(getByText('Log in'));
 
     expect(props.navigation.navigate).toHaveBeenCalledWith('Login');
   });

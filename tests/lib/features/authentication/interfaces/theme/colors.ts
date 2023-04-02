@@ -6,7 +6,7 @@ export const colors = {
   buttonLabel: '#FFF',
   title: 'black',
   inputBackgroundColor: '#FAFAFA',
-  inputPlaceholderTextColor: '#000000',
+  inputPlaceholderTextColor: 'grey',
   inputBorderColor: '#A4ACB1',
   inputTextColor: '#000000',
   inputCursorColor: '#000000',
