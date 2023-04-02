@@ -1,7 +1,8 @@
 import React, {Dispatch, SetStateAction} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import StyledTextInput from '../atoms/styled-text-input';
+import {Dimensions, StyleSheet, Text, View} from 'react-native';
 import {colors} from '../../../../../../tests/lib/features/authentication/interfaces/theme/colors';
+import {CodeField, Cursor} from 'react-native-confirmation-code-field';
+import StyledText from '../atoms/styled-text';
 
 type ConfirmCodeInputProps = {
   setConfirm: Dispatch<SetStateAction<string>>;
@@ -12,14 +13,33 @@ export const ConfirmCodeInput: React.FC<ConfirmCodeInputProps> = ({
   confirm,
   setConfirm,
 }) => {
+  const window = Dimensions.get('window');
+  const NUM_OF_CELLS = 6;
+  const CONTAINER_MARGIN = 20;
+
+  const width = window.width / NUM_OF_CELLS - CONTAINER_MARGIN;
+
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>Enter the confirmation code</Text>
-      <StyledTextInput
-        testID="confirm-input"
-        placeholder={'Enter Confirm Code'}
-        onChangeText={setConfirm}
+      <StyledText style={styles.label}>
+        Please enter the one time verification code that was sent to your email
+      </StyledText>
+      <CodeField
         value={confirm}
+        onChangeText={setConfirm}
+        cellCount={6}
+        keyboardType="number-pad"
+        textContentType="oneTimeCode"
+        renderCell={({symbol, isFocused}) => (
+          <Text
+            style={[
+              styles.cell,
+              isFocused && styles.focusCell,
+              {width: width, height: width},
+            ]}>
+            {symbol || (isFocused ? <Cursor /> : null)}
+          </Text>
+        )}
       />
     </View>
   );
@@ -27,11 +47,24 @@ export const ConfirmCodeInput: React.FC<ConfirmCodeInputProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 20,
+    margin: 20,
   },
   label: {
     color: colors.inputLabelColor,
-    marginBottom: 6,
+    marginBottom: 16,
     marginTop: 9,
+  },
+  cell: {
+    width: 40,
+    height: 40,
+    lineHeight: 38,
+    fontSize: 30,
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: '#00000030',
+    textAlign: 'center',
+  },
+  focusCell: {
+    borderColor: colors.primary,
   },
 });

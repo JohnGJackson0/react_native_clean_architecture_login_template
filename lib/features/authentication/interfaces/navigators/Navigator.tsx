@@ -84,13 +84,13 @@ export const AppStack = () => {
           <Stack.Screen
             name="ResetPassword"
             component={ResetPassword}
-            options={{title: 'Reset Password'}}
+            options={{title: ''}}
           />
           <Stack.Screen
             initialParams={{email: ''}}
             name="PasswordResetVerification"
             component={PasswordResetVerification}
-            options={{title: 'Password Reset Confirm'}}
+            options={{title: ''}}
           />
           <Stack.Screen
             name="Welcome"

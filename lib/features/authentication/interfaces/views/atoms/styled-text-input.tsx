@@ -35,6 +35,7 @@ const StyledTextInput: React.FC<StyledTextInputProps> = ({
         value={value}
         onChangeText={onChangeText}
         style={[styles.input, inputStyle]}
+        // TODO: Password can have requirement overlay
         secureTextEntry={secure}
         placeholderTextColor={colors.inputPlaceholderTextColor}
         selectionColor={colors.inputCursorColor}
