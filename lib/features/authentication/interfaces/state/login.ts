@@ -17,6 +17,7 @@ export const dispatchSignUpUseCaseAtom = atom(
   null,
   async (_get, set, payload: User) => {
     set(baseLoading, true);
+    set(baseError, '');
 
     try {
       const loginUseCase = await AppIOCContainer.get('LoginUseCase').execute(

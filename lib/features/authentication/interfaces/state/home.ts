@@ -18,6 +18,7 @@ export const isLoadingAtom = atom(get => get(baseLoading));
 
 export const dispatchLogoutUseCaseAtom = atom(null, async (_get, set) => {
   set(baseLoading, true);
+  set(baseError, '');
   try {
     const result = await AppIOCContainer.get('LogoutUseCase').execute();
 

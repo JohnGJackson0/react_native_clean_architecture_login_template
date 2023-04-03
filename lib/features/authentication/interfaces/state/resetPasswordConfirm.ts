@@ -21,6 +21,7 @@ export const dispatchConfirmResetUseCaseAtom = atom(
   null,
   async (_get, set, payload: ResetPasswordPayload) => {
     set(baseLoading, true);
+    set(baseError, '');
 
     try {
       const ConfirmPasswordReset = await AppIOCContainer.get(

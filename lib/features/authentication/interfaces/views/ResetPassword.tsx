@@ -27,7 +27,7 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({navigation}) => {
   const [, dispatchResetPassword] = useAtom(dispatchResetPasswordUseCaseAtom);
   const [error] = useAtom(errorAtom);
   const [isLoading] = useAtom(isLoadingAtom);
-  const [isSubmitted] = useAtom(isSubmittedAtom);
+  const [isSubmitted, setIsSubmitted] = useAtom(isSubmittedAtom);
 
   const OnResetPressed = async () => {
     dispatchResetPassword({email});
@@ -35,9 +35,10 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({navigation}) => {
 
   useEffect(() => {
     if (isSubmitted === true) {
+      setIsSubmitted(false);
       navigation.navigate('PasswordResetVerification', {email: email});
     }
-  }, [isSubmitted, navigation, email]);
+  }, [isSubmitted, navigation, email, setIsSubmitted]);
 
   return (
     <View style={styles.resetContainer}>

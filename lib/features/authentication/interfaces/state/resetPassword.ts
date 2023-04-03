@@ -6,10 +6,9 @@ interface Payload {
   email: string;
 }
 const baseError = atom<string>('');
-const baseIsSubmitted = atom<boolean>(false);
 const baseLoading = atom<boolean>(false);
 
-export const isSubmittedAtom = atom(get => get(baseIsSubmitted));
+export const isSubmittedAtom = atom<boolean>(false);
 export const errorAtom = atom(get => get(baseError));
 export const isLoadingAtom = atom(get => get(baseLoading));
 
@@ -17,6 +16,7 @@ export const dispatchResetPasswordUseCaseAtom = atom(
   null,
   async (_get, set, payload: Payload) => {
     set(baseLoading, true);
+    set(baseError, '');
 
     try {
       const ResetPasswordUseCase = await AppIOCContainer.get(
@@ -29,7 +29,7 @@ export const dispatchResetPasswordUseCaseAtom = atom(
           }
         },
         (value: boolean) => {
-          set(baseIsSubmitted, value);
+          set(isSubmittedAtom, value);
           set(baseError, '');
         },
       )(ResetPasswordUseCase);

@@ -19,6 +19,7 @@ export const dispatchConfirmUserAtom = atom(
   null,
   async (_get, set, payload: payload) => {
     set(baseLoading, true);
+    set(baseError, '');
 
     try {
       const confirmUseCaseResponse: E.Either<string, boolean> =
