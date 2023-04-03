@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     paddingVertical: 10,
     paddingHorizontal: 20,
-    height: 45,
+    height: 55,
   },
   label: {
     fontSize: 16,

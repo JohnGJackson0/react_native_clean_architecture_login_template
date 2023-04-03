@@ -15,7 +15,7 @@ export const ConfirmCodeInput: React.FC<ConfirmCodeInputProps> = ({
 }) => {
   const window = Dimensions.get('window');
   const NUM_OF_CELLS = 6;
-  const CONTAINER_MARGIN = 20;
+  const CONTAINER_MARGIN = 15;
 
   const width = window.width / NUM_OF_CELLS - CONTAINER_MARGIN;
 
@@ -46,9 +46,7 @@ export const ConfirmCodeInput: React.FC<ConfirmCodeInputProps> = ({
 };
 
 const styles = StyleSheet.create({
-  container: {
-    margin: 20,
-  },
+  container: {},
   label: {
     color: colors.inputLabelColor,
     marginBottom: 16,

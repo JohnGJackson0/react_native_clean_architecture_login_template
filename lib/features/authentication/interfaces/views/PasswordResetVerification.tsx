@@ -3,7 +3,6 @@ import {StyleSheet, View} from 'react-native';
 import {colors} from '../../../../../tests/lib/features/authentication/interfaces/theme/colors';
 import {ConfirmCodeInput} from './molecules/ConfirmCodeInput';
 import StyledButton from './atoms/styled-button';
-import Overlay from './atoms/Overlay';
 import StyledInput from './atoms/styled-text-input';
 import {useAtom} from 'jotai';
 import {
@@ -17,6 +16,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../navigators/Navigator';
 import StyledErrorText from './atoms/styled-error-text';
 import StyledSuccessText from './atoms/styled-success-text';
+import StyledTitle from './atoms/styled-title';
 
 type PasswordResetVerificationProps = NativeStackScreenProps<
   RootStackParamList,
@@ -44,18 +44,27 @@ const PasswordResetVerification: React.FC<PasswordResetVerificationProps> = ({
   return (
     <View style={styles.container}>
       {isLoading && <StyledLoader />}
-      <Overlay>
-        <ConfirmCodeInput setConfirm={setConfirm} confirm={confirm} />
-        <StyledInput
-          labelText="New Password*"
-          placeholder={'Enter Password'}
-          testID="password-input"
-          onChangeText={setPassword}
-          value={password}
-          secureTextEntry={true}
+      <StyledTitle style={styles.resetConfirmTitle}>
+        Reset Confirmation
+      </StyledTitle>
+
+      <ConfirmCodeInput setConfirm={setConfirm} confirm={confirm} />
+      <StyledInput
+        labelText="Please enter a new password"
+        placeholder={'Enter Password'}
+        testID="password-input"
+        onChangeText={setPassword}
+        value={password}
+        secureTextEntry={true}
+      />
+      <View style={styles.confirmPasswordResetButton}>
+        <StyledButton
+          testID="submit"
+          label={'Change Password'}
+          onPress={onPress}
         />
-        <StyledButton testID="submit" label={'Submit'} onPress={onPress} />
-      </Overlay>
+      </View>
+
       <StyledErrorText>{error.toString()}</StyledErrorText>
       {isConfirmed && (
         <StyledSuccessText>Password has been reset!</StyledSuccessText>
@@ -66,9 +75,18 @@ const PasswordResetVerification: React.FC<PasswordResetVerificationProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: '20%',
     backgroundColor: colors.background,
     flex: 1,
+    padding: 10,
+  },
+  resetConfirmTitle: {marginBottom: 20},
+  confirmPasswordResetButton: {
+    marginTop: 20,
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    left: 0,
+    padding: 5,
   },
 });
 

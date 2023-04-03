@@ -14,7 +14,8 @@ import {
   isSubmittedAtom,
 } from '../state/resetPassword';
 import {colors} from '../../../../../tests/lib/features/authentication/interfaces/theme/colors';
-import Overlay from './atoms/Overlay';
+import StyledTitle from './atoms/styled-title';
+import StyledText from './atoms/styled-text';
 
 type ResetPasswordProps = NativeStackScreenProps<
   RootStackParamList,
@@ -42,18 +43,23 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({navigation}) => {
     <View style={styles.resetContainer}>
       {isLoading && <StyledLoader />}
       <>
-        <Overlay>
-          <StyledInput
-            testID="email-input"
-            placeholder="Enter Email"
-            onChangeText={setEmail}
-            value={email}
-          />
+        <StyledTitle style={styles.forgotPassword}>
+          Forgot Password?
+        </StyledTitle>
+        <StyledText>
+          We will send a one time password reset confirmation code to the email
+        </StyledText>
+        <StyledText>Please enter your registered email</StyledText>
+        <StyledInput
+          testID="email-input"
+          placeholder="Enter Email"
+          onChangeText={setEmail}
+          value={email}
+        />
 
-          <View style={styles.resetPasswordButton}>
-            <StyledButton label="Reset Password" onPress={OnResetPressed} />
-          </View>
-        </Overlay>
+        <View style={styles.resetPasswordButton}>
+          <StyledButton label="Reset Password" onPress={OnResetPressed} />
+        </View>
       </>
       <StyledErrorText>{error}</StyledErrorText>
     </View>
@@ -64,11 +70,18 @@ const styles = StyleSheet.create({
   resetContainer: {
     backgroundColor: colors.background,
     padding: 20,
-    paddingTop: '20%',
     flex: 1,
   },
   resetPasswordButton: {
     marginTop: 20,
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    left: 0,
+    padding: 5,
+  },
+  forgotPassword: {
+    marginBottom: 40,
   },
 });
 

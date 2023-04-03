@@ -33,8 +33,7 @@ describe('login Presentation', () => {
 
   it('navigates to sign up when sign up button is pressed', () => {
     const props = createScreenTestProps();
-    const {getByText, debug} = render(<Login {...props} />);
-    debug();
+    const {getByText} = render(<Login {...props} />);
     expect(getByText('Sign up')).toBeTruthy();
     fireEvent.press(getByText('Sign up'));
     expect(props.navigation.navigate).toHaveBeenCalledWith('SignUp');
