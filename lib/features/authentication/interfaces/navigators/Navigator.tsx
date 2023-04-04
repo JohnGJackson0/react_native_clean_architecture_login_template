@@ -65,6 +65,7 @@ export const AppStack = () => {
             name="Confirm"
             component={Confirm}
             initialParams={{email: '', password: ''}}
+            options={{title: ''}}
           />
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen

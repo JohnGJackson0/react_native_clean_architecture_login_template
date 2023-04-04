@@ -16,6 +16,7 @@ import StyledLoader from './atoms/styled-loader';
 import {ConfirmCodeInput} from './molecules/ConfirmCodeInput';
 import StyledText from './atoms/styled-text';
 import {isConfirmedAtom} from '../state/resetPasswordConfirm';
+import {colors} from '../../../../../tests/lib/features/authentication/interfaces/theme/colors';
 
 type ConfirmProps = NativeStackScreenProps<RootStackParamList, 'Confirm'>;
 
@@ -51,10 +52,17 @@ const Confirm: React.FC<ConfirmProps> = props => {
       {isLoading && <StyledLoader />}
 
       <>
-        <StyledTitle style={styles.confirmText}>Confirm Email</StyledTitle>
+        <StyledTitle style={styles.title}>Confirm Email</StyledTitle>
         <ConfirmCodeInput setConfirm={setConfirm} confirm={confirm} />
-        <StyledButton testID="submit" label={'Submit'} onPress={onPress} />
-        {isConfirmed && <StyledText>Password Reset Sucessful</StyledText>}
+        <View style={styles.confirmButton}>
+          <StyledButton testID="submit" label={'Confirm'} onPress={onPress} />
+        </View>
+
+        {isConfirmed && (
+          <StyledText>
+            One time verification was confirmed Successfully!
+          </StyledText>
+        )}
         <StyledErrorText>{error.toString()}</StyledErrorText>
       </>
     </View>
@@ -69,12 +77,10 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    alignContent: 'center',
     padding: 20,
-    marginTop: '30%',
+    backgroundColor: colors.background,
   },
   confirmText: {
-    alignSelf: 'center',
     fontSize: 35,
     marginBottom: 30,
   },
@@ -87,6 +93,17 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
+  },
+  confirmButton: {
+    marginTop: 20,
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    left: 0,
+    padding: 5,
+  },
+  title: {
+    marginBottom: 60,
   },
 });
 
