@@ -8,7 +8,6 @@ import * as E from 'fp-ts/Either';
 import SplashScreen from '../views/molecules/SplashScreen';
 import Login from '../views/Login';
 import ResetPassword from '../views/ResetPassword';
-import Welcome from '../views/Welcome';
 import {colors} from '../../../../../tests/lib/features/authentication/interfaces/theme/colors';
 import PasswordResetVerification from '../views/PasswordResetVerification';
 
@@ -92,16 +91,6 @@ export const AppStack = () => {
             name="PasswordResetVerification"
             component={PasswordResetVerification}
             options={{title: ''}}
-          />
-          <Stack.Screen
-            name="Welcome"
-            component={Welcome}
-            options={{
-              headerShown: false,
-              headerStyle: {
-                backgroundColor: '#000000',
-              },
-            }}
           />
         </Stack.Navigator>
       )}
