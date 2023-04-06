@@ -1,31 +1,14 @@
-In the case of React, the fast pace of development and changing best practices in the JavaScript community can also make it difficult to keep a large React Native project well-maintained and well-tested.
+# Project
 
-However, this does not mean that it is impossible. By following good design principles, such as separating concerns, keeping components simple and modular, and writing isolated tests, it is possible to build React projects that are scalable and maintainable over time.
+Complete Authentication setup as infastructure as code connected to AWS SAM / serverless / Lamba functions as a backend in React Native.
 
-# The “React Native” Concern
+## How to
 
-React provides a flexible and modular approach to building UI that allows you to create complex and dynamic web applications without being tied to a specific Framework or Platform Concern.
+You can simply follow https://github.com/JohnGJackson0/serverless-restful-authentication. Then fork this repo or place into an existing project and replace the base url and it should be good to go!
 
-The separation of concerns between the "V" (view) and the "C" (controller) in MVC is a key aspect of React. React focuses on declarative components, where you describe what you want the UI to look like, rather than how you want to manipulate it.
+### Architecture
 
-The freedom that React provides can lead to both benefits and drawbacks. On one hand, not having a rigid structure imposed by a framework allows developers to choose the best architecture for their specific needs and to make design decisions that are tailored to their use case. This can lead to highly optimized and well-designed software solutions.
+Notice that in clean architecture the call flow !=== dependencies. The takeaway is if you inject the dependecy then you only need a 'type' to depend on. The type is in *your* control, what do you need in the actual code? Thus it will invert dependencies and the call flow remains the exact same. 
 
-On the other hand, the lack of a clear framework can lead to confusion and make it more challenging for developers to make informed decisions about architecture or even worse, assuming things like “Hooks” and “Redux” is the overall App Architecture. This can result in inconsistent approaches to architecture, leading to difficulties in maintaining and scaling the code over time.
-
-Ultimately, the key to success with React is to have a solid understanding of good software design principles.
-
-# The Secret to Maintainability
-
-The good news is that these common software development issues can be addressed through the adoption of Clean Architecture, a proposal put forward by Bob Martin.
-
-By staying focused on the principles of Clean Architecture and seeking out opportunities to improve, you can develop the skills and habits necessary to write code that is scalable, maintainable, and easy to understand.
-
-While Clean Architecture may not be a one-size-fits-all solution, it can serve as a starting point for developers to understand the fundamental principles of software architecture and how to build scalable applications.
-
-After all, most architectures all resolve to similar concerns and with similar underlying concepts. You may even understand the idea well, but it won’t do anything worthwhile if you can’t figure out how to write it!
-
-So let’s change that in React-Native..
-
-# The Project
-
-… Not Finished ...
+<img width="280" alt="image" src="https://user-images.githubusercontent.com/23160192/230359067-799164eb-97ff-400c-9678-9684544603c7.png">
+<img width="448" alt="image" src="https://user-images.githubusercontent.com/23160192/230362928-333a7da7-5565-40e2-b475-87c14408c24b.png">
