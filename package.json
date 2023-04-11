@@ -49,6 +49,9 @@
   },
   "jest": {
     "preset": "react-native",
+    "setupFilesAfterEnv": [
+      "./tests/lib/setupFile.js"
+    ],
     "transformIgnorePatterns": [
       "node_modules/(?!((jest-)?react-native|react-native-confirmation-code-field|@react-native(-community)?)/)"
     ]

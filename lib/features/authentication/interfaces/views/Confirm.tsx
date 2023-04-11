@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {KeyboardAvoidingView, Platform, StyleSheet, View} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {RootStackParamList} from '../navigators/Navigator';
+import {HEADER_HEIGHT, RootStackParamList} from '../navigators/Navigator';
 import StyledErrorText from './atoms/styled-error-text';
 import StyledTitle from './atoms/styled-title';
 import StyledButton from './atoms/styled-button';
@@ -54,9 +54,13 @@ const Confirm: React.FC<ConfirmProps> = props => {
       <>
         <StyledTitle style={styles.title}>Confirm Email</StyledTitle>
         <ConfirmCodeInput setConfirm={setConfirm} confirm={confirm} />
-        <View style={styles.confirmButton}>
+        <KeyboardAvoidingView
+          keyboardVerticalOffset={HEADER_HEIGHT}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          enabled
+          style={styles.confirmButton}>
           <StyledButton testID="submit" label={'Confirm'} onPress={onPress} />
-        </View>
+        </KeyboardAvoidingView>
 
         {isConfirmed && (
           <StyledText>

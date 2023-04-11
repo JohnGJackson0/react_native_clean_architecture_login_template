@@ -21,6 +21,8 @@ export type RootStackParamList = {
   Welcome: undefined;
 };
 
+export const HEADER_HEIGHT = 95;
+
 export const AppStack = () => {
   const [isUserLoggedIn, setIsUserLoggedIn] = useState<boolean | null>(null);
 

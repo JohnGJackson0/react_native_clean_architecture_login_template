@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {KeyboardAvoidingView, Platform, StyleSheet, View} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {RootStackParamList} from '../navigators/Navigator';
+import {HEADER_HEIGHT, RootStackParamList} from '../navigators/Navigator';
 import StyledButton from './atoms/styled-button';
 import StyledInput from './atoms/styled-text-input';
 import {useAtom} from 'jotai';
@@ -58,9 +58,13 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({navigation}) => {
           value={email}
         />
 
-        <View style={styles.resetPasswordButton}>
+        <KeyboardAvoidingView
+          keyboardVerticalOffset={HEADER_HEIGHT}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          enabled
+          style={styles.resetPasswordButton}>
           <StyledButton label="Reset Password" onPress={OnResetPressed} />
-        </View>
+        </KeyboardAvoidingView>
       </>
       <StyledErrorText>{error}</StyledErrorText>
     </View>

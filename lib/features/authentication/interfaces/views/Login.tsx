@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {KeyboardAvoidingView, Platform, StyleSheet, View} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {RootStackParamList} from '../navigators/Navigator';
+import {HEADER_HEIGHT, RootStackParamList} from '../navigators/Navigator';
 import StyledButton from './atoms/styled-button';
 import StyledInput from './atoms/styled-text-input';
 import StyledButtonText from './atoms/styled-button-text';
@@ -51,7 +51,11 @@ const Login: React.FC<LoginProps> = ({navigation}) => {
   }, [isSignedIn, setIsSignedIn, navigation]);
 
   return (
-    <View style={styles.loginContainer}>
+    <KeyboardAvoidingView
+      keyboardVerticalOffset={HEADER_HEIGHT}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      enabled
+      style={styles.loginContainer}>
       {isLoading && <StyledLoader />}
 
       <StyledTitle style={styles.signInTitle}>Sign in</StyledTitle>
@@ -94,7 +98,7 @@ const Login: React.FC<LoginProps> = ({navigation}) => {
           onPress={handleSignUpPressed}
         />
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
