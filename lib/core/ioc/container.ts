@@ -22,8 +22,7 @@ import ConfirmChangePasswordDataSourceImpl from '../../features/authentication/i
 import ConfirmPasswordResetUseCase from '../../features/authentication/domain/usecases/ConfirmPasswordResetUseCase';
 
 export default function configureDI() {
-  // TODO need types
-  const container: any = new DIContainer();
+  const container: DIContainer = new DIContainer();
 
   container.add({
     ENV: 'PRODUCTION',
