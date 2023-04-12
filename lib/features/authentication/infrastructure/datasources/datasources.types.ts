@@ -54,3 +54,7 @@ export interface ConfirmChangePasswordDataSource {
     newPassword: string,
   ) => Promise<E.Either<string, string>>;
 }
+
+export interface ResendConfirmationCodeDataSource {
+  resendConfirmationCode: (email: string) => Promise<E.Either<string, string>>;
+}
