@@ -11,6 +11,7 @@
 */
 
 const AWS = require("aws-sdk");
+import { COGNITO_CLIENT_ID } from "../../config";
 
 exports.resendConfirmCode = async (event) => {
   try {
@@ -19,7 +20,7 @@ exports.resendConfirmCode = async (event) => {
     const { email } = JSON.parse(event.body);
 
     const params = {
-      ClientId: "qf3oj4jkp9p1agcnkdmnm7gbj",
+      ClientId: COGNITO_CLIENT_ID,
       Username: email,
     };
 

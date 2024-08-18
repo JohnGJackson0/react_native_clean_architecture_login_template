@@ -11,6 +11,7 @@
 */
 
 const AWS = require("aws-sdk");
+import { COGNITO_CLIENT_ID } from "../../config";
 
 exports.refreshHandler = async (event) => {
   const cognitoIdentityServiceProvider =
@@ -22,7 +23,7 @@ exports.refreshHandler = async (event) => {
 
     const refreshParams = {
       AuthFlow: "REFRESH_TOKEN_AUTH",
-      ClientId: "qf3oj4jkp9p1agcnkdmnm7gbj",
+      ClientId: COGNITO_CLIENT_ID,
       AuthParameters: {
         REFRESH_TOKEN: refreshToken,
       },

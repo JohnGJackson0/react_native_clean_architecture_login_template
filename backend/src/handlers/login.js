@@ -5,6 +5,7 @@
 */
 
 const AWS = require("aws-sdk");
+import { COGNITO_CLIENT_ID } from "../../config";
 
 exports.loginHandler = async (event) => {
   const cognitoIdentityServiceProvider =
@@ -15,7 +16,7 @@ exports.loginHandler = async (event) => {
 
     const authParams = {
       AuthFlow: "USER_PASSWORD_AUTH",
-      ClientId: "qf3oj4jkp9p1agcnkdmnm7gbj",
+      ClientId: COGNITO_CLIENT_ID,
       AuthParameters: {
         USERNAME: email,
         PASSWORD: password,

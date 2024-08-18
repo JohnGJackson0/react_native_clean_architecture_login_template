@@ -12,13 +12,14 @@
 
 const AWS = require("aws-sdk");
 const cognitoIdentityServiceProvider = new AWS.CognitoIdentityServiceProvider();
+import { COGNITO_CLIENT_ID } from "../../config";
 
 exports.resetConfirmHandler = async (event) => {
   const body = JSON.parse(event.body);
   const { email, verificationCode, newPassword } = body;
 
   const params = {
-    ClientId: "qf3oj4jkp9p1agcnkdmnm7gbj",
+    ClientId: COGNITO_CLIENT_ID,
     ConfirmationCode: verificationCode,
     Password: newPassword,
     Username: email,

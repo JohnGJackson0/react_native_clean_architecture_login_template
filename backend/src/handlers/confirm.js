@@ -11,6 +11,7 @@
 */
 
 const AWS = require("aws-sdk");
+import { COGNITO_CLIENT_ID } from "../../config";
 
 exports.confirmHandler = async (event) => {
   try {
@@ -19,7 +20,7 @@ exports.confirmHandler = async (event) => {
     const { email, password, confirmationCode } = JSON.parse(event.body);
 
     const confirmSignUpParams = {
-      ClientId: "qf3oj4jkp9p1agcnkdmnm7gbj",
+      ClientId: COGNITO_CLIENT_ID,
       ConfirmationCode: confirmationCode,
       Username: email,
     };
@@ -29,7 +30,7 @@ exports.confirmHandler = async (event) => {
 
     const authParams = {
       AuthFlow: "USER_PASSWORD_AUTH",
-      ClientId: "qf3oj4jkp9p1agcnkdmnm7gbj",
+      ClientId: COGNITO_CLIENT_ID,
       AuthParameters: {
         USERNAME: email,
         PASSWORD: password,
