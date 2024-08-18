@@ -1,3 +1,4 @@
+import {API_BASE_URL} from '../../../../../config';
 import {Client} from '../../../../core/types/client';
 import {UserSignUpDTO} from '../../domain/entities/UserSignUpDTO';
 import {UserSignUpDataSource} from './datasources.types';
@@ -40,10 +41,7 @@ export default class UserSignUpDataSourceImpl implements UserSignUpDataSource {
       email: email,
       password: password,
     };
-
-    const url =
-      'https://iz1ul818p3.execute-api.us-east-1.amazonaws.com/Prod/signup';
-
+    const url = `${API_BASE_URL}/signup`;
     const response = await this._client.request<
       JSONResponse,
       JSONErrorResponse

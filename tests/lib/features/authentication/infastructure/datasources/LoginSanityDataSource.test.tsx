@@ -43,9 +43,7 @@ describe('Login Sanity Data Source', () => {
       set: jest.fn(),
       remove: jest.fn(),
     };
-
     await new LoginSanityDataSource(client, storage).getLoginSanity();
-
     expect(client.request).toHaveBeenCalledWith(
       'https://iz1ul818p3.execute-api.us-east-1.amazonaws.com/Prod/loginSanity',
       {

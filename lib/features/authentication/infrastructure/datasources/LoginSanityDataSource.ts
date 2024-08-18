@@ -1,3 +1,4 @@
+import {API_BASE_URL} from '../../../../../config';
 import {Client} from '../../../../core/types/client';
 import {LoginSanityDTO} from '../../domain/entities/LoginSanityDTO';
 import {JWTTOKEN, Storage} from '../storage/storage.types';
@@ -27,14 +28,10 @@ export default class LoginSanityDataSourceImpl
 
   getLoginSanity = async (): Promise<E.Either<string, LoginSanityDTO>> => {
     const JWT: string = (await this.storage.get(JWTTOKEN)) ?? '';
-
     if (JWT === '') {
       return E.left('Authorization failed');
     }
-
-    const url =
-      'https://iz1ul818p3.execute-api.us-east-1.amazonaws.com/Prod/loginSanity';
-
+    const url = `${API_BASE_URL}/loginSanity`;
     const response = await this.client.request<JSONResponse, JSONErrorResponse>(
       url,
       {

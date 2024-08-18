@@ -3,6 +3,7 @@ import {ConfirmDTO} from '../../domain/entities/ConfirmDTO';
 import {ConfirmDataSource} from './datasources.types';
 import {EMAIL, JWTTOKEN, REFRESHTOKEN, Storage} from '../storage/storage.types';
 import {Client} from '../../../../core/types/client';
+import {API_BASE_URL} from '../../../../../config';
 
 interface ApiResponse {
   message: string;
@@ -36,11 +37,8 @@ export default class ConfirmDataSourceImpl implements ConfirmDataSource {
     password: string,
     confirmCode: string,
   ): Promise<E.Either<string, ConfirmDTO>> => {
-    const url =
-      'https://iz1ul818p3.execute-api.us-east-1.amazonaws.com/Prod/confirm';
-
+    const url = `${API_BASE_URL}/confirm`;
     const payload = {email, password, confirmationCode: confirmCode};
-
     const response = await this.client.request<ApiResponse, ApiError>(url, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},

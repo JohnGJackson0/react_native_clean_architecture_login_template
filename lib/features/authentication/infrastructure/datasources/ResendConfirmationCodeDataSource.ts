@@ -1,6 +1,7 @@
 import * as E from 'fp-ts/Either';
 import {ResendConfirmationCodeDataSource} from './datasources.types';
 import {Client} from '../../../../core/types/client';
+import {API_BASE_URL} from '../../../../../config';
 
 interface ApiResponseBody {
   message: string;
@@ -23,11 +24,8 @@ export default class ResendConfirmationCodeDataSourceImpl
   resendConfirmationCode = async (
     email: string,
   ): Promise<E.Either<string, string>> => {
-    const url =
-      'https://iz1ul818p3.execute-api.us-east-1.amazonaws.com/Prod/resendConfirmCode';
-
+    const url = `${API_BASE_URL}/resendConfirmCode`;
     const payload = {email};
-
     const response = await this.client.request<ApiResponseBody, ApiError>(url, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},

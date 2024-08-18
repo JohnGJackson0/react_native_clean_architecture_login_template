@@ -3,6 +3,7 @@ import * as E from 'fp-ts/Either';
 import {RefreshDTO} from '../../domain/entities/RefreshDTO';
 import {Client} from '../../../../core/types/client';
 import {JWTTOKEN, REFRESHTOKEN, Storage} from '../storage/storage.types';
+import {API_BASE_URL} from '../../../../../config';
 
 interface ApiResponse {
   message: string;
@@ -24,22 +25,16 @@ interface ApiError {
 export default class RefreshDataSourceImpl implements RefreshDataSource {
   client: Client;
   storage: Storage;
-
   constructor(client: Client, storage: Storage) {
     this.client = client;
     this.storage = storage;
   }
-
   refreshJwt = async (): Promise<E.Either<string, RefreshDTO>> => {
-    const url =
-      'https://iz1ul818p3.execute-api.us-east-1.amazonaws.com/Prod/refresh';
-
+    const url = `${API_BASE_URL}/refresh`;
     const refreshToken: string = (await this.storage.get(REFRESHTOKEN)) ?? '';
-
     if (refreshToken === '') {
       return E.left('Refresh token not found');
     }
-
     const payload = {
       refreshToken,
     };

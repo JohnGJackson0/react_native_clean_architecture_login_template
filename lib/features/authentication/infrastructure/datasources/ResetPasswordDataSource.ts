@@ -2,6 +2,7 @@ import {ResetPasswordDataSource} from './datasources.types';
 import * as E from 'fp-ts/Either';
 import {RefreshDTO} from '../../domain/entities/RefreshDTO';
 import {Client} from '../../../../core/types/client';
+import {API_BASE_URL} from '../../../../../config';
 
 interface ApiResponse {
   message: string;
@@ -24,8 +25,7 @@ export default class ResetPasswordDataSourceImpl
   resetPassword = async (
     email: string,
   ): Promise<E.Either<string, RefreshDTO>> => {
-    const url =
-      'https://iz1ul818p3.execute-api.us-east-1.amazonaws.com/Prod/reset';
+    const url = `${API_BASE_URL}/reset`;
 
     const payload = {
       email,

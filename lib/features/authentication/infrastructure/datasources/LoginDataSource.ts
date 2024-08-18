@@ -2,6 +2,7 @@ import * as E from 'fp-ts/Either';
 import {LoginDataSource} from './datasources.types';
 import {EMAIL, JWTTOKEN, REFRESHTOKEN, Storage} from '../storage/storage.types';
 import {Client} from '../../../../core/types/client';
+import {API_BASE_URL} from '../../../../../config';
 
 interface ApiResponse {
   message: string;
@@ -35,8 +36,7 @@ export default class LoginDataSourceImpl implements LoginDataSource {
     email: string,
     password: string,
   ): Promise<E.Either<string, boolean>> => {
-    const url =
-      'https://iz1ul818p3.execute-api.us-east-1.amazonaws.com/Prod/login';
+    const url = `${API_BASE_URL}/login`;
 
     const payload = {email, password};
 

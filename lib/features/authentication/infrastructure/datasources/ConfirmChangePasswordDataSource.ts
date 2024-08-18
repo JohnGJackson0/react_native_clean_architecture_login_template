@@ -2,6 +2,7 @@ import * as E from 'fp-ts/Either';
 import {ConfirmChangePasswordDataSource} from './datasources.types';
 import {EMAIL, JWTTOKEN, REFRESHTOKEN, Storage} from '../storage/storage.types';
 import {Client} from '../../../../core/types/client';
+import {API_BASE_URL} from '../../../../../config';
 
 interface ApiResponseBody {
   message: string;
@@ -28,8 +29,7 @@ export default class ConfirmChangePasswordDataSourceImpl
     verificationCode: string,
     newPassword: string,
   ): Promise<E.Either<string, string>> => {
-    const url =
-      'https://iz1ul818p3.execute-api.us-east-1.amazonaws.com/Prod/confirmReset';
+    const url = `${API_BASE_URL}/confirmReset`;
     const payload = {email, verificationCode: verificationCode, newPassword};
 
     const response = await this.client.request<ApiResponseBody, ApiError>(url, {
