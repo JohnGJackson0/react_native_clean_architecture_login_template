@@ -38,6 +38,7 @@ frontend/android/*.keystore
 frontend/node_modules/
 frontend/npm-debug.log*
 frontend/yarn-error.log*
+node_modules
 
 # fastlane
 #

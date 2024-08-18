@@ -1,0 +1,139 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >-
+  auth-portal
+Transform:
+  - AWS::Serverless-2016-10-31
+Resources:
+  SignUpFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/signup.signupHandler
+      Runtime: nodejs16.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: A signup API
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /signup
+            Method: POST
+  ConfirmSignUpFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/confirm.confirmHandler
+      Runtime: nodejs16.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: Confirm after sign up
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /confirm
+            Method: POST
+  LoginFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/login.loginHandler
+      Runtime: nodejs16.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: login
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /login
+            Method: POST
+  RefreshTokenFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/refresh.refreshHandler
+      Runtime: nodejs16.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: Refresh token
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /refresh
+            Method: POST
+  ResetPasswordFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/reset.resetHandler
+      Runtime: nodejs16.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: Reset Password
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /reset
+            Method: POST
+  ConfirmResetPasswordFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/resetConfirm.resetConfirmHandler
+      Runtime: nodejs16.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: Confirm Password Reset
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /confirmReset
+            Method: POST
+  LoginSanityFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/loginSanity.loginSanity
+      Runtime: nodejs16.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: Login Sanity
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /loginSanity
+            Method: POST
+  ResendConfirmCodeFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/resendConfirmCode.resendConfirmCode
+      Runtime: nodejs16.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: Resend Confirm Code email
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /resendConfirmCode
+            Method: POST
+
+Outputs:
+  WebEndpoint:
+    Description: "API Gateway endpoint URL for Prod stage"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
