@@ -4,41 +4,40 @@
 
 # Xcode
 #
-build/
-*.pbxuser
-!default.pbxuser
-*.mode1v3
-!default.mode1v3
-*.mode2v3
-!default.mode2v3
-*.perspectivev3
-!default.perspectivev3
-xcuserdata
-*.xccheckout
-*.moved-aside
-DerivedData
-*.hmap
-*.ipa
-*.xcuserstate
-ios/.xcode.env.local
+frontend/ios/build/
+frontend/ios/*.pbxuser
+frontend/ios/!default.pbxuser
+frontend/ios/*.mode1v3
+frontend/ios/!default.mode1v3
+frontend/ios/*.mode2v3
+frontend/ios/!default.mode2v3
+frontend/ios/*.perspectivev3
+frontend/ios/!default.perspectivev3
+frontend/ios/xcuserdata/
+frontend/ios/*.xccheckout
+frontend/ios/*.moved-aside
+frontend/ios/DerivedData/
+frontend/ios/*.hmap
+frontend/ios/*.ipa
+frontend/ios/*.xcuserstate
+frontend/ios/.xcode.env.local
 
 # Android/IntelliJ
 #
-build/
-.idea
-.gradle
-local.properties
-*.iml
-*.hprof
-.cxx/
-*.keystore
-!debug.keystore
+frontend/android/build/
+frontend/android/.idea/
+frontend/android/.gradle/
+frontend/android/local.properties
+frontend/android/*.iml
+frontend/android/*.hprof
+frontend/android/.cxx/
+frontend/android/*.keystore
+!frontend/android/debug.keystore
 
 # node.js
-#
-node_modules/
-npm-debug.log
-yarn-error.log
+frontend/node_modules/
+frontend/npm-debug.log*
+frontend/yarn-error.log*
 
 # fastlane
 #
@@ -56,7 +55,7 @@ yarn-error.log
 *.jsbundle
 
 # Ruby / CocoaPods
-/ios/Pods/
+frontend/ios/Pods/
 /vendor/bundle/
 
 # Temporary files created by Metro to check the health of the file watcher
